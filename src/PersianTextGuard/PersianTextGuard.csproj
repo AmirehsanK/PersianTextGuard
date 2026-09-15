@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- netstandard2.0 keeps the package usable from .NET Framework 4.6.1+ apps, which are
+         still common in Iranian enterprise code. -->
+    <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsAotCompatible>
+    <RootNamespace>PersianTextGuard</RootNamespace>
+
+    <PackageId>PersianTextGuard</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Amirehsan Kohannasab</Authors>
+    <Description>Persian text normalization and evasion-resistant profanity filtering for .NET. Folds Arabic/Persian look-alike letters, zero-width and bidi characters, and all three digit ranges, and catches the ways people get around a word list: spaced or dotted letters, held keys, leetspeak, filler symbols, Cyrillic look-alikes and Finglish. Ships an optional curated Persian/Finglish/English word list.</Description>
+    <PackageTags>persian;farsi;finglish;profanity;profanity-filter;moderation;normalization;arabic;text;rtl</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/AmirehsanK/PersianTextGuard</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AmirehsanK/PersianTextGuard</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnablePackageValidation>true</EnablePackageValidation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="WordLists\persian-default.txt" LogicalName="PersianTextGuard.WordLists.persian-default.txt" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="PolySharp" Version="1.16.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PersianTextGuard.Tests" />
+  </ItemGroup>
+
+</Project>

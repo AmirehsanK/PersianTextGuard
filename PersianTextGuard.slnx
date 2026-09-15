@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/PersianTextGuard.Benchmarks/PersianTextGuard.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/PersianTextGuard/PersianTextGuard.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PersianTextGuard.Tests/PersianTextGuard.Tests.csproj" />
+  </Folder>
+</Solution>
