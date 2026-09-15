@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/AmirehsanK/PersianTextGuard/main/icon.png" alt="" width="96" align="right">
+
 # PersianTextGuard
 
 [![CI](https://github.com/AmirehsanK/PersianTextGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/AmirehsanK/PersianTextGuard/actions/workflows/ci.yml)

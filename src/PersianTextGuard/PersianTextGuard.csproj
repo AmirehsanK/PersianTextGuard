@@ -10,12 +10,13 @@
     <RootNamespace>PersianTextGuard</RootNamespace>
 
     <PackageId>PersianTextGuard</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Amirehsan Kohannasab</Authors>
     <Description>Persian text normalization and evasion-resistant profanity filtering for .NET. Folds Arabic/Persian look-alike letters, zero-width and bidi characters, and all three digit ranges, and catches the ways people get around a word list: spaced or dotted letters, held keys, leetspeak, filler symbols, Cyrillic look-alikes and Finglish. Ships an optional curated Persian/Finglish/English word list.</Description>
     <PackageTags>persian;farsi;finglish;profanity;profanity-filter;moderation;normalization;arabic;text;rtl</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/AmirehsanK/PersianTextGuard</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AmirehsanK/PersianTextGuard</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -29,6 +30,7 @@
   <ItemGroup>
     <EmbeddedResource Include="WordLists\persian-default.txt" LogicalName="PersianTextGuard.WordLists.persian-default.txt" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
