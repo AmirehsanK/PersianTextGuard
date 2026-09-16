@@ -287,7 +287,7 @@ with 1.1.0.
   - **Behaviour change:** `ProfanityMatch` equality now includes `Index` and `Length`, so a `FindMatch` result no longer equals `new ProfanityMatch(word, evasion)` (R7 — constitution, Public API & Versioning).
   - **Censoring rules:** whole-word masking with a fixed four-character mask.
   - **Performance:** the before-and-after numbers from `specs/001-censor-find-matches/benchmarks.md`.
-- [ ] T026 Run every step of `specs/001-censor-find-matches/quickstart.md` (sections 1–5) and tick each expected outcome. Open a pull request from `001-censor-find-matches` to `main`, with the benchmark table from T021 in its description (constitution, Development Workflow & Quality Gates), and confirm CI is green on build, `net8.0`/`net10.0` tests, `net48` tests and pack before merging.
+- [X] T026 Run every step of `specs/001-censor-find-matches/quickstart.md` (sections 1–5) and tick each expected outcome. Open a pull request from `001-censor-find-matches` to `main`, with the benchmark table from T021 in its description (constitution, Development Workflow & Quality Gates), and confirm CI is green on build, `net8.0`/`net10.0` tests, `net48` tests and pack before merging.
 
 ---
 
