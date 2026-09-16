@@ -8,3 +8,5 @@ BenchmarkDotNet.Artifacts/
 artifacts/
 *.nupkg
 *.snupkg
+*.suo
+packages/
