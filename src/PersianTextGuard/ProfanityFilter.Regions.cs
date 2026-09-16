@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace PersianTextGuard;
 
 /// <summary>A hit mapped back to the message and widened to whole words.</summary>
@@ -13,6 +15,9 @@ public sealed partial class ProfanityFilter
 {
     // One source-map slot per ReadingKind; keep in step with the enum.
     private const int ReadingKindCount = (int)ReadingKind.FoldedSqueezed + 1;
+
+    // Every hidden word gets the same mask, so its length says nothing about the word (FR-012).
+    private const int MaskLength = 4;
 
     /// <summary>
     /// Where <paramref name="hit"/> is in <paramref name="original"/>, widened to the whole words it
@@ -96,6 +101,51 @@ public sealed partial class ProfanityFilter
         }
 
         return matches;
+    }
+
+    /// <summary>
+    /// Replaces each match's region with the mask, then keeps going until the output is clean.
+    /// </summary>
+    /// <remarks>
+    /// The mask character is usually filler the filter drops to catch "f*ck", so masking can join
+    /// the letters around a mask into a new word: "k kos i kos r" masks to "k **** i **** r", which
+    /// reads as "kir" (research R6). Each extra pass replaces letters with a mask that has none, so
+    /// the letters only ever run out; the cap is a guard against a bug, not an expected limit, and
+    /// if it is ever reached the whole text becomes one mask rather than leak a word.
+    /// </remarks>
+    private string CensorMatches(string text, IReadOnlyList<ProfanityMatch> matches, char maskCharacter)
+    {
+        var mask = new string(maskCharacter, MaskLength);
+        var censored = ApplyMask(text, matches, mask);
+        var passesLeft = PersianNormalizer.Tokenize(text).Length + 1;
+
+        while (ContainsProfanity(censored))
+        {
+            if (passesLeft-- == 0)
+            {
+                return mask;
+            }
+
+            censored = ApplyMask(censored, FindMatches(censored), mask);
+        }
+
+        return censored;
+    }
+
+    private static string ApplyMask(string text, IReadOnlyList<ProfanityMatch> matches, string mask)
+    {
+        var sb = new StringBuilder(text.Length);
+        var copied = 0;
+
+        foreach (var match in matches)
+        {
+            sb.Append(text, copied, match.Index - copied);
+            sb.Append(mask);
+            copied = match.Index + match.Length;
+        }
+
+        sb.Append(text, copied, text.Length - copied);
+        return sb.ToString();
     }
 
     private static bool IsSurrogatePairAt(string text, int index) =>

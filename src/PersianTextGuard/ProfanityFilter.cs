@@ -145,6 +145,60 @@ public sealed partial class ProfanityFilter
         return Merge(candidates).ToArray();
     }
 
+    /// <summary>
+    /// <paramref name="text"/> with every banned word hidden behind <c>****</c>, and everything else
+    /// exactly as passed.
+    /// </summary>
+    /// <remarks>Same as <see cref="Censor(string?, char)"/> with <c>'*'</c>.</remarks>
+    public string Censor(string? text) => Censor(text, '*');
+
+    /// <summary>
+    /// <paramref name="text"/> with every banned word hidden behind four
+    /// <paramref name="maskCharacter"/>s, and everything else exactly as passed.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Each region <see cref="FindMatches"/> reports is replaced by the same four-character mask,
+    /// however long the text it hides, so a reader learns that a word was removed but not how long
+    /// it was. Whole words are hidden: "motherfucker" and «جنده‌ها» leave no fragment, and a disguised
+    /// word such as "f u c k" or «ج.نده» is hidden with its separators, line breaks included.
+    /// </para>
+    /// <para>
+    /// Every character outside a hidden region is copied unchanged — none of the filter's
+    /// normalization reaches the output. The result is usually a different length from
+    /// <paramref name="text"/>, so positions from <see cref="FindMatches"/> refer to the original,
+    /// not to the result.
+    /// </para>
+    /// <para>
+    /// The result is always clean: <see cref="ContainsProfanity"/> returns false for it. Clean text,
+    /// including empty or whitespace-only text, is returned as the same instance; <c>null</c> becomes
+    /// an empty string. Safe to call concurrently on a shared filter.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="maskCharacter"/> is a letter, a digit, whitespace, a control character or half
+    /// of a surrogate pair. Checked before <paramref name="text"/> is looked at; the text itself never
+    /// causes an exception.
+    /// </exception>
+    public string Censor(string? text, char maskCharacter)
+    {
+        if (char.IsLetterOrDigit(maskCharacter) || char.IsWhiteSpace(maskCharacter)
+            || char.IsControl(maskCharacter) || char.IsSurrogate(maskCharacter))
+        {
+            throw new ArgumentException(
+                "The mask character must not be a letter, a digit, whitespace, a control character or half of a surrogate pair.",
+                nameof(maskCharacter));
+        }
+
+        if (text is null)
+        {
+            return string.Empty;
+        }
+
+        var matches = FindMatches(text);
+        return matches.Count == 0 ? text : CensorMatches(text, matches, maskCharacter);
+    }
+
     private bool Add(string form, BannedWord word, int order, HashSet<string> anywhereKeys)
     {
         if (word.Mode == WordMatchMode.Anywhere)

@@ -186,7 +186,7 @@ that ordinary messages come back as the same instance.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T014 [P] [US2] Write `tests/PersianTextGuard.Tests/CensorTests.cs` using `new ProfanityFilter(WordList.PersianDefault)`. Assert each case exactly:
+- [X] T014 [P] [US2] Write `tests/PersianTextGuard.Tests/CensorTests.cs` using `new ProfanityFilter(WordList.PersianDefault)`. Assert each case exactly:
   - **Masking:**
     - `"this is kir"` → `"this is ****"`.
     - `"جنده‌ها رو ببین"` → `"**** رو ببین"`.
@@ -209,7 +209,7 @@ that ordinary messages come back as the same instance.
 
 ### Implementation for User Story 2
 
-- [ ] T015 [US2] Implement `public string Censor(string? text, char maskCharacter)` in `src/PersianTextGuard/ProfanityFilter.cs`, delegating the output building to a private helper in `src/PersianTextGuard/ProfanityFilter.Regions.cs`.
+- [X] T015 [US2] Implement `public string Censor(string? text, char maskCharacter)` in `src/PersianTextGuard/ProfanityFilter.cs`, delegating the output building to a private helper in `src/PersianTextGuard/ProfanityFilter.Regions.cs`.
   - **Validation (R8):** first throw `new ArgumentException(message, nameof(maskCharacter))` when `char.IsLetterOrDigit(maskCharacter) || char.IsWhiteSpace(maskCharacter) || char.IsControl(maskCharacter) || char.IsSurrogate(maskCharacter)`. Then, if `text` is null, return `string.Empty`.
   - **Clean text:** `var matches = FindMatches(text)`; if empty, return `text` itself (same instance).
   - **Building:** use a `StringBuilder`. Copy `text[previousEnd .. m.Index]` verbatim, then append `new string(maskCharacter, 4)`. The data model's rule is "`mask` = the mask character four times".
@@ -218,7 +218,7 @@ that ordinary messages come back as the same instance.
     - Cap the passes at `PersianNormalizer.Tokenize(text).Length + 1`.
     - If the cap is reached and the output is still dirty, return `new string(maskCharacter, 4)`, so FR-015 holds unconditionally.
   - **XML docs:** must state every row of the `Censor` table in `specs/001-censor-find-matches/contracts/public-api.md`.
-- [ ] T016 [US2] Add `public string Censor(string? text) => Censor(text, '*');` to `src/PersianTextGuard/ProfanityFilter.cs`, with XML docs saying the default mask is `****`. Run `dotnet test tests/PersianTextGuard.Tests -f net10.0`; T014 must pass.
+- [X] T016 [US2] Add `public string Censor(string? text) => Censor(text, '*');` to `src/PersianTextGuard/ProfanityFilter.cs`, with XML docs saying the default mask is `****`. Run `dotnet test tests/PersianTextGuard.Tests -f net10.0`; T014 must pass.
 
 **Checkpoint**: User Stories 1 and 2 both work. Censoring hides whole words with a fixed mask and
 never returns text the filter still flags.
