@@ -44,6 +44,60 @@ public sealed partial class ProfanityFilter
         return new Candidate(start, end, hitLength, hit.Word, hit.Order, hit.Evasion);
     }
 
+    /// <summary>
+    /// Candidates that overlap become one match (FR-007): the region is their union, the entry is
+    /// the one whose hit covered the most characters before widening — so "motherfucker" beats the
+    /// "fuck" inside it even though both widen to the same word — with ties going to the entry
+    /// listed first, and the evasion is the least that entry needed.
+    /// </summary>
+    private static List<ProfanityMatch> Merge(List<Candidate> candidates)
+    {
+        candidates.Sort(static (a, b) => a.Start != b.Start ? a.Start.CompareTo(b.Start) : b.End.CompareTo(a.End));
+
+        var matches = new List<ProfanityMatch>();
+        var i = 0;
+
+        while (i < candidates.Count)
+        {
+            var clusterStart = candidates[i].Start;
+            var clusterEnd = candidates[i].End;
+            var best = candidates[i];
+
+            var next = i + 1;
+            while (next < candidates.Count && candidates[next].Start < clusterEnd)
+            {
+                var candidate = candidates[next];
+                clusterEnd = Math.Max(clusterEnd, candidate.End);
+                if (candidate.HitLength > best.HitLength
+                    || (candidate.HitLength == best.HitLength && candidate.Order < best.Order))
+                {
+                    best = candidate;
+                }
+
+                next++;
+            }
+
+            var evasion = best.Evasion;
+            for (var k = i; k < next; k++)
+            {
+                if (candidates[k].Word == best.Word && candidates[k].Evasion < evasion)
+                {
+                    evasion = candidates[k].Evasion;
+                }
+            }
+
+            matches.Add(new ProfanityMatch(best.Word, evasion)
+            {
+                Index = clusterStart,
+                Length = clusterEnd - clusterStart,
+            });
+
+            i = next;
+        }
+
+        return matches;
+    }
+
     private static bool IsSurrogatePairAt(string text, int index) =>
         char.IsHighSurrogate(text[index]) && index + 1 < text.Length && char.IsLowSurrogate(text[index + 1]);
 }

@@ -24,7 +24,8 @@ public enum EvasionKind
 }
 
 /// <summary>
-/// A banned word found by <see cref="ProfanityFilter.FindMatch"/>.
+/// A banned word found by <see cref="ProfanityFilter.FindMatch"/> or
+/// <see cref="ProfanityFilter.FindMatches"/>.
 /// </summary>
 /// <param name="Word">The entry that matched, exactly as it was given to the filter.</param>
 /// <param name="Evasion">What had to be undone to find it. Useful for moderation logs.</param>

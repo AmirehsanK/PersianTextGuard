@@ -106,6 +106,45 @@ public sealed partial class ProfanityFilter
         };
     }
 
+    /// <summary>Every banned word in <paramref name="text"/>, in the order they appear.</summary>
+    /// <remarks>
+    /// <para>
+    /// Each match's <see cref="ProfanityMatch.Index"/> and <see cref="ProfanityMatch.Length"/> refer
+    /// to <paramref name="text"/> exactly as passed, not to a normalized copy, and cover whole words:
+    /// a banned word inside "motherfucker" or «جنده‌ها» covers the whole word, and a disguised word
+    /// such as "f u c k" or «ج.نده» covers its separators too.
+    /// </para>
+    /// <para>
+    /// Matches are ordered by position and never overlap. Where entries overlap — "motherfucker"
+    /// holds "fuck", «پدر سگ پدر» holds two phrases — one match covers the union of their regions,
+    /// reporting the entry whose own text covered the most characters, or on a tie the entry listed
+    /// first. Several occurrences inside one word ("fuckfuck") are one match, and repeats in separate
+    /// words are separate matches.
+    /// </para>
+    /// <para>
+    /// The filter's word list and <see cref="ProfanityFilterOptions"/> apply as they do to
+    /// <see cref="ContainsProfanity"/>. Returns an empty list, never null, for clean, empty or
+    /// <c>null</c> text. Never throws, and is safe to call concurrently on a shared filter.
+    /// </para>
+    /// </remarks>
+    public IReadOnlyList<ProfanityMatch> FindMatches(string? text)
+    {
+        var hits = new List<Hit>();
+        if (!Scan(text, hits, out _))
+        {
+            return Array.Empty<ProfanityMatch>();
+        }
+
+        var mapCache = new MappedText?[ReadingKindCount];
+        var candidates = new List<Candidate>(hits.Count);
+        foreach (var hit in hits)
+        {
+            candidates.Add(ToCandidate(text!, hit, mapCache));
+        }
+
+        return Merge(candidates).ToArray();
+    }
+
     private bool Add(string form, BannedWord word, int order, HashSet<string> anywhereKeys)
     {
         if (word.Mode == WordMatchMode.Anywhere)

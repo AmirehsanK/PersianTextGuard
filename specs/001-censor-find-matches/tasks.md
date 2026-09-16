@@ -130,7 +130,7 @@ and position, and that ordinary messages return an empty list.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T011 [P] [US1] Write `tests/PersianTextGuard.Tests/FindMatchesTests.cs` using `new ProfanityFilter(WordList.PersianDefault)`. Assert each case exactly:
+- [X] T011 [P] [US1] Write `tests/PersianTextGuard.Tests/FindMatchesTests.cs` using `new ProfanityFilter(WordList.PersianDefault)`. Assert each case exactly:
   - **Basic scenarios (from the quickstart):**
     - `"you bitch, kos kesh"` → 2 matches, in order: `Word.Text == "bitch"` at `(4,5)`, then a match with `Word.Category == WordCategory.Insult` at `(11,8)`. Do not assert that entry's text: the phrase `kos kesh` and `~koskesh` tie on length and list order decides (research R4).
     - `"kir kir kir"` → 3 matches with `(Index, Length)` = `(0,3)`, `(4,3)`, `(8,3)`.
@@ -154,14 +154,14 @@ and position, and that ordinary messages return an empty list.
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Implement `private static List<ProfanityMatch> Merge(List<Candidate> candidates)` in `src/PersianTextGuard/ProfanityFilter.Regions.cs` (R4).
+- [X] T012 [US1] Implement `private static List<ProfanityMatch> Merge(List<Candidate> candidates)` in `src/PersianTextGuard/ProfanityFilter.Regions.cs` (R4).
   - **Clusters:** sort by `Start`, then by `End` descending. Walk the list, starting a new cluster when a candidate's `Start` ≥ the running cluster `End`, and otherwise extending the cluster `End` to the maximum.
   - **One match per cluster, with:**
     - **Region:** the union.
     - **Entry:** from the candidate with the largest `HitLength`, the length before widening, so `motherfucker` (12) beats `~fuck` (4) even though both widen to the same word; ties go to the lowest `Order`.
     - **Evasion:** the numerically smallest `Evasion` among that entry's candidates in the cluster (`Word` equal).
   - **Result:** `new ProfanityMatch(word, evasion) { Index = clusterStart, Length = clusterEnd - clusterStart }`, in ascending `Index` order.
-- [ ] T013 [US1] Add `public IReadOnlyList<ProfanityMatch> FindMatches(string? text)` to `src/PersianTextGuard/ProfanityFilter.cs`.
+- [X] T013 [US1] Add `public IReadOnlyList<ProfanityMatch> FindMatches(string? text)` to `src/PersianTextGuard/ProfanityFilter.cs`.
   - **Clean path:** if `string.IsNullOrWhiteSpace(text)` or `Count == 0`, return `Array.Empty<ProfanityMatch>()`. Otherwise call `Scan(text, hits, out _)` with a `List<Hit>` allocated only on the first hit. If there are none, return `Array.Empty<ProfanityMatch>()` without building maps (R9).
   - **Dirty path:** otherwise convert every hit with `ToCandidate` (T009), sharing one `MappedText?[4]` cache for the call, then return `Merge(candidates).ToArray()`.
   - **XML docs:** must state every row of the `FindMatches` table in `specs/001-censor-find-matches/contracts/public-api.md`: order, no overlap, whole-word regions, positions in the text as passed, the settings used, never throws, safe to share.
