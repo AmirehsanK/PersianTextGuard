@@ -1,0 +1,279 @@
+# PersianTextGuard — Finglish entries: Persian written in Latin letters.
+#
+# Finglish has no fixed spelling, so this file carries the spellings people actually type,
+# not one canonical form. The matcher already reads through held keys (kiiir), digits and
+# symbols for letters (k0s, k!r), spaced or dotted letters (k.i.r) and masked letters (k**r),
+# so only genuinely different spellings belong here.
+#
+# See persian.txt for the format, the categories, and what is deliberately left out.
+# «kos» is listed where Persian «کس» is not: in Latin letters it is not the ordinary word
+# for "person", and «kasi», «kosar» and «kiriakos» are different tokens.
+
+
+[sexual]
+
+kos
+koss
+kose
+kosse
+koset
+kosesh
+kosam
+kus
+kooss
+kir
+kiram
+kiri
+kiret
+kiresh
+kirmo
+kireto
+kirkhar
+kir khar
+kirkhor
+keer
+keeram
+kiir
+koon
+kun
+koonet
+koon gonde
+kuni
+kooni
+sak zadan
+sakbezan
+sak bezan
+saak zadan
+jagh
+jaghi
+jagh zadan
+jalgh
+jalgh zadan
+khayemal
+khaye mal
+khaye khor
+tokhmi
+tokhmam
+sexy chat
+film super
+kos lisidan
+kos kardan
+kos dadan
+koon dadan
+koon kardan
+soorakh koon
+abe kir
+mame
+mameh
+pestoon
+shombol
+doodool
+
+
+[profanity]
+
+goh
+gooh
+goh bokhor
+goh khori
+gohkhori
+ge khori
+ridam
+ridi
+ridan
+ridam behet
+reedam
+
+
+[insult]
+
+~koskesh
+~kosekesh
+~kooskesh
+~koskhesh
+kos kesh
+koskeshi
+~kosnanat
+~kosenanat
+kos nanat
+kose nanat
+kosnanet
+koskhol
+kos khol
+koskhool
+kosmadar
+kos madar
+kospedar
+kossher
+kos sher
+kosshear
+kossheri
+kesafat
+kasafat
+kesafate
+~kharkosde
+kharkosdeh
+kharkose
+khar kosde
+kosde
+kos de
+koonde
+koondeh
+~koonkesh
+koon kesh
+madarkooni
+madar kooni
+jende
+jendeh
+jnde
+jendas
+jenda
+~madarjende
+~khaharjende
+jende khane
+jende pooli
+zan jende
+ghahbe
+qahbe
+ghahbeh
+madar ghahbe
+fahishe
+harze
+lashi
+~jakesh
+~jaakesh
+jaa kesh
+dayus
+dayoos
+dayyoos
+dayous
+dayoose
+ghoromsagh
+ghoromsaq
+ghoromsaagh
+gharamsagh
+~pedarsag
+pedar sag
+~madarsag
+madar sag
+sag pedar
+tokhme sag
+~haroomzade
+~haramzade
+haroom zade
+haroomzadeh
+haramzadeh
+haroomi
+haroom loghme
+madar be khata
+madarbe khata
+bi pedar
+bi pedar o madar
+binamoos
+bi namoos
+binamus
+bigheirat
+bi gheirat
+bisharaf
+bi sharaf
+bi khaye
+pafyooz
+pofyooz
+~gaidam
+~gayidam
+~gaeedam
+~gaeidam
+~gaiidam
+gaidamet
+gayidamet
+bgamet
+begamet
+migamet
+bega
+bokonamet
+bokonet
+dahan gaeede
+dahanet service
+dahan service
+oskol
+oskl
+oskol bazi
+oskool
+eskol
+ooshkol
+oshkol
+shaskol
+shasgool
+gagool
+chalghooz
+chaghal
+salite
+ragoozeto bebband
+beband gale ro
+
+
+# ── از لیست kaveh-dev ─────────────────────────────────────────────────────────────
+jinda
+oskul
+kiriface
+kardamet
+kosmagz
+kosmikh
+kharkiooni
+
+[slur]
+
+kooni bazi
+obne
+bache kooni
+bacheh kooni
+
+
+[harassment]
+
+khafe sho
+khafe khoon
+khafasho
+dahanet ro beband
+dahanto beband
+siktir
+sikdir
+boro bemir
+gomsho
+
+
+[mild]
+
+ashghal
+ashghal kole
+ashghale
+lajan
+badbakht
+avazi
+bi sho'ur
+bishoor
+bi shoor
+tole sag
+pedar sokhte
+pedarsookhte
+pedar salavati
+zanike
+martike
+mardike
+dalghak
+gashad
+hiz
+lamasab
+chos
+choso
+choskhor
+gooz
+goozo
+shash
+gande gooz
+kharfat
+pepe
+abla
+nakes
+moft khor
+bangi

@@ -34,8 +34,9 @@ filter.ContainsProfanity("ک.ی.ر");                     // true
 filter.ContainsProfanity("f u c k");                   // true
 
 var match = filter.FindMatch("sh1iiit");
-// match.Word    -> BannedWord { Text = "shit", Mode = Anywhere }
-// match.Evasion -> LookalikeCharacters | RepeatedLetters
+// match.Word          -> BannedWord { Text = "shit", Mode = WholeWord }
+// match.Word.Category -> WordCategory.Profanity
+// match.Evasion       -> LookalikeCharacters | RepeatedLetters
 ```
 
 ### What it reads through
@@ -50,10 +51,17 @@ var match = filter.FindMatch("sh1iiit");
 | Held keys | `fuuuuck`, `کیییییر` |
 | Digits and symbols for letters | `sh1t`, `$hit`, `sh!t`, `k0s` |
 | Filler inside a word | `f*ck`, `ک*ی*ر` |
+| Symbols masking letters | `f**k`, `c*nt`, `f@ck`, `a$$hole` |
+| Punctuation inside a word | `ج.نده`, `kos_kesh`, `bi-namoos` |
+| A word split once | `fu ck`, `کی ر` |
+| Accents and letters from other blocks | `fück`, `shíť`, `ƒuck`, `🅵🆄🅲🅺` |
+| Emoji beside or inside a word | `کیر😂`, `f🖕ck` |
 | Cyrillic and Greek look-alikes | `bitсh` with a Cyrillic `с` |
 
 Whole-word entries never match across ordinary words. `push it` contains `shit` once the
-space is removed, so only runs of single letters are joined.
+space is removed, so words are only joined when the result is exactly an entry, and digits
+are only read as letters in a run that has letters in it — `455` and `۴۵۵ تومان` are
+numbers, `4ss` is a word.
 
 ### Your own words
 
@@ -84,10 +92,35 @@ var words = WordList.Load(File.OpenRead("banned-words.txt"));
 
 ### The bundled list
 
-`WordList.PersianDefault` has about 400 Persian, Finglish and English entries. It is
-**opt-in**: nothing uses it unless you pass it to a filter. The
-[file](src/PersianTextGuard/WordLists/persian-default.txt) documents what is deliberately
-left out and why. For example, `کس` also means "person", and ethnic names are not slurs.
+About 1,250 Persian, Finglish and English entries, in three files that document what is
+deliberately left out and why — `کس` also means "person", `ساک` is a bag, `shit` is in
+shiitake, and ethnic names are not slurs:
+[persian.txt](src/PersianTextGuard/WordLists/persian.txt),
+[finglish.txt](src/PersianTextGuard/WordLists/finglish.txt),
+[english.txt](src/PersianTextGuard/WordLists/english.txt). The list is **opt-in**: nothing
+uses it unless you pass it to a filter.
+
+Every entry has a `WordCategory`, so you can block what your community needs blocked:
+
+```csharp
+WordList.PersianDefault   // everything except Mild — the sane default
+WordList.All              // Mild too: آشغال, دلقک, damn, crap, boobs
+WordList.Bundled(WordCategory.Slur, WordCategory.Harassment)
+
+filter.FindMatch("nigger")!.Word.Category;   // WordCategory.Slur
+```
+
+| Category | What it holds |
+| --- | --- |
+| `Profanity` | General swearing: `fuck`, `shit`, `گوه`, `ریدم` |
+| `Sexual` | Genitals, sex acts, pornography: `کیر`, `سکس`, `cock`, `blowjob` |
+| `Insult` | Strong insults, and the family and honour insults Persian is built on: `کسکش`, `مادرجنده`, `بی‌ناموس`, `bastard` |
+| `Slur` | Hate speech: race, ethnicity, religion, orientation, gender, disability |
+| `Harassment` | `kys`, `kill yourself`, `خفه شو`, `سیکتیر` |
+| `Mild` | Rude in context, ordinary otherwise. **Not** in `PersianDefault` |
+
+Persian suffixes are handled by the matcher, not by the list, so `جنده‌ها`, `کیرتون`,
+`کونیا` and `حرامزاده‌ای` match without entries of their own.
 
 ### Options
 
@@ -127,15 +160,20 @@ before saving them, so a search for `کتاب` also finds `كتاب`.
 
 ## Performance
 
-Against the bundled list of about 400 entries, on .NET 10 (Intel Core i7-9700K, BenchmarkDotNet):
+Against `WordList.PersianDefault` (about 1,000 entries), on .NET 10 (Intel Core i7-9700K,
+BenchmarkDotNet):
 
 | Operation | Mean | Allocated |
 | --- | ---: | ---: |
-| Short clean message (5 words) | 4.9 µs | 2.3 KB |
-| Long clean message (60 words) | 33.8 µs | 16.3 KB |
-| Message with evasions | 3.1 µs | 2.3 KB |
-| Normalize a long message | 5.2 µs | 3.3 KB |
-| Build a filter from the bundled list | 183 µs | 393 KB |
+| Short clean message (5 words) | 2.4 µs | 2.8 KB |
+| Long clean message (60 words) | 22.3 µs | 20.9 KB |
+| Message with evasions | 1.7 µs | 2.3 KB |
+| Normalize a long message | 5.6 µs | 3.3 KB |
+| Build a filter from the bundled list | 552 µs | 1,039 KB |
+
+Whole-word entries are looked up by token rather than searched for one by one, so checking a
+message barely notices how long the list is: 1.1.0 checks a message in half the time 1.0.1
+took, against three times as many entries.
 
 Build the filter once. Checking a message is cheap enough to run on every chat message or
 form submission.
@@ -151,6 +189,11 @@ dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks
 - Finglish has no fixed spelling. The bundled list covers common spellings; add the ones
   your community uses.
 - `FindMatch` reports the first match, not every match or its position.
+- A word split in the middle stays hidden unless the halves join into exactly an entry, so
+  `fu ck` is caught but `fuc k` is not, and two ordinary Persian words are never glued
+  together (`هر کس ده تا` is not `کسده`).
+- Transposed letters (`fcuk`) and a letter typed as a different letter (`cvnt`) are
+  spellings, not typography: add the ones your community uses.
 
 ## Background
 

@@ -2,9 +2,9 @@
 
 The code in PersianTextGuard is MIT licensed (see [LICENSE](LICENSE)).
 
-The bundled word list, `src/PersianTextGuard/WordLists/persian-default.txt`, was curated by
+The bundled word lists in `src/PersianTextGuard/WordLists/` were curated by
 hand: entries were selected, removed and added (including Finglish and ص/ث spellings that
-none of the sources carry). It draws on the following lists, credited here under their
+none of the sources carry). They draw on the following lists, credited here under their
 licenses.
 
 ## List of Dirty, Naughty, Obscene, and Otherwise Bad Words (LDNOOBW)
@@ -30,3 +30,17 @@ licenses.
 
 - Source: https://github.com/dsojevic/profanity-list
 - License: MIT License
+
+## The Obscenity List (Surge AI)
+
+- Source: https://github.com/surge-ai/profanity (mirrored at
+  https://huggingface.co/datasets/mmathys/profanity)
+- License: MIT License
+- Changes: entries selected; the bundled English list follows its categories and severity
+  ratings, with its `Mild` severity mapped to `WordCategory.Mild`.
+
+## persian-bad-words
+
+- Source: https://github.com/kaveh-dev/persian-bad-words
+- License: MIT License
+- Changes: entries selected and normalized.

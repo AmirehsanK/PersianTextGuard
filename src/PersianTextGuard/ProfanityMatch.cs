@@ -12,9 +12,15 @@ public enum EvasionKind
 
     /// <summary>
     /// Digits, symbols or look-alike letters stood in for letters, or filler was typed inside
-    /// the word: "sh1t", "$hit", "f*ck", Cyrillic "bitсh".
+    /// the word, or symbols masked some of its letters: "sh1t", "$hit", "f*ck", "f**k", "fück",
+    /// Cyrillic "bitсh".
     /// </summary>
-    LookalikeCharacters = 1 << 1
+    LookalikeCharacters = 1 << 1,
+
+    /// <summary>
+    /// The word was broken up with spaces or punctuation: "f u c k", "fu ck", «ج.نده».
+    /// </summary>
+    SplitWord = 1 << 2
 }
 
 /// <summary>A banned word found by <see cref="ProfanityFilter.FindMatch"/>.</summary>

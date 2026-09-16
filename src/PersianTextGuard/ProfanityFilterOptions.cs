@@ -13,14 +13,17 @@ public sealed class ProfanityFilterOptions
     public bool SqueezeRepeatedLetters { get; init; } = true;
 
     /// <summary>
-    /// Read digits, symbols and Cyrillic or Greek look-alikes as the Latin letters they imitate
-    /// ("sh1t", "$hit", "k0s"), and drop filler typed inside a word ("f*ck").
+    /// Read digits, symbols, accented letters and Cyrillic or Greek look-alikes as the Latin
+    /// letters they imitate ("sh1t", "$hit", "k0s", "fück"), drop filler and emoji typed inside
+    /// a word ("f*ck"), and read symbols masking letters as those letters ("f**k", "c*nt").
     /// </summary>
     public bool FoldLookalikeCharacters { get; init; } = true;
 
     /// <summary>
-    /// Join runs of single letters into one word: "f u c k", "f.u.c.k", «ک ی ر». Whole words
-    /// are never glued together, because "push it" contains "shit" once the space goes.
+    /// Put split words back together: runs of single letters ("f u c k", «ک ی ر»), punctuation
+    /// inside a word («ج.نده», "kos_kesh"), and a word split once ("fu ck", «کی ر») when the
+    /// halves join into exactly an entry. Ordinary words are never glued into something else:
+    /// "push it" contains "shit" once the space goes, and does not match.
     /// </summary>
     public bool JoinSpacedLetters { get; init; } = true;
 }

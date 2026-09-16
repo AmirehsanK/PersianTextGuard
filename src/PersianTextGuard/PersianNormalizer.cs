@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 
 namespace PersianTextGuard;
@@ -22,9 +23,6 @@ public static class PersianNormalizer
     private const char ArabicIndicZero = '٠';
     private const char ExtendedArabicIndicZero = '۰';
 
-    private static readonly char[] WordSeparators =
-        [' ', '\t', '\n', '\r', '.', ',', '!', '?', ':', ';', '-', '_', '/', '\\', '(', ')', '[', ']', '"', '\'', '،', '؛', '؟'];
-
     private static readonly string[] PersianDigitStrings = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
 
     /// <summary>
@@ -43,8 +41,10 @@ public static class PersianNormalizer
             return string.Empty;
         }
 
+        // string.Normalize throws on a lone surrogate, which is what a message cut in the middle
+        // of an emoji contains. User input must never be able to throw here.
         var source = (steps & PersianNormalization.CompatibilityForms) != 0
-            ? text!.Normalize(NormalizationForm.FormKC)
+            ? ReplaceLoneSurrogates(text!).Normalize(NormalizationForm.FormKC)
             : text!;
 
         var sb = new StringBuilder(source.Length);
@@ -92,8 +92,10 @@ public static class PersianNormalizer
     }
 
     /// <summary>
-    /// Splits text into word tokens on whitespace and on ASCII and Persian punctuation (، ؛ ؟).
-    /// Normalize first: tokens are only as consistent as the text they came from.
+    /// Splits text into word tokens on whitespace, punctuation (ASCII, Persian «» ، ؛ ؟ ٫, and
+    /// the rest of Unicode) and symbols, emoji included. Letters, digits, combining marks and
+    /// the zero-width non-joiner stay inside tokens. Normalize first: tokens are only as
+    /// consistent as the text they came from.
     /// </summary>
     public static string[] Tokenize(string? text)
     {
@@ -102,19 +104,76 @@ public static class PersianNormalizer
             return [];
         }
 
-        var parts = text!.Split(WordSeparators, StringSplitOptions.RemoveEmptyEntries);
-        var tokens = new List<string>(parts.Length);
+        var tokens = new List<string>();
+        var start = -1;
 
-        foreach (var part in parts)
+        for (var i = 0; i < text!.Length; i++)
         {
-            var trimmed = part.Trim();
-            if (trimmed.Length > 0)
+            if (IsWordCharacter(text, i))
             {
-                tokens.Add(trimmed);
+                if (start < 0)
+                {
+                    start = i;
+                }
+
+                continue;
+            }
+
+            if (start >= 0)
+            {
+                tokens.Add(text.Substring(start, i - start));
+                start = -1;
             }
         }
 
+        if (start >= 0)
+        {
+            tokens.Add(text.Substring(start));
+        }
+
         return tokens.ToArray();
+    }
+
+    /// <summary>
+    /// Whether the character at <paramref name="index"/> belongs inside a word. A split-off
+    /// word used to survive next to anything the tokenizer did not know about: «کیر», کیر😂.
+    /// </summary>
+    internal static bool IsWordCharacter(string text, int index)
+    {
+        var c = text[index];
+        if (c < 128)
+        {
+            return char.IsLetterOrDigit(c);
+        }
+
+        if (char.IsLowSurrogate(c) && index > 0 && char.IsHighSurrogate(text[index - 1]))
+        {
+            return IsWordCharacter(text, index - 1);
+        }
+
+        switch (CharUnicodeInfo.GetUnicodeCategory(text, index))
+        {
+            case UnicodeCategory.UppercaseLetter:
+            case UnicodeCategory.LowercaseLetter:
+            case UnicodeCategory.TitlecaseLetter:
+            case UnicodeCategory.ModifierLetter:
+            case UnicodeCategory.OtherLetter:
+            case UnicodeCategory.NonSpacingMark:
+            case UnicodeCategory.SpacingCombiningMark:
+            case UnicodeCategory.EnclosingMark:
+            case UnicodeCategory.DecimalDigitNumber:
+            case UnicodeCategory.LetterNumber:
+            case UnicodeCategory.OtherNumber:
+                return true;
+
+            // Zero-width non-joiner and friends are part of Persian spelling, but a variation
+            // selector or zero-width joiner after an emoji is not.
+            case UnicodeCategory.Format:
+                return c is '‌' or '‍' && index > 0 && char.IsLetter(text[index - 1]);
+
+            default:
+                return false;
+        }
     }
 
     /// <summary>Renders ASCII digits as Persian digits (۰-۹), leaving everything else alone.</summary>
@@ -144,6 +203,31 @@ public static class PersianNormalizer
 
     /// <summary>Converts Persian and Arabic-Indic digits to ASCII, leaving everything else alone.</summary>
     public static string ToAsciiDigits(string? text) => Normalize(text, PersianNormalization.AsciiDigits);
+
+    private static string ReplaceLoneSurrogates(string text)
+    {
+        StringBuilder? sb = null;
+
+        for (var i = 0; i < text.Length; i++)
+        {
+            var c = text[i];
+            var lone = char.IsHighSurrogate(c)
+                ? i + 1 >= text.Length || !char.IsLowSurrogate(text[i + 1])
+                : char.IsLowSurrogate(c) && (i == 0 || !char.IsHighSurrogate(text[i - 1]));
+
+            if (lone)
+            {
+                sb ??= new StringBuilder(text, 0, i, text.Length);
+                sb.Append('�');
+            }
+            else
+            {
+                sb?.Append(c);
+            }
+        }
+
+        return sb?.ToString() ?? text;
+    }
 
     private static bool IsRemoved(char c, PersianNormalization steps)
     {

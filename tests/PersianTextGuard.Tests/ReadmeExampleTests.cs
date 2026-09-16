@@ -14,8 +14,22 @@ public class ReadmeExampleTests
 
         var match = Filter.FindMatch("sh1iiit");
         Assert.NotNull(match);
-        Assert.Equal(new BannedWord("shit", WordMatchMode.Anywhere), match!.Word);
+        Assert.Equal("shit", match!.Word.Text);
+        Assert.Equal(WordCategory.Profanity, match.Word.Category);
         Assert.Equal(EvasionKind.LookalikeCharacters | EvasionKind.RepeatedLetters, match.Evasion);
+    }
+
+    [Fact]
+    public void Category_examples()
+    {
+        var strict = new ProfanityFilter(WordList.All);
+        var slursAndAbuse = new ProfanityFilter(
+            WordList.Bundled(WordCategory.Slur, WordCategory.Harassment));
+
+        Assert.False(Filter.ContainsProfanity("این فیلم آشغال بود"));
+        Assert.True(strict.ContainsProfanity("این فیلم آشغال بود"));
+        Assert.True(slursAndAbuse.ContainsProfanity("kys"));
+        Assert.False(slursAndAbuse.ContainsProfanity("کیر"));
     }
 
     [Theory]

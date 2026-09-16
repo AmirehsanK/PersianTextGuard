@@ -1,0 +1,651 @@
+# PersianTextGuard — English entries.
+#
+# Persian chat is full of English swearing, so the bundled list carries it too. The matcher
+# reads through leetspeak (sh1t, $hit), held keys (fuuuck), spaced letters (f u c k), filler
+# (f*ck), masked letters (f**k), accents (fück) and look-alike Cyrillic or Greek letters, so
+# only genuinely different spellings belong here (fuk, biatch, niqqa).
+#
+# See persian.txt for the format and the categories.
+#
+# ── What is deliberately NOT here ──────────────────────────────────────────────
+#
+# Almost everything is a whole-word entry, because English profanity hides inside ordinary
+# words: "ass" in assassin, class and pass; "cum" in document and circumstance; "rape" in
+# grape and therapist; "shit" in shiitake and Matsushita; "nigger" in sniggered; "pussy" in
+# pussycat; "cunt" in Scunthorpe; "cock" in peacock and cockpit; "tit" in title. Only stems
+# whose every extension is offensive are matched anywhere (~fuck, ~bitch, ~asshole).
+#
+# hell, crap, bloody, wtf, noob, trash, suck, screw, balls, boob, hooker and the rest of the
+# ordinary-in-context words are in [mild], not in WordList.PersianDefault.
+#
+# ── Sources ────────────────────────────────────────────────────────────────────
+#
+# Curated from LDNOOBW (CC BY 4.0), LDNOOBW V2 (CC0 1.0), dsojevic/profanity-list (MIT) and
+# Surge AI's Obscenity List (MIT), whose categories and severity ratings this file follows.
+# Credited in THIRD-PARTY-NOTICES.md.
+
+
+[profanity]
+
+# ── fuck: one substring entry covers fucking, fucker, motherfucker, clusterfuck ──────
+~fuck
+fuk
+fuks
+fuker
+fukker
+fuking
+fukin
+fuq
+fuqing
+fck
+fcks
+fcker
+fcking
+fckin
+fkn
+fking
+fkin
+fcuk
+fcuking
+phuck
+phuk
+phucking
+fvck
+fvcking
+fucc
+fuxk
+mofo
+muthafucka
+mothafucka
+muthafuka
+mothafuka
+motherfricker
+
+# ── shit: whole words, so shiitake, mishit and Matsushita pass ───────────────────────
+shit
+shits
+shite
+shitty
+shitter
+shitters
+shitting
+shitted
+shithead
+shitheads
+shitface
+shitfaced
+shitbag
+shithole
+shitshow
+shitstorm
+shitload
+shitlord
+bullshit
+horseshit
+dogshit
+batshit
+apeshit
+chickenshit
+dipshit
+shyt
+shyte
+sht
+shitcunt
+piss off
+pissed off
+pisshead
+
+
+[sexual]
+
+# ── anatomy ─────────────────────────────────────────────────────────────────────
+cock
+cocks
+cocksucker
+cocksuckers
+~cocksuck
+cawk
+dick
+dicks
+dik
+dck
+~dickhead
+dickface
+dickwad
+dickweed
+dickbag
+cunt
+cunts
+cunty
+kunt
+kunts
+twat
+twats
+pussy
+pussies
+pussi
+pusy
+pssy
+clit
+clits
+ballsack
+nutsack
+tits
+titty
+titties
+titfuck
+boobies
+
+# ── acts ────────────────────────────────────────────────────────────────────────
+~blowjob
+blow job
+blowjobs
+~handjob
+hand job
+rimjob
+rimming
+~cumshot
+~jizz
+cum
+cums
+cumming
+creampie
+felching
+fisting
+gangbang
+gangbanged
+bukkake
+deepthroat
+dry hump
+doggystyle
+missionary position
+~dildo
+buttplug
+fleshlight
+wank
+wanker
+wankers
+wanking
+jerkoff
+jerk off
+jackoff
+jack off
+masturbate
+masturbating
+masturbation
+horny
+nudes
+sexting
+~porn
+pornos
+pornhub
+pornographic
+pornography
+xvideos
+xnxx
+xhamster
+onlyfans
+milf
+gilf
+hentai
+bestiality
+sex
+sexy
+orgy
+orgies
+strapon
+threesome
+
+
+# ── from the Surge AI and LDNOOBW lists ─────────────────────────────────────────
+anilingus
+analingus
+assmunch
+bareback
+bdsm
+beastiality
+bestiality
+blumpkin
+bondage
+bulldyke
+bunghole
+bung hole
+camgirl
+camslut
+carpet muncher
+carpetmuncher
+circlejerk
+cornhole
+cunnilingus
+cumdumpster
+cumslut
+date rape
+daterape
+dingleberry
+dirty sanchez
+doggie style
+doggiestyle
+dominatrix
+ejaculating
+ejaculation
+fellatio
+felch
+felching
+fingerbang
+fingerbanging
+fudge packer
+fudgepacker
+golden shower
+goatse
+hardcore
+incest
+jailbait
+jail bail
+lolita
+muff diver
+muffdiving
+nambla
+nympho
+nymphomaniac
+paedophile
+pedophile
+pedophilia
+pedo
+pedos
+pedobear
+pegging
+poontang
+punany
+poop chute
+poopchute
+queef
+quim
+schlong
+scissoring
+sexcam
+shibari
+smut
+snowballing
+sodomize
+sodomy
+splooge
+spooge
+swinger
+tea bagging
+teabagging
+throating
+twink
+upskirt
+voyeur
+wet dream
+xxx
+yaoi
+zoophilia
+coprophilia
+kid diddler
+sausage jockey
+snatch licker
+pussylicker
+pussylickers
+pole smoker
+knob jockey
+
+[insult]
+
+~asshole
+~arsehole
+assholes
+ahole
+ass
+arse
+azz
+asshat
+assface
+asswipe
+assclown
+asslicker
+asskisser
+dumbass
+jackass
+smartass
+badass
+fatass
+lardass
+~bitch
+bitches
+bitchy
+biatch
+biotch
+beyotch
+bytch
+btch
+bich
+sonofabitch
+son of a bitch
+bastard
+bastards
+douche
+douchebag
+douchenozzle
+douchecanoe
+whore
+whores
+whoring
+whorehouse
+whoreson
+manwhore
+camwhore
+whre
+hore
+slut
+sluts
+slutty
+slutbag
+slvt
+skank
+skanky
+skanks
+jizzbag
+scumbag
+scumbags
+twatwaffle
+wankstain
+knobhead
+knobend
+tosser
+numbnuts
+dickless
+cockwomble
+motherfucker
+prick
+pricks
+knobjockey
+
+
+# ── from the Surge AI and LDNOOBW lists ─────────────────────────────────────────
+dumbshit
+gobshite
+shitbird
+shitbrain
+shithead
+shitheads
+turdhead
+bastardo
+basterd
+motherfecker
+mofoes
+cuntbag
+cuntface
+cuntlick
+cuntlicker
+cuntlickers
+dicksmoker
+soab
+
+[slur]
+
+# Hate speech. Kept apart from [insult] so a site can block these even where it allows
+# ordinary swearing.
+nigger
+niggers
+niggerz
+nigga
+niggas
+niggaz
+niggah
+nigguh
+niga
+nigas
+niqqa
+niqqer
+nibba
+nibbas
+ngga
+faggot
+faggots
+fag
+fags
+fagot
+fgt
+phag
+dyke
+dykes
+tranny
+trannies
+shemale
+shemales
+chink
+chinks
+gook
+gooks
+spic
+spics
+wop
+wops
+kike
+kikes
+paki
+pakis
+wetback
+wetbacks
+towelhead
+towelheads
+raghead
+ragheads
+sand nigger
+camel jockey
+coon
+coons
+beaner
+beaners
+jigaboo
+porch monkey
+zipperhead
+gypo
+gyppo
+retard
+retards
+retarded
+tard
+libtard
+mongoloid
+spastic
+spaz
+cripple
+midget
+faggotry
+homo
+dothead
+
+
+# ── from the Surge AI and LDNOOBW lists ─────────────────────────────────────────
+chingchong
+ching chong
+chinky
+coonie
+coonies
+cotton picker
+darkie
+darky
+jigaboo
+jigaboos
+jiggaboo
+jiggerboo
+nig nog
+nignog
+nig-nog
+niglet
+nigra
+nigs
+kyke
+negroid
+sambo
+redskin
+injun
+dago
+wophead
+heeb
+shylock
+oven dodger
+abeed
+groid
+blacky
+tacohead
+pancake face
+slant eye
+slanteye
+spik
+spig
+spix
+wigger
+ku klux
+ku kluxer
+honkey
+honky
+pikey
+poof
+poofter
+faget
+faggy
+phaggot
+phagot
+phags
+gaysian
+gaytard
+ladyboy
+lady boy
+window licker
+retardo
+ragtard
+slantard
+darktard
+white power
+chinavirus
+china virus
+
+[harassment]
+
+kys
+kill yourself
+kill urself
+kill ur self
+go die
+neck yourself
+stfu
+gtfo
+screw you
+blow me
+choke and die
+drink bleach
+rot in hell
+
+
+[mild]
+
+# Rude in context, ordinary otherwise. Left out of WordList.PersianDefault; pass WordList.All
+# or WordList.Bundled(WordCategory.Mild, ...) to include them.
+damn
+damnit
+dammit
+goddamn
+goddammit
+hell
+crap
+crappy
+bloody hell
+bugger
+bollocks
+arsed
+piss
+pissed
+pissing
+wtf
+omfg
+ffs
+sucks
+suck it
+screwed
+jerk
+jerks
+moron
+morons
+idiot
+idiots
+stupid
+dumb
+dumbo
+loser
+losers
+freak
+weirdo
+creep
+creepy
+slob
+scum
+trash
+noob
+nub
+booger
+fart
+farted
+farting
+butt
+butthead
+buttface
+bum
+knockers
+boob
+boobs
+booty
+balls
+nuts
+willy
+weenie
+wiener
+hooker
+hookers
+stripper
+strippers
+pimp
+naked
+nude
+vagina
+penis
+scrotum
+testicle
+testicles
+clitoris
+condom
+orgasm
+erection
+horndog
+
+# ── ordinary, medical or topical words public lists carry ───────────────────────
+anal
+anus
+rectum
+genitals
+semen
+sperm
+nipple
+nipples
+pubes
+erotic
+erotica
+topless
+boner
+snatch
+hoe
+hoes
+scat
+spunk
+nsfw
+goddamned
+goddamnit
+godamnit
+bimbo
+bimbos
+hustler
+dolt
+fugly
+scummy
