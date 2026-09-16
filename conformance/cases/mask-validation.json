@@ -1,0 +1,49 @@
+[
+  {
+    "id": "mask-lone-high-surrogate",
+    "kind": "mask-validation",
+    "note": "Half of an emoji. A JSON string cannot carry it portably, so it is built.",
+    "mask": {
+      "build": [
+        { "utf16": "D83D" }
+      ]
+    },
+    "expected": { "accepted": false }
+  },
+  {
+    "id": "mask-validation-letters-digits-whitespace-controls-and-surrogates-are-refused-as-masks-001",
+    "kind": "mask-validation",
+    "mask": "x",
+    "expected": { "accepted": false }
+  },
+  {
+    "id": "mask-validation-letters-digits-whitespace-controls-and-surrogates-are-refused-as-masks-002",
+    "kind": "mask-validation",
+    "mask": "5",
+    "expected": { "accepted": false }
+  },
+  {
+    "id": "mask-validation-letters-digits-whitespace-controls-and-surrogates-are-refused-as-masks-003",
+    "kind": "mask-validation",
+    "mask": " ",
+    "expected": { "accepted": false }
+  },
+  {
+    "id": "mask-validation-letters-digits-whitespace-controls-and-surrogates-are-refused-as-masks-004",
+    "kind": "mask-validation",
+    "mask": "\n",
+    "expected": { "accepted": false }
+  },
+  {
+    "id": "mask-validation-censor-tests-001",
+    "kind": "mask-validation",
+    "mask": "*",
+    "expected": { "accepted": true }
+  },
+  {
+    "id": "mask-validation-censor-tests-002",
+    "kind": "mask-validation",
+    "mask": "#",
+    "expected": { "accepted": true }
+  }
+]

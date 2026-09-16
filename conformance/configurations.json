@@ -1,0 +1,92 @@
+[
+  { "name": "default", "wordLists": { "bundled": "default" } },
+  { "name": "all", "wordLists": { "bundled": "all" } },
+  { "name": "slurs-only", "wordLists": { "bundled": ["slur"] } },
+  { "name": "slurs-and-harassment", "wordLists": { "bundled": ["slur", "harassment"] } },
+  { "name": "no-folding", "wordLists": { "bundled": "default" }, "options": { "foldLookalikeCharacters": false } },
+  { "name": "no-squeezing", "wordLists": { "bundled": "default" }, "options": { "squeezeRepeatedLetters": false } },
+  { "name": "no-joining", "wordLists": { "bundled": "default" }, "options": { "joinSpacedLetters": false } },
+  {
+    "name": "custom-kesafat",
+    "wordLists": { "entries": [
+      { "text": "كثافت", "mode": "wholeWord", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-damn",
+    "wordLists": { "entries": [
+      { "text": "damn", "mode": "wholeWord", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-k0s-whole",
+    "wordLists": { "entries": [
+      { "text": "k0s", "mode": "wholeWord", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-k0s-anywhere",
+    "wordLists": { "entries": [
+      { "text": "k0s", "mode": "anywhere", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-shit",
+    "wordLists": { "entries": [
+      { "text": "shit", "mode": "wholeWord", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-fuck-anywhere",
+    "wordLists": { "entries": [
+      { "text": "fuck", "mode": "anywhere", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-ass",
+    "wordLists": { "entries": [
+      { "text": "ass", "mode": "wholeWord", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-fuck-whole",
+    "wordLists": { "entries": [
+      { "text": "fuck", "mode": "wholeWord", "category": "uncategorized" }
+    ] }
+  },
+  {
+    "name": "custom-fuck-whole-no-squeezing",
+    "wordLists": { "entries": [
+      { "text": "fuck", "mode": "wholeWord", "category": "uncategorized" }
+    ] },
+    "options": { "squeezeRepeatedLetters": false }
+  },
+  {
+    "name": "custom-fuck-whole-no-folding",
+    "wordLists": { "entries": [
+      { "text": "fuck", "mode": "wholeWord", "category": "uncategorized" }
+    ] },
+    "options": { "foldLookalikeCharacters": false }
+  },
+  {
+    "name": "custom-fuck-whole-no-joining",
+    "wordLists": { "entries": [
+      { "text": "fuck", "mode": "wholeWord", "category": "uncategorized" }
+    ] },
+    "options": { "joinSpacedLetters": false }
+  },
+  {
+    "name": "custom-x",
+    "wordLists": { "entries": [
+      { "text": "x", "mode": "wholeWord", "category": "uncategorized" }
+    ] }
+  },
+  { "name": "custom-empty", "wordLists": { "entries": [] } },
+  {
+    "name": "custom-readme",
+    "wordLists": { "entries": [
+      { "text": "اسپم", "mode": "wholeWord", "category": "uncategorized" },
+      { "text": "casino", "mode": "anywhere", "category": "uncategorized" }
+    ] }
+  }
+]

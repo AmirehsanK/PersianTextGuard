@@ -1,0 +1,2977 @@
+[
+  {
+    "id": "matching-english-ordinary-messages-pass-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Kassadin main",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Kassadin main"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-002",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Cassiopeia and assassin players",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Cassiopeia and assassin players"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-003",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "pass the class",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "pass the class"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-004",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "grape",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "grape"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-005",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "therapist",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "therapist"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-006",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "push it",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "push it"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-007",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "peacock cockpit",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "peacock cockpit"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-008",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "document the build",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "document the build"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-009",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "analysis of the results",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "analysis of the results"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-010",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Scunthorpe",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Scunthorpe"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-011",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "title",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "title"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-012",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "hello",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "hello"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-013",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "shiitake mushrooms",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "shiitake mushrooms"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-014",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "he mishit the ball",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "he mishit the ball"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-015",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Matsushita",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Matsushita"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-016",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "he sniggered at the joke",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "he sniggered at the joke"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-017",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Pussycat Dolls",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Pussycat Dolls"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-018",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "the ball was hit for six",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "the ball was hit for six"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-019",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Faker#KR1",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Faker#KR1"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-020",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "1v1 5v5 EUW1 D4 P1 G4",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "1v1 5v5 EUW1 D4 P1 G4"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-021",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "order #4521 costs $30",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "order #4521 costs $30"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-022",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "I paid 455 dollars",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "I paid 455 dollars"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-023",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "call 0912 455 1234",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "call 0912 455 1234"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-024",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "chikar koni",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "chikar koni"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-025",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "kosar",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "kosar"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-026",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "kiriakos",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "kiriakos"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-027",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "a d c",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "a d c"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-messages-pass-028",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "gg wp",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "gg wp"
+    }
+  },
+  {
+    "id": "matching-english-plain-entries-match-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fuck off",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "**** off"
+    }
+  },
+  {
+    "id": "matching-english-plain-entries-match-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "you are a bitch",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 10,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 10,
+          "length": 5
+        }
+      ],
+      "censored": "you are a ****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f u c k",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f.u.c.k this",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "**** this"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fuuuuuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "sh1t",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "$hit",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "sh!t",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "b1tch",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "n1gga",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "nigga", "mode": "wholeWord", "category": "slur" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "nigga", "mode": "wholeWord", "category": "slur" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f*ck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fck", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "bitсh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-011",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "biatch",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "biatch", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "biatch", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-are-caught-012",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "niqqa",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "niqqa", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "niqqa", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f**k",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "c*nt",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "cunt", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "cunt", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f@ck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fck", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "a$$hole",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "asshole", "mode": "anywhere", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "asshole", "mode": "anywhere", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fu ck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fück",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "shíť",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ƒuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "🅵🆄🅲🅺",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-evasions-found-by-testing-1-0-1-are-caught-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f🖕ck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fck", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-spellings-missing-from-1-0-1-are-covered-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kill urself",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kill urself", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "kill urself", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-anywhere-entries-match-inside-longer-words-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "motherfucker",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "motherfucker", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 12
+      },
+      "matches": [
+        {
+          "entry": { "text": "motherfucker", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 12
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-regions-cover-whole-words-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "hello,fuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 6,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 6,
+          "length": 4
+        }
+      ],
+      "censored": "hello,****"
+    }
+  },
+  {
+    "id": "matching-english-results-are-ordered-non-overlapping-and-inside-the-message-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "sh1t and f u c k",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 9,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        },
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 9,
+          "length": 7
+        }
+      ],
+      "censored": "**** and ****"
+    }
+  },
+  {
+    "id": "matching-english-banned-words-are-replaced-by-the-mask-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f.u.c.k off",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "**** off"
+    }
+  },
+  {
+    "id": "matching-english-banned-words-are-replaced-by-the-mask-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f\nu\nc\nk",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-ordinary-text-named-in-the-readme-passes-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "class",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "class"
+    }
+  },
+  {
+    "id": "matching-english-find-matches-tests-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fuckfuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-default-list-tests-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "nigger",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "nigger", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "nigger", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-default-list-tests-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kys",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-readme-example-tests-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "sh1iiit",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["repeatedLetters", "lookalikeCharacters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["repeatedLetters", "lookalikeCharacters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "FUCK YOU",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "**** YOU"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fucking idiot",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "**** idiot"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "shit",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Anywhere",
+    "input": "bullshit",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bullshit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "bullshit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "bitch",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "sonofabitch",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "sonofabitch", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "sonofabitch", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "asshole",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "asshole", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "asshole", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "cunt",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "cunt", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "cunt", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "dickhead",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "dickhead", "mode": "anywhere", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "dickhead", "mode": "anywhere", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-011",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "whore",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "whore", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "whore", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-012",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "slut",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "slut", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "slut", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-013",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "pornhub",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "pornhub", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "pornhub", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-014",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "go kys",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 3,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 3,
+          "length": 3
+        }
+      ],
+      "censored": "go ****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-015",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kill yourself",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kill yourself", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 13
+      },
+      "matches": [
+        {
+          "entry": { "text": "kill yourself", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 13
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-016",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "faggot",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "faggot", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "faggot", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-017",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "retard",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "retard", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "retard", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-018",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "bastard",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bastard", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "bastard", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-019",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "piece of shit",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 9,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 9,
+          "length": 4
+        }
+      ],
+      "censored": "piece of ****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-020",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "shitty",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shitty", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "shitty", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-021",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fuckers",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-022",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "assholes",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "assholes", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "assholes", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-023",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "dicks",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "dicks", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "dicks", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-plain-024",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "cocksucker",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "cocksucker", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 10
+      },
+      "matches": [
+        {
+          "entry": { "text": "cocksucker", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 10
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fu*k",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuk", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "F.U.C.K",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f-u-c-k",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f_u_c_k",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fuuuuuuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "transposed",
+    "input": "fcuk",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fcuk", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fcuk", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "ZWSP",
+    "input": "fu\u200Bck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Cyrillic с",
+    "input": "fuсk",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "fullwidth",
+    "input": "ｆｕｃｋ",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "math bold",
+    "input": "𝐟𝐮𝐜𝐤",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-011",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "5hit",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-012",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "s.h.i.t",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "profanity" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-013",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "b!tch",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-014",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "8itch",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-015",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "@$$",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ass", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "ass", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-016",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "4ss",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ass", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "ass", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-017",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "d1ck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "dick", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "dick", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-018",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "n1gg3r",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "nigger", "mode": "wholeWord", "category": "slur" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "nigger", "mode": "wholeWord", "category": "slur" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-019",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "f@gg0t",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "faggot", "mode": "wholeWord", "category": "slur" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "faggot", "mode": "wholeWord", "category": "slur" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-020",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "wh0re",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "whore", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "whore", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-021",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "$lut",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "slut", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "slut", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-022",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "p0rn",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "porn", "mode": "anywhere", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "porn", "mode": "anywhere", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-023",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "k y s",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-024",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "fuk u",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuk", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuk", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "**** u"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-025",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "phuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "phuck", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "phuck", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-026",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "mixed case",
+    "input": "FuCkInG",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-027",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "acute accent",
+    "input": "fúck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-028",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "strikethrough combining",
+    "input": "f̶u̶c̶k̶",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-evasion-029",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "superscript",
+    "input": "ᶠᵘᶜᵏ",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Scunthorpe United",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Scunthorpe United"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-002",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "class assignment",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "class assignment"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-003",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "I assume you passed",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "I assume you passed"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-004",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "push it real good",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "push it real good"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-005",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "Anywhere nigger",
+    "input": "he sniggered",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "he sniggered"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-006",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Sussex county",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Sussex county"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-007",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "grab a garden hoe",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "grab a garden hoe"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-008",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "raccoon",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "raccoon"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-009",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "spick and span",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "spick and span"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-010",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "rapeseed oil",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "rapeseed oil"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-011",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "fire retardant",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "fire retardant"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-012",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "room 455",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "room 455"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-013",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "call 5417",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "call 5417"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-014",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "version 5.1.7",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "version 5.1.7"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-015",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "spaced heading",
+    "input": "A S S E T S",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "A S S E T S"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-016",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "I got a B, you got a C",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "I got a B, you got a C"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-017",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "cocktail party",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "cocktail party"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-018",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Dickens novel",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Dickens novel"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-019",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "assassin",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "assassin"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-020",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "bass guitar",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "bass guitar"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-021",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "hello world",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "hello world"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-022",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "cockpit",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "cockpit"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-023",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "spelling variant of shiitake",
+    "input": "shitake",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "shitake"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-024",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Penistone",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Penistone"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-025",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "arsenal fc",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "arsenal fc"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-026",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "archaic, Anywhere whore",
+    "input": "whoredom",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "whoredom"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-027",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "hancock",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "hancock"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-028",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "analyst",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "analyst"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-029",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "execute",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "execute"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-030",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Documenting",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Documenting"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-031",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Buttercup",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Buttercup"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-032",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Hitchcock",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Hitchcock"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-033",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Shitenn",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Shitenn"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-034",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "l->? ",
+    "input": "flick",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "flick"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-035",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "f1ck",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "f1ck"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-036",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "fork",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "fork"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-037",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "duck",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "duck"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-038",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "shot",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "shot"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-039",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "sh0t",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "sh0t"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-040",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "pass",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "pass"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-041",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "digit fold",
+    "input": "8 inch",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "8 inch"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-042",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "spaced 'its hits' -> itshits contains shit",
+    "input": "i t s h i t s",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "i t s h i t s"
+    }
+  },
+  {
+    "id": "matching-english-suite-en-clean-043",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "s h i t a k e",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "s h i t a k e"
+    }
+  }
+]

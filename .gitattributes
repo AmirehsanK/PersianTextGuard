@@ -1,0 +1,2 @@
+wordlists/*.txt text eol=lf
+conformance/**/*.json text eol=lf

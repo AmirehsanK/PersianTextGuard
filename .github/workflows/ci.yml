@@ -28,20 +28,20 @@ jobs:
             10.0.x
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore dotnet/PersianTextGuard.slnx
 
       - name: Build
-        run: dotnet build -c Release --no-restore
+        run: dotnet build dotnet/PersianTextGuard.slnx -c Release --no-restore
 
       - name: Test (.NET 8 and .NET 10)
-        run: dotnet test tests/PersianTextGuard.Tests -c Release --no-build
+        run: dotnet test dotnet/tests/PersianTextGuard.Tests -c Release --no-build
 
-      # A tag v1.2.3 publishes version 1.2.3; everything else packs the version in the project file.
+      - name: Conformance corpus (.NET 8 and .NET 10)
+        run: dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release --no-build
+
+      # The version comes from the VERSION file only; the publish job checks the tag against it.
       - name: Pack
-        run: |
-          VERSION_ARG=""
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then VERSION_ARG="-p:Version=${GITHUB_REF_NAME#v}"; fi
-          dotnet pack src/PersianTextGuard -c Release --no-build -o artifacts $VERSION_ARG
+        run: dotnet pack dotnet/src/PersianTextGuard -c Release --no-build -o artifacts
 
       - uses: actions/upload-artifact@v4
         with:
@@ -59,7 +59,10 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Test
-        run: dotnet test tests/PersianTextGuard.Tests -c Release -f net48
+        run: dotnet test dotnet/tests/PersianTextGuard.Tests -c Release -f net48
+
+      - name: Conformance corpus
+        run: dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release -f net48
 
   publish:
     name: Publish to NuGet
@@ -71,6 +74,12 @@ jobs:
       contents: read
       id-token: write   # NuGet trusted publishing: no long-lived API key stored in GitHub
     steps:
+      - uses: actions/checkout@v5
+
+      # A tag must name the version being released: v1.2.3 only when VERSION says 1.2.3.
+      - name: Check tag matches VERSION
+        run: test "${GITHUB_REF_NAME#v}" = "$(tr -d '[:space:]' < VERSION)" || { echo "Tag $GITHUB_REF_NAME does not match VERSION $(cat VERSION)"; exit 1; }
+
       - uses: actions/download-artifact@v4
         with:
           name: packages

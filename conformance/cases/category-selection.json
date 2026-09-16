@@ -1,0 +1,209 @@
+[
+  {
+    "id": "category-selection-default-list-tests-001",
+    "kind": "category-selection",
+    "selection": "default",
+    "expected": {
+      "count": 1025,
+      "first": [
+        { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرم", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرت", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرش", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیری", "mode": "wholeWord", "category": "sexual" }
+      ],
+      "last": [
+        { "text": "screw you", "mode": "wholeWord", "category": "harassment" },
+        { "text": "blow me", "mode": "wholeWord", "category": "harassment" },
+        { "text": "choke and die", "mode": "wholeWord", "category": "harassment" },
+        { "text": "drink bleach", "mode": "wholeWord", "category": "harassment" },
+        { "text": "rot in hell", "mode": "wholeWord", "category": "harassment" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder", "noMild"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-002",
+    "kind": "category-selection",
+    "selection": "all",
+    "expected": {
+      "count": 1250,
+      "first": [
+        { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرم", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرت", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرش", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیری", "mode": "wholeWord", "category": "sexual" }
+      ],
+      "last": [
+        { "text": "bimbos", "mode": "wholeWord", "category": "mild" },
+        { "text": "hustler", "mode": "wholeWord", "category": "mild" },
+        { "text": "dolt", "mode": "wholeWord", "category": "mild" },
+        { "text": "fugly", "mode": "wholeWord", "category": "mild" },
+        { "text": "scummy", "mode": "wholeWord", "category": "mild" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-003",
+    "kind": "category-selection",
+    "selection": ["profanity"],
+    "expected": {
+      "count": 93,
+      "first": [
+        { "text": "گوه", "mode": "wholeWord", "category": "profanity" },
+        { "text": "گوه خوری", "mode": "wholeWord", "category": "profanity" },
+        { "text": "گوه\u200Cخوری", "mode": "wholeWord", "category": "profanity" },
+        { "text": "گوه خور", "mode": "wholeWord", "category": "profanity" },
+        { "text": "گه نخور", "mode": "wholeWord", "category": "profanity" }
+      ],
+      "last": [
+        { "text": "sht", "mode": "wholeWord", "category": "profanity" },
+        { "text": "shitcunt", "mode": "wholeWord", "category": "profanity" },
+        { "text": "piss off", "mode": "wholeWord", "category": "profanity" },
+        { "text": "pissed off", "mode": "wholeWord", "category": "profanity" },
+        { "text": "pisshead", "mode": "wholeWord", "category": "profanity" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-004",
+    "kind": "category-selection",
+    "selection": ["sexual"],
+    "expected": {
+      "count": 353,
+      "first": [
+        { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرم", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرت", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیرش", "mode": "wholeWord", "category": "sexual" },
+        { "text": "کیری", "mode": "wholeWord", "category": "sexual" }
+      ],
+      "last": [
+        { "text": "snatch licker", "mode": "wholeWord", "category": "sexual" },
+        { "text": "pussylicker", "mode": "wholeWord", "category": "sexual" },
+        { "text": "pussylickers", "mode": "wholeWord", "category": "sexual" },
+        { "text": "pole smoker", "mode": "wholeWord", "category": "sexual" },
+        { "text": "knob jockey", "mode": "wholeWord", "category": "sexual" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-005",
+    "kind": "category-selection",
+    "selection": ["insult"],
+    "expected": {
+      "count": 400,
+      "first": [
+        { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        { "text": "کصکش", "mode": "anywhere", "category": "insult" },
+        { "text": "کثکش", "mode": "anywhere", "category": "insult" },
+        { "text": "کوسکش", "mode": "anywhere", "category": "insult" },
+        { "text": "کس کش", "mode": "wholeWord", "category": "insult" }
+      ],
+      "last": [
+        { "text": "cuntlick", "mode": "wholeWord", "category": "insult" },
+        { "text": "cuntlicker", "mode": "wholeWord", "category": "insult" },
+        { "text": "cuntlickers", "mode": "wholeWord", "category": "insult" },
+        { "text": "dicksmoker", "mode": "wholeWord", "category": "insult" },
+        { "text": "soab", "mode": "wholeWord", "category": "insult" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-006",
+    "kind": "category-selection",
+    "selection": ["slur"],
+    "expected": {
+      "count": 146,
+      "first": [
+        { "text": "کونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "کیونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "بچه کونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "بچه کیونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "لاکونی", "mode": "wholeWord", "category": "slur" }
+      ],
+      "last": [
+        { "text": "slantard", "mode": "wholeWord", "category": "slur" },
+        { "text": "darktard", "mode": "wholeWord", "category": "slur" },
+        { "text": "white power", "mode": "wholeWord", "category": "slur" },
+        { "text": "chinavirus", "mode": "wholeWord", "category": "slur" },
+        { "text": "china virus", "mode": "wholeWord", "category": "slur" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-007",
+    "kind": "category-selection",
+    "selection": ["harassment"],
+    "expected": {
+      "count": 33,
+      "first": [
+        { "text": "خفه شو", "mode": "wholeWord", "category": "harassment" },
+        { "text": "خفه خون", "mode": "wholeWord", "category": "harassment" },
+        { "text": "دهنتو ببند", "mode": "wholeWord", "category": "harassment" },
+        { "text": "دهنتوببند", "mode": "wholeWord", "category": "harassment" },
+        { "text": "ببند گاله رو", "mode": "wholeWord", "category": "harassment" }
+      ],
+      "last": [
+        { "text": "screw you", "mode": "wholeWord", "category": "harassment" },
+        { "text": "blow me", "mode": "wholeWord", "category": "harassment" },
+        { "text": "choke and die", "mode": "wholeWord", "category": "harassment" },
+        { "text": "drink bleach", "mode": "wholeWord", "category": "harassment" },
+        { "text": "rot in hell", "mode": "wholeWord", "category": "harassment" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-008",
+    "kind": "category-selection",
+    "selection": ["mild"],
+    "expected": {
+      "count": 225,
+      "first": [
+        { "text": "آشغال", "mode": "wholeWord", "category": "mild" },
+        { "text": "آشغال کله", "mode": "wholeWord", "category": "mild" },
+        { "text": "انگل", "mode": "wholeWord", "category": "mild" },
+        { "text": "لجن", "mode": "wholeWord", "category": "mild" },
+        { "text": "ابله", "mode": "wholeWord", "category": "mild" }
+      ],
+      "last": [
+        { "text": "bimbos", "mode": "wholeWord", "category": "mild" },
+        { "text": "hustler", "mode": "wholeWord", "category": "mild" },
+        { "text": "dolt", "mode": "wholeWord", "category": "mild" },
+        { "text": "fugly", "mode": "wholeWord", "category": "mild" },
+        { "text": "scummy", "mode": "wholeWord", "category": "mild" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  },
+  {
+    "id": "category-selection-default-list-tests-009",
+    "kind": "category-selection",
+    "selection": ["slur", "harassment"],
+    "expected": {
+      "count": 179,
+      "first": [
+        { "text": "کونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "کیونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "بچه کونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "بچه کیونی", "mode": "wholeWord", "category": "slur" },
+        { "text": "لاکونی", "mode": "wholeWord", "category": "slur" }
+      ],
+      "last": [
+        { "text": "screw you", "mode": "wholeWord", "category": "harassment" },
+        { "text": "blow me", "mode": "wholeWord", "category": "harassment" },
+        { "text": "choke and die", "mode": "wholeWord", "category": "harassment" },
+        { "text": "drink bleach", "mode": "wholeWord", "category": "harassment" },
+        { "text": "rot in hell", "mode": "wholeWord", "category": "harassment" }
+      ],
+      "rules": ["categoriesInSelection", "bundledOrder"]
+    }
+  }
+]

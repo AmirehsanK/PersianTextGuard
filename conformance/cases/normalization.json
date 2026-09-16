@@ -1,0 +1,233 @@
+[
+  {
+    "id": "normalization-look-alike-letters-from-other-scripts-fold-to-persian-001",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ڪ",
+    "expected": { "output": "ک" }
+  },
+  {
+    "id": "normalization-look-alike-letters-from-other-scripts-fold-to-persian-002",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ھ",
+    "expected": { "output": "ه" }
+  },
+  {
+    "id": "normalization-look-alike-letters-from-other-scripts-fold-to-persian-003",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ە",
+    "expected": { "output": "ه" }
+  },
+  {
+    "id": "normalization-look-alike-letters-from-other-scripts-fold-to-persian-004",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ې",
+    "expected": { "output": "ی" }
+  },
+  {
+    "id": "normalization-look-alike-letters-from-other-scripts-fold-to-persian-005",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ٱ",
+    "expected": { "output": "ا" }
+  },
+  {
+    "id": "normalization-look-alike-letters-from-other-scripts-fold-to-persian-006",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ﻙ",
+    "expected": { "output": "ک" }
+  },
+  {
+    "id": "normalization-invisible-and-decorative-characters-are-removed-for-comparison-001",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "می\u200Cروم",
+    "expected": { "output": "میروم" }
+  },
+  {
+    "id": "normalization-invisible-and-decorative-characters-are-removed-for-comparison-002",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "می\u200Bروم",
+    "expected": { "output": "میروم" }
+  },
+  {
+    "id": "normalization-invisible-and-decorative-characters-are-removed-for-comparison-003",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "می\u2060روم",
+    "expected": { "output": "میروم" }
+  },
+  {
+    "id": "normalization-invisible-and-decorative-characters-are-removed-for-comparison-004",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "می\u00ADروم",
+    "expected": { "output": "میروم" }
+  },
+  {
+    "id": "normalization-invisible-and-decorative-characters-are-removed-for-comparison-005",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "\u202Bمیروم\u202C",
+    "expected": { "output": "میروم" }
+  },
+  {
+    "id": "normalization-invisible-and-decorative-characters-are-removed-for-comparison-006",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "مـیـروم",
+    "expected": { "output": "میروم" }
+  },
+  {
+    "id": "normalization-invisible-and-decorative-characters-are-removed-for-comparison-007",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "مِیرُوم",
+    "expected": { "output": "میروم" }
+  },
+  {
+    "id": "normalization-all-three-digit-ranges-fold-to-ascii-001",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "۱۲۳",
+    "expected": { "output": "123" }
+  },
+  {
+    "id": "normalization-all-three-digit-ranges-fold-to-ascii-002",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "١٢٣",
+    "expected": { "output": "123" }
+  },
+  {
+    "id": "normalization-all-three-digit-ranges-fold-to-ascii-003",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "123",
+    "expected": { "output": "123" }
+  },
+  {
+    "id": "normalization-readme-example-tests-001",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "كتاب\u200Cهاي  ۱۲ ABC",
+    "expected": { "output": "کتابهای 12 abc" }
+  },
+  {
+    "id": "normalization-readme-example-tests-002",
+    "kind": "normalization",
+    "steps": "standard",
+    "input": "كتاب\u200Cهاي  ۱۲ ABC",
+    "expected": { "output": "کتاب\u200Cهای ۱۲ ABC" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-001",
+    "kind": "normalization",
+    "steps": ["unifyLetters"],
+    "input": "كتاب\u200Cهاي",
+    "expected": { "output": "کتاب\u200Cهای" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-002",
+    "kind": "normalization",
+    "steps": "none",
+    "input": "كتاب\u200Cهاي",
+    "expected": { "output": "كتاب\u200Cهاي" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-003",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "بازي",
+    "expected": { "output": "بازی" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-004",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "بازی",
+    "expected": { "output": "بازی" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-005",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "كمك",
+    "expected": { "output": "کمک" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-006",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "کمک",
+    "expected": { "output": "کمک" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-007",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "سسسسلام",
+    "expected": { "output": "سسلام" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-008",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "BOOOOOK",
+    "expected": { "output": "book" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-009",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "  سلام \t\n  دنیا  ",
+    "expected": { "output": "سلام دنیا" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-010",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": null,
+    "expected": { "output": "" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-011",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "   ",
+    "expected": { "output": "" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-012",
+    "kind": "normalization",
+    "steps": "toPersianDigits",
+    "input": "2 ساعت پیش، KR1",
+    "expected": { "output": "۲ ساعت پیش، KR۱" }
+  },
+  {
+    "id": "normalization-readme-example-tests-003",
+    "kind": "normalization",
+    "steps": "toPersianDigits",
+    "input": "2 ساعت پیش",
+    "expected": { "output": "۲ ساعت پیش" }
+  },
+  {
+    "id": "normalization-persian-normalizer-tests-013",
+    "kind": "normalization",
+    "steps": "toAsciiDigits",
+    "input": "۲ ساعت پیش، KR١",
+    "expected": { "output": "2 ساعت پیش، KR1" }
+  },
+  {
+    "id": "normalization-readme-example-tests-004",
+    "kind": "normalization",
+    "steps": "toAsciiDigits",
+    "input": "۱۴۰۴/۰۵/۱۴",
+    "expected": { "output": "1404/05/14" }
+  }
+]
