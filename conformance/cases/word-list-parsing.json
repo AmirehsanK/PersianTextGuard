@@ -1,0 +1,44 @@
+[
+  {
+    "id": "word-list-parsing-profanity-filter-tests-001",
+    "kind": "word-list-parsing",
+    "text": "# a comment\r\n\r\nwhole\n~anywhere\n  ~  spaced  \n",
+    "expected": {
+      "entries": [
+        { "text": "whole", "mode": "wholeWord", "category": "uncategorized" },
+        { "text": "anywhere", "mode": "anywhere", "category": "uncategorized" },
+        { "text": "spaced", "mode": "anywhere", "category": "uncategorized" }
+      ]
+    }
+  },
+  {
+    "id": "word-list-parsing-profanity-filter-tests-002",
+    "kind": "word-list-parsing",
+    "text": "کیر\n~fuck\n",
+    "expected": {
+      "entries": [
+        { "text": "کیر", "mode": "wholeWord", "category": "uncategorized" },
+        { "text": "fuck", "mode": "anywhere", "category": "uncategorized" }
+      ]
+    }
+  },
+  {
+    "id": "word-list-parsing-profanity-filter-tests-003",
+    "kind": "word-list-parsing",
+    "text": "[nonsense]\nword\n",
+    "expected": {
+      "error": { "kind": "unknown-category", "line": 1 }
+    }
+  },
+  {
+    "id": "word-list-parsing-profanity-filter-tests-004",
+    "kind": "word-list-parsing",
+    "text": "[insult]\n~x\ny\n",
+    "expected": {
+      "entries": [
+        { "text": "x", "mode": "anywhere", "category": "insult" },
+        { "text": "y", "mode": "wholeWord", "category": "insult" }
+      ]
+    }
+  }
+]

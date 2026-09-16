@@ -1,0 +1,34 @@
+[
+  {
+    "id": "tokenization-persian-normalizer-tests-001",
+    "kind": "tokenization",
+    "input": "سلام، دنیا! خوبی؟",
+    "expected": {
+      "tokens": ["سلام", "دنیا", "خوبی"]
+    }
+  },
+  {
+    "id": "tokenization-persian-normalizer-tests-002",
+    "kind": "tokenization",
+    "input": null,
+    "expected": {
+      "tokens": []
+    }
+  },
+  {
+    "id": "tokenization-find-matches-tests-001",
+    "kind": "tokenization",
+    "input": "hello,fuck",
+    "expected": {
+      "tokens": ["hello", "fuck"]
+    }
+  },
+  {
+    "id": "tokenization-find-matches-tests-002",
+    "kind": "tokenization",
+    "input": "کیر😂",
+    "expected": {
+      "tokens": ["کیر"]
+    }
+  }
+]

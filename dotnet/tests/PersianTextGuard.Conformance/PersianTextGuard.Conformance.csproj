@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <!-- .NET Framework runs only on Windows; this is what exercises the netstandard2.0 build. -->
+    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net48</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PersianTextGuard\PersianTextGuard.csproj" />
+    <!-- The [InlineData] coverage guard reads the existing tests by reflection. -->
+    <ProjectReference Include="..\PersianTextGuard.Tests\PersianTextGuard.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The canonical writer is the fill-in tool's; compiled here so its escaping is tested. -->
+    <Compile Include="..\..\tools\PersianTextGuard.CorpusFill\CaseWriter.cs" Link="CaseWriter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The corpus path is fixed at build time, so tests never depend on the working directory. -->
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>ConformanceDirectory</_Parameter1>
+      <_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\..\conformance'))</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

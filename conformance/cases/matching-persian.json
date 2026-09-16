@@ -1,0 +1,3114 @@
+[
+  {
+    "id": "fa-emoji-before-word",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "An emoji is one code point and two UTF-16 units, so the match starts at code point 2, UTF-16 index 3.",
+    "input": "😀 کیر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 2,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 2,
+          "length": 3
+        }
+      ],
+      "censored": "😀 ****"
+    }
+  },
+  {
+    "id": "fa-zwnj-between-every-letter",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Zero-width non-joiners inside the word.",
+    "input": "ک\u200Cی\u200Cر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "fa-zero-width-space-inside-word",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ک\u200Bیر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "fa-soft-hyphen-inside-word",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کی\u00ADر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "fa-rlm-inside-word",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "A right-to-left mark inside the word.",
+    "input": "ج\u200Fنده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "هر کس پلات بالاست پیام بده",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "هر کس پلات بالاست پیام بده"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-002",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کسی هست بیاد دو نفره",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کسی هست بیاد دو نفره"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-003",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "هر کس کشته زیاد میده نیاد",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "هر کس کشته زیاد میده نیاد"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-004",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "هر کس ده تا سکه بده برنده است",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "هر کس ده تا سکه بده برنده است"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-005",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "اسکلت",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "اسکلت"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-006",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "اسکله",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "اسکله"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-007",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کوسه",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کوسه"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-008",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "سکسکه",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "سکسکه"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-009",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "گوهر",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "گوهر"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-010",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "جاکفشی",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "جاکفشی"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-011",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "فاکتور",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "فاکتور"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-012",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "درگیرم این هفته",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "درگیرم این هفته"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-013",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "رنجنده نباش",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "رنجنده نباش"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-014",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کوثر و کیانا",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کوثر و کیانا"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-015",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کیرکگور فیلسوف بود",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کیرکگور فیلسوف بود"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-016",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "ساک ورزشی",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "ساک ورزشی"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-017",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "تخم مرغ",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "تخم مرغ"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-018",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "گه گاهی آنلاینم",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "گه گاهی آنلاینم"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-019",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کار کردن",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کار کردن"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-020",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "گاید نصب برنامه",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "گاید نصب برنامه"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-021",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "دول اروپایی",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "دول اروپایی"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-022",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "خر پول شده",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "خر پول شده"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-023",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "ترک لر عرب فارس همه خوش اومدین",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "ترک لر عرب فارس همه خوش اومدین"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-024",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "سلام، وقت بخیر. سفارشم کی ارسال میشه؟",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "سلام، وقت بخیر. سفارشم کی ارسال میشه؟"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-025",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "قیمت این گوشی با تخفیف چنده؟",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "قیمت این گوشی با تخفیف چنده؟"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-026",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کسانی که ثبت نام کردند ایمیل فعال\u200Cسازی گرفتند",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کسانی که ثبت نام کردند ایمیل فعال\u200Cسازی گرفتند"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-027",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "لطفا کد تخفیف رو برام بفرستید",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "لطفا کد تخفیف رو برام بفرستید"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-028",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "این کتاب و دفتر رو بردار",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "این کتاب و دفتر رو بردار"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-029",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "رنک ۴ الماس",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "رنک ۴ الماس"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-messages-pass-030",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "۴۵۵ تومان شد",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "۴۵۵ تومان شد"
+    }
+  },
+  {
+    "id": "matching-persian-plain-entries-match-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کیر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-plain-entries-match-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کسکش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ک ی ر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ک.ی.ر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کیییییر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کووووون",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کون", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "کون", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ک*ی*ر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "كسكش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کس\u200Cکش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کس\u200Bکش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کــیــر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ڪیر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-011",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کصکش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کصکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کصکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-012",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کث کش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کث", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 2
+      },
+      "matches": [
+        {
+          "entry": { "text": "کث", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 2
+        }
+      ],
+      "censored": "**** کش"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-are-caught-013",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کص ننت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کص", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 2
+      },
+      "matches": [
+        {
+          "entry": { "text": "کص", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 2
+        }
+      ],
+      "censored": "**** ننت"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-found-by-testing-1-0-1-are-caught-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ج*نده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-found-by-testing-1-0-1-are-caught-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ج.نده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-found-by-testing-1-0-1-are-caught-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کی ر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-found-by-testing-1-0-1-are-caught-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کیر😂",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****😂"
+    }
+  },
+  {
+    "id": "matching-persian-evasions-found-by-testing-1-0-1-are-caught-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "«کیر»",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 1,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 1,
+          "length": 3
+        }
+      ],
+      "censored": "«****»"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "جنده\u200Cها",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "جندها",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کیرتون",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کونیا",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کونی", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کونی", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کسکشا",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "حرامزاده\u200Cها",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "حرامزاده", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "حرامزاده", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "بی ناموس\u200Cها",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بی ناموس", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "بی ناموس", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-persian-suffixes-are-matched-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "اسکلات",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "اسکل", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "اسکل", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کثافت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کثافت", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کثافت", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کسخول",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسخول", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسخول", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "گه نخور",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "گه نخور", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "گه نخور", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "گوه\u200Cخوری",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "گوه\u200Cخوری", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "گوه\u200Cخوری", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ریدی",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ریدی", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "ریدی", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "بگا",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بگا", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "بگا", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کیرخور",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیرخور", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیرخور", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-spellings-missing-from-1-0-1-are-covered-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "بی پدر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بی پدر", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "بی پدر", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-entries-from-the-persian-swear-words-dataset-match-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "گایدن",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "گایدن", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "گایدن", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-entries-from-the-persian-swear-words-dataset-match-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "بکیرم",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بکیرم", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "بکیرم", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-entries-from-the-persian-swear-words-dataset-match-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "به تخم اقام",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "به تخم اقام", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "به تخم اقام", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-entries-from-the-persian-swear-words-dataset-match-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "سگ تو روحت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "سگ تو روحت", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 10
+      },
+      "matches": [
+        {
+          "entry": { "text": "سگ تو روحت", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 10
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-entries-from-the-persian-swear-words-dataset-match-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "نرکده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "نرکده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "نرکده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-entries-from-the-persian-swear-words-dataset-match-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "اوب",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "اوب", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "اوب", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-entries-from-the-persian-swear-words-dataset-match-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "دول ننه",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "دول ننه", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "دول ننه", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-anywhere-entries-match-inside-longer-words-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "اینجا یه کسکش پیام داد",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 9,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 9,
+          "length": 4
+        }
+      ],
+      "censored": "اینجا یه **** پیام داد"
+    }
+  },
+  {
+    "id": "matching-persian-anywhere-entries-match-inside-longer-words-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "مادرجنده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "مادرجنده", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "مادرجنده", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-results-are-ordered-non-overlapping-and-inside-the-message-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "جنده\u200Cها رو ببین",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "**** رو ببین"
+    }
+  },
+  {
+    "id": "matching-persian-results-are-ordered-non-overlapping-and-inside-the-message-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "پدر سگ پدر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "پدر سگ", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "پدر سگ", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 10
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-banned-words-are-replaced-by-the-mask-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "برو پدر سگ",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "پدر سگ", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 4,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "پدر سگ", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 4,
+          "length": 6
+        }
+      ],
+      "censored": "برو ****"
+    }
+  },
+  {
+    "id": "matching-persian-clean-text-comes-back-as-the-same-instance-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "كتاب\u200Cهاي خوب",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "كتاب\u200Cهاي خوب"
+    }
+  },
+  {
+    "id": "matching-persian-ordinary-text-named-in-the-readme-passes-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "هر کس",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "هر کس"
+    }
+  },
+  {
+    "id": "matching-persian-find-matches-tests-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ﻛﻴﺮ",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-find-matches-tests-002",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "سلام، سفارشم کی میرسه؟",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "سلام، سفارشم کی میرسه؟"
+    }
+  },
+  {
+    "id": "matching-persian-default-list-tests-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "این فیلم آشغال بود",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "این فیلم آشغال بود"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کیرم تو این سایت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیرم", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیرم", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "**** تو این سایت"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "space",
+    "input": "کس کش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کس کش", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کس کش", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "جنده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "space",
+    "input": "مادر جنده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 5,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 5,
+          "length": 4
+        }
+      ],
+      "censored": "مادر ****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "جاکش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جاکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "جاکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "حرومزاده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "حرومزاده", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "حرومزاده", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "ZWNJ",
+    "input": "بی\u200Cناموس",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بیناموس", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "بیناموس", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "بیشرف",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بیشرف", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "بیشرف", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کسشعر نگو",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسشعر", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسشعر", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "**** نگو"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "ZWNJ",
+    "input": "کس\u200Cشعر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسشعر", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسشعر", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-011",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کونی",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کونی", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کونی", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-012",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "گاییدمت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "گاییدمت", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "گاییدمت", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-013",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "قرمساق",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "قرمساق", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "قرمساق", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-014",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "دیوث",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "دیوث", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "دیوث", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-015",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "لاشی",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "لاشی", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "لاشی", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-016",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "پدرسگ",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "پدرسگ", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "پدرسگ", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-017",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "اسکل",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "اسکل", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "اسکل", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-018",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "خارکسده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "خارکسده", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "خارکسده", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-019",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "کصافت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کصافت", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کصافت", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-020",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "in sentence",
+    "input": "تو یه جنده ای",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 6,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 6,
+          "length": 4
+        }
+      ],
+      "censored": "تو یه **** ای"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-021",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "end of sentence",
+    "input": "برو بمیر کسخل",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "برو بمیر", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "برو بمیر", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        },
+        {
+          "entry": { "text": "کسخل", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 9,
+          "length": 4
+        }
+      ],
+      "censored": "**** ****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-022",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "punctuation",
+    "input": "جنده!",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****!"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-plain-023",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Persian ?",
+    "input": "کیر؟",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****؟"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-variant-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "bi-pedar",
+    "input": "بی\u200Cپدر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بیپدر", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "بیپدر", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-variant-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "bega",
+    "input": "بگا رفتی",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بگا", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "بگا", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "**** رفتی"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-variant-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Anywhere",
+    "input": "جاکشی",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جاکش", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "جاکش", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Arabic kaf+yeh",
+    "input": "كير",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "teh marbuta",
+    "input": "جندة",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "tatweel",
+    "input": "کــــیر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "kasra",
+    "input": "کِیر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "harakat",
+    "input": "جَنْدِه",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Urdu kaf",
+    "input": "ڪير",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Urdu heh doachashmee",
+    "input": "جندھ",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "repeated",
+    "input": "کیییییییر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "repeated",
+    "input": "جننننده",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "hyphens",
+    "input": "ک-ی-ر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-011",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "underscore",
+    "input": "ک_ی_ر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-012",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "slashes",
+    "input": "ک/ی/ر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-013",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "spaced 4",
+    "input": "ج ن د ه",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "جنده", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-014",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "spaced 4",
+    "input": "ک س ک ش",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "کسکش", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-015",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "filler inside Persian word",
+    "input": "ک*یر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-016",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "spaced inflection",
+    "input": "ک ی ر ت و ن",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-017",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "combo: Arabic+kasra+tatweel+repeats",
+    "input": "كِــيـــيـير",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 12
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 12
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-evasion-018",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "newlines",
+    "input": "ک\nی\nر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "کسی",
+    "input": "کسی اینجا نیست",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کسی اینجا نیست"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-002",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "کسب",
+    "input": "کسب و کار",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کسب و کار"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-003",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کسر مالیات",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کسر مالیات"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-004",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کشور ایران",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کشور ایران"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-005",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "hiccup contains سکس",
+    "input": "سکسکه گرفتم",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "سکسکه گرفتم"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-006",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "pier contains اسکل",
+    "input": "اسکله بندر",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "اسکله بندر"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-007",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "jewel contains گوه",
+    "input": "گوهر شب چراغ",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "گوهر شب چراغ"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-008",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "name contains کوث",
+    "input": "کوثر خانم",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کوثر خانم"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-009",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کثیف شده",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کثیف شده"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-010",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "puppy!",
+    "input": "توله سگ خریدم",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "توله سگ خریدم"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-011",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "rattle",
+    "input": "جقجقه بچه",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "جقجقه بچه"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-012",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "مسکن مهر",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "مسکن مهر"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-013",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کوه دماوند",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کوه دماوند"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-014",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کونگ فو",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کونگ فو"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-015",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "single-letter و",
+    "input": "این کتاب و ن ... ",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "این کتاب و ن ... "
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-016",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "spaced word 'به تو چه'",
+    "input": "ب ه ت و چه",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "ب ه ت و چه"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-017",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "می\u200Cروم خانه",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "می\u200Cروم خانه"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-018",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "کیوسک",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کیوسک"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-019",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "هرزگرد",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "هرزگرد"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-020",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "carcass",
+    "input": "لاشه",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "لاشه"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-021",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "Kierkegaard",
+    "input": "کیرکگور فیلسوف",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کیرکگور فیلسوف"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-022",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "خایه\u200Cدوزی",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "خایه\u200Cدوزی"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-023",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "invoice contains فاک",
+    "input": "فاکتور خرید",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "فاکتور خرید"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-024",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "اک ی ر",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "اک ی ر"
+    }
+  },
+  {
+    "id": "matching-persian-suite-fa-clean-025",
+    "kind": "ordinary",
+    "configuration": "default",
+    "note": "digits",
+    "input": "کد ۴۵۵",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کد ۴۵۵"
+    }
+  }
+]

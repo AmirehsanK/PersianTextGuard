@@ -1,0 +1,1419 @@
+[
+  {
+    "id": "matching-finglish-plain-entries-match-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kos kesh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-plain-entries-match-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kiram",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kiram", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "kiram", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-evasions-are-caught-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "k0s",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-evasions-are-caught-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kоs",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-evasions-are-caught-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "koskesh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-evasions-found-by-testing-1-0-1-are-caught-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kos_kesh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-evasions-found-by-testing-1-0-1-are-caught-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "bi-namoos",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bi namoos", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "binamoos", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-evasions-found-by-testing-1-0-1-are-caught-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "@kir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 1,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 1,
+          "length": 3
+        }
+      ],
+      "censored": "@****"
+    }
+  },
+  {
+    "id": "matching-finglish-spellings-missing-from-1-0-1-are-covered-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "keer",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "keer", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "keer", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-spellings-missing-from-1-0-1-are-covered-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kuni",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kuni", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "kuni", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-spellings-missing-from-1-0-1-are-covered-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kossher",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kossher", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "kossher", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-spellings-missing-from-1-0-1-are-covered-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kesafat",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kesafat", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "kesafat", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-spellings-missing-from-1-0-1-are-covered-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "ridi",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ridi", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "ridi", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-spellings-missing-from-1-0-1-are-covered-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "goh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "goh", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "goh", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-results-are-ordered-non-overlapping-and-inside-the-message-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "you bitch, kos kesh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 11,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "bitch", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 4,
+          "length": 5
+        },
+        {
+          "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 11,
+          "length": 8
+        }
+      ],
+      "censored": "you ****, ****"
+    }
+  },
+  {
+    "id": "matching-finglish-results-are-ordered-non-overlapping-and-inside-the-message-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kir kir kir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        },
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 4,
+          "length": 3
+        },
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 8,
+          "length": 3
+        }
+      ],
+      "censored": "**** **** ****"
+    }
+  },
+  {
+    "id": "matching-finglish-banned-words-are-replaced-by-the-mask-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "this is kir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 8,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 8,
+          "length": 3
+        }
+      ],
+      "censored": "this is ****"
+    }
+  },
+  {
+    "id": "matching-finglish-banned-words-are-replaced-by-the-mask-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kir and motherfucker",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        },
+        {
+          "entry": { "text": "motherfucker", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 8,
+          "length": 12
+        }
+      ],
+      "censored": "**** and ****"
+    }
+  },
+  {
+    "id": "matching-finglish-banned-words-are-replaced-by-the-mask-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kir kos",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        },
+        {
+          "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 4,
+          "length": 3
+        }
+      ],
+      "censored": "**** ****"
+    }
+  },
+  {
+    "id": "matching-finglish-censor-tests-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "k kos i kos r",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 2,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 2,
+          "length": 3
+        },
+        {
+          "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 8,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-censor-tests-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "masks": ["#"],
+    "input": "kir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****",
+      "censoredWith": { "#": "####" }
+    }
+  },
+  {
+    "id": "matching-finglish-readme-example-tests-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "masks": ["#"],
+    "input": "kir and motherfucker",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        },
+        {
+          "entry": { "text": "motherfucker", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 8,
+          "length": 12
+        }
+      ],
+      "censored": "**** and ****",
+      "censoredWith": { "#": "#### and ####" }
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-001",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-002",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "upper",
+    "input": "KIR",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-003",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kiram too in site",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kiram", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "kiram", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "**** too in site"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-004",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "space",
+    "input": "kos nanat",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kosnanat", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-005",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "alt spelling",
+    "input": "kosnanet",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kosnanet", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "kosnanet", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-006",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "koskhol",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "koskhol", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "koskhol", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-007",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "accent",
+    "input": "kosshér",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kossher", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "kossher", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-008",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "jende",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "jende", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "jende", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-009",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "jendeh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "jendeh", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "jendeh", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-010",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "madar jende",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "jende", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 6,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "madarjende", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-011",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "jakesh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "jakesh", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "jakesh", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-012",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "binamoos",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "binamoos", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "binamoos", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-013",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "pedarsag",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "pedarsag", "mode": "anywhere", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "pedarsag", "mode": "anywhere", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-014",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "haroomzadeh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "haroomzadeh", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "haroomzadeh", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-015",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "lashi",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "lashi", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "lashi", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-016",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kooni",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kooni", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "kooni", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-017",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "kiir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kiir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-018",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "leet",
+    "input": "k1r",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-019",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "leet",
+    "input": "k!r",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-020",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "leet",
+    "input": "k0sk3sh",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-021",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "leet",
+    "input": "j3nd3",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "jende", "mode": "wholeWord", "category": "insult" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "jende", "mode": "wholeWord", "category": "insult" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-022",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "repeats",
+    "input": "kiiiiiir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kiir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-023",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "spaced",
+    "input": "k o s k e s h",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 13
+      },
+      "matches": [
+        {
+          "entry": { "text": "koskesh", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 13
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-024",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "dotted",
+    "input": "k.i.r",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-025",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Ukrainian і",
+    "input": "kіr",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-026",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "goh",
+    "input": "goh nakhor",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "goh", "mode": "wholeWord", "category": "profanity" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "goh", "mode": "wholeWord", "category": "profanity" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "**** nakhor"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-027",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "oskol",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "oskol", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "oskol", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-028",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "eskol",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "eskol", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "eskol", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-029",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "space",
+    "input": "khar kosde",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "khar kosde", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 10
+      },
+      "matches": [
+        {
+          "entry": { "text": "kharkosde", "mode": "anywhere", "category": "insult" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 10
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-030",
+    "kind": "must-match",
+    "configuration": "default",
+    "note": "Anywhere gaidam",
+    "input": "gaidamet",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "gaidamet", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "gaidamet", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-031",
+    "kind": "must-match",
+    "configuration": "default",
+    "input": "bokonamet",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "bokonamet", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "bokonamet", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-clean-001",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "salam khubi?",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "salam khubi?"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-clean-002",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "kasi hast?",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "kasi hast?"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-clean-003",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "koskhodam",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "koskhodam"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-clean-004",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "tokhme morgh",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "tokhme morgh"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-clean-005",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "koondi",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "koondi"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-clean-006",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "kiryat gat",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "kiryat gat"
+    }
+  },
+  {
+    "id": "matching-finglish-suite-finglish-clean-007",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "Kusadasi",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "Kusadasi"
+    }
+  }
+]

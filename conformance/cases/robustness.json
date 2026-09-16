@@ -1,0 +1,238 @@
+[
+  {
+    "id": "robustness-missing-or-blank-text-returns-an-empty-list-001",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": ""
+    }
+  },
+  {
+    "id": "robustness-missing-or-blank-text-returns-an-empty-list-002",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "   ",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "   "
+    }
+  },
+  {
+    "id": "robustness-find-matches-tests-001",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": {
+      "build": [
+        { "text": "hi " },
+        { "utf16": "D83D" },
+        { "text": " kir" }
+      ]
+    },
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 5,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 5,
+          "length": 3
+        }
+      ],
+      "censored": {
+        "build": [
+          { "text": "hi " },
+          { "utf16": "D83D" },
+          { "text": " ****" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "robustness-censor-tests-001",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": null,
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": ""
+    }
+  },
+  {
+    "id": "robustness-profanity-filter-tests-001",
+    "kind": "robustness",
+    "configuration": "custom-x",
+    "input": null,
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": ""
+    }
+  },
+  {
+    "id": "robustness-profanity-filter-tests-002",
+    "kind": "robustness",
+    "configuration": "custom-x",
+    "input": "   ",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "   "
+    }
+  },
+  {
+    "id": "robustness-consistency-tests-001",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": {
+      "build": [
+        { "text": "hi " },
+        { "utf16": "D83D" }
+      ]
+    },
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": {
+        "build": [
+          { "text": "hi " },
+          { "utf16": "D83D" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "robustness-consistency-tests-002",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": {
+      "build": [
+        { "utf16": "DE00" },
+        { "text": " hi" }
+      ]
+    },
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": {
+        "build": [
+          { "utf16": "DE00" },
+          { "text": " hi" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "robustness-consistency-tests-003",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": {
+      "build": [
+        { "text": "kir " },
+        { "utf16": "D83D" },
+        { "text": " kos" }
+      ]
+    },
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        },
+        {
+          "entry": { "text": "kos", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 6,
+          "length": 3
+        }
+      ],
+      "censored": {
+        "build": [
+          { "text": "**** " },
+          { "utf16": "D83D" },
+          { "text": " ****" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "robustness-consistency-tests-004",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": {
+      "build": [
+        { "repeat": "سلام این یک متن معمولی است و هیچ مشکلی ندارد. hello this is fine. ", "times": 2000 }
+      ]
+    },
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": {
+        "build": [
+          { "repeat": "سلام این یک متن معمولی است و هیچ مشکلی ندارد. hello this is fine. ", "times": 2000 }
+        ]
+      }
+    }
+  },
+  {
+    "id": "robustness-consistency-tests-005",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": {
+      "build": [
+        { "repeat": "سلام این یک متن معمولی است و هیچ مشکلی ندارد. hello this is fine. ", "times": 2000 },
+        { "text": " کیر" }
+      ]
+    },
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 132001,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 132001,
+          "length": 3
+        }
+      ],
+      "censored": {
+        "build": [
+          { "repeat": "سلام این یک متن معمولی است و هیچ مشکلی ندارد. hello this is fine. ", "times": 2000 },
+          { "text": " ****" }
+        ]
+      }
+    }
+  }
+]

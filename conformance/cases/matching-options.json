@@ -1,0 +1,1154 @@
+[
+  {
+    "id": "matching-options-additional-persian-entries-match-001",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "چس",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "چس", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 2
+      },
+      "matches": [
+        {
+          "entry": { "text": "چس", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 2
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-002",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "گوزو",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "گوزو", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "گوزو", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-003",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "خفه شو",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "خفه شو", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "خفه شو", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-004",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "دهنتو ببند",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "دهنتو ببند", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 10
+      },
+      "matches": [
+        {
+          "entry": { "text": "دهنتو ببند", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 10
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-005",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "سیکتیر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "سیکتیر", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "سیکتیر", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-006",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "بچه کونی",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "بچه کونی", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "بچه کونی", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-007",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "دهن سرویس",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "دهن سرویس", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "دهن سرویس", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-008",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "پدر سوخته",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "پدر سوخته", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "پدر سوخته", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-009",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "کوس خل",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کوس", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کوس خل", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-010",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "عن دونی",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "عن دونی", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "عن دونی", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-011",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "حروم\u200Cلقمه",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "حروم\u200Cلقمه", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "حروم\u200Cلقمه", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-additional-persian-entries-match-012",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "دهنتو گاییدم",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "دهنتو گاییدم", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 12
+      },
+      "matches": [
+        {
+          "entry": { "text": "دهنتو گاییدم", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 12
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-001",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "مادربه\u200Cخطا",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "مادربهخطا", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 10
+      },
+      "matches": [
+        {
+          "entry": { "text": "مادربهخطا", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 10
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-002",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "مادر به خطا",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "مادر به خطا", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "مادر به خطا", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-003",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "راگوزتو ببند",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "راگوزتو ببند", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 12
+      },
+      "matches": [
+        {
+          "entry": { "text": "راگوزتو ببند", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 12
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-004",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "ببند گاله رو",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ببند گاله رو", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 12
+      },
+      "matches": [
+        {
+          "entry": { "text": "ببند گاله رو", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 12
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-005",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "آشغال کله",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "آشغال", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "آشغال کله", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-006",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "عن تیلیت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "عن تیلیت", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 8
+      },
+      "matches": [
+        {
+          "entry": { "text": "عن تیلیت", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 8
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-007",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "پسته خانم",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "پسته خانم", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 9
+      },
+      "matches": [
+        {
+          "entry": { "text": "پسته خانم", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 9
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-008",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "چلغوز",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "چلغوز", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "چلغوز", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-009",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "madarbe khata",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "madarbe khata", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 13
+      },
+      "matches": [
+        {
+          "entry": { "text": "madarbe khata", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 13
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-010",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "ragoozeto bebband",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ragoozeto bebband", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 17
+      },
+      "matches": [
+        {
+          "entry": { "text": "ragoozeto bebband", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 17
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-011",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "beband gale ro",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "beband gale ro", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 14
+      },
+      "matches": [
+        {
+          "entry": { "text": "beband gale ro", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 14
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-012",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "ashghal kole",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ashghal", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "ashghal kole", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 0,
+          "length": 12
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-013",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "ooshkol",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "ooshkol", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "ooshkol", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-web-sourced-finglish-entries-match-014",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "shaskol",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shaskol", "mode": "wholeWord", "category": "insult" },
+        "evasion": [],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "shaskol", "mode": "wholeWord", "category": "insult" },
+          "evasion": [],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-the-match-says-which-evasion-was-undone-001",
+    "kind": "must-match",
+    "configuration": "custom-damn",
+    "input": "damn",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": [],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": [],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-the-match-says-which-evasion-was-undone-002",
+    "kind": "must-match",
+    "configuration": "custom-damn",
+    "input": "daaaamn",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-the-match-says-which-evasion-was-undone-003",
+    "kind": "must-match",
+    "configuration": "custom-damn",
+    "input": "d4mn",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-the-match-says-which-evasion-was-undone-004",
+    "kind": "must-match",
+    "configuration": "custom-damn",
+    "input": "d44aamn",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": ["repeatedLetters", "lookalikeCharacters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "damn", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": ["repeatedLetters", "lookalikeCharacters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-find-matches-tests-001",
+    "kind": "ordinary",
+    "configuration": "no-folding",
+    "input": "sh1t",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "sh1t"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-001",
+    "kind": "ordinary",
+    "configuration": "custom-kesafat",
+    "input": "چه کثافتی",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "چه کثافتی"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-002",
+    "kind": "must-match",
+    "configuration": "custom-kesafat",
+    "input": "این کثافت",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "كثافت", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": [],
+        "start": 4,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "كثافت", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": [],
+          "start": 4,
+          "length": 5
+        }
+      ],
+      "censored": "این ****"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-003",
+    "kind": "must-match",
+    "configuration": "custom-k0s-whole",
+    "input": "ye kos inja",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "k0s", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": [],
+        "start": 3,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "k0s", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": [],
+          "start": 3,
+          "length": 3
+        }
+      ],
+      "censored": "ye **** inja"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-004",
+    "kind": "must-match",
+    "configuration": "custom-k0s-whole",
+    "input": "ye k0s inja",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "k0s", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": [],
+        "start": 3,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "k0s", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": [],
+          "start": 3,
+          "length": 3
+        }
+      ],
+      "censored": "ye **** inja"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-005",
+    "kind": "must-match",
+    "configuration": "custom-k0s-anywhere",
+    "input": "ye kos inja",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "k0s", "mode": "anywhere", "category": "uncategorized" },
+        "evasion": [],
+        "start": 3,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "k0s", "mode": "anywhere", "category": "uncategorized" },
+          "evasion": [],
+          "start": 3,
+          "length": 3
+        }
+      ],
+      "censored": "ye **** inja"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-006",
+    "kind": "must-match",
+    "configuration": "custom-k0s-anywhere",
+    "input": "ye k0s inja",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "k0s", "mode": "anywhere", "category": "uncategorized" },
+        "evasion": [],
+        "start": 3,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "k0s", "mode": "anywhere", "category": "uncategorized" },
+          "evasion": [],
+          "start": 3,
+          "length": 3
+        }
+      ],
+      "censored": "ye **** inja"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-007",
+    "kind": "ordinary",
+    "configuration": "custom-shit",
+    "input": "push it",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "push it"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-008",
+    "kind": "must-match",
+    "configuration": "custom-shit",
+    "input": "s h i t",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "shit", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": ["splitWord"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "shit", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": ["splitWord"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-009",
+    "kind": "must-match",
+    "configuration": "custom-fuck-anywhere",
+    "input": "clusterfuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "uncategorized" },
+        "evasion": [],
+        "start": 0,
+        "length": 11
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "uncategorized" },
+          "evasion": [],
+          "start": 0,
+          "length": 11
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-010",
+    "kind": "ordinary",
+    "configuration": "custom-ass",
+    "input": "classic",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "classic"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-011",
+    "kind": "must-match",
+    "configuration": "custom-fuck-whole",
+    "input": "fuuuuck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": ["repeatedLetters"],
+        "start": 0,
+        "length": 7
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": ["repeatedLetters"],
+          "start": 0,
+          "length": 7
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-012",
+    "kind": "ordinary",
+    "configuration": "custom-fuck-whole-no-squeezing",
+    "input": "fuuuuck",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "fuuuuck"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-013",
+    "kind": "ordinary",
+    "configuration": "custom-fuck-whole-no-folding",
+    "input": "f*ck",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "f*ck"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-014",
+    "kind": "ordinary",
+    "configuration": "custom-fuck-whole-no-joining",
+    "input": "f u c k",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "f u c k"
+    }
+  },
+  {
+    "id": "matching-options-profanity-filter-tests-015",
+    "kind": "ordinary",
+    "configuration": "custom-empty",
+    "input": "anything",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "anything"
+    }
+  },
+  {
+    "id": "matching-options-default-list-tests-001",
+    "kind": "must-match",
+    "configuration": "all",
+    "input": "این فیلم آشغال بود",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "آشغال", "mode": "wholeWord", "category": "mild" },
+        "evasion": [],
+        "start": 9,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "آشغال", "mode": "wholeWord", "category": "mild" },
+          "evasion": [],
+          "start": 9,
+          "length": 5
+        }
+      ],
+      "censored": "این فیلم **** بود"
+    }
+  },
+  {
+    "id": "matching-options-default-list-tests-002",
+    "kind": "must-match",
+    "configuration": "slurs-only",
+    "input": "faggot",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "faggot", "mode": "wholeWord", "category": "slur" },
+        "evasion": [],
+        "start": 0,
+        "length": 6
+      },
+      "matches": [
+        {
+          "entry": { "text": "faggot", "mode": "wholeWord", "category": "slur" },
+          "evasion": [],
+          "start": 0,
+          "length": 6
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-default-list-tests-003",
+    "kind": "ordinary",
+    "configuration": "slurs-only",
+    "input": "fuck",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "fuck"
+    }
+  },
+  {
+    "id": "matching-options-readme-example-tests-001",
+    "kind": "must-match",
+    "configuration": "slurs-and-harassment",
+    "input": "kys",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kys", "mode": "wholeWord", "category": "harassment" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "matching-options-readme-example-tests-002",
+    "kind": "ordinary",
+    "configuration": "slurs-and-harassment",
+    "input": "کیر",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "کیر"
+    }
+  },
+  {
+    "id": "matching-options-readme-example-tests-003",
+    "kind": "must-match",
+    "configuration": "custom-readme",
+    "input": "این پیام اسپم است",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "اسپم", "mode": "wholeWord", "category": "uncategorized" },
+        "evasion": [],
+        "start": 9,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "اسپم", "mode": "wholeWord", "category": "uncategorized" },
+          "evasion": [],
+          "start": 9,
+          "length": 4
+        }
+      ],
+      "censored": "این پیام **** است"
+    }
+  },
+  {
+    "id": "matching-options-readme-example-tests-004",
+    "kind": "must-match",
+    "configuration": "custom-readme",
+    "input": "onlinecasino.example",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "casino", "mode": "anywhere", "category": "uncategorized" },
+        "evasion": [],
+        "start": 0,
+        "length": 12
+      },
+      "matches": [
+        {
+          "entry": { "text": "casino", "mode": "anywhere", "category": "uncategorized" },
+          "evasion": [],
+          "start": 0,
+          "length": 12
+        }
+      ],
+      "censored": "****.example"
+    }
+  }
+]
