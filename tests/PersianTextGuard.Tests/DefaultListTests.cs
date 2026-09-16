@@ -115,6 +115,18 @@ public class DefaultListTests
     public void Spellings_missing_from_1_0_1_are_covered(string text) => Assert.True(Filter.ContainsProfanity(text));
 
     [Theory]
+    // Entries amirshnll/Persian-Swear-Words carries that the matcher did not already reach.
+    [InlineData("گایدن")]
+    [InlineData("بکیرم")]
+    [InlineData("به تخم اقام")]
+    [InlineData("سگ تو روحت")]
+    [InlineData("نرکده")]
+    [InlineData("اوب")]
+    [InlineData("دول ننه")]
+    public void Entries_from_the_persian_swear_words_dataset_match(string text) =>
+        Assert.True(Filter.ContainsProfanity(text));
+
+    [Theory]
     [InlineData("چس")]
     [InlineData("گوزو")]
     [InlineData("خفه شو")]
