@@ -44,9 +44,9 @@ Single library project, per plan.md:
 
 **Purpose**: Branch, baseline numbers, and the partial-class split the plan's structure needs.
 
-- [ ] T001 Create and switch to git branch `001-censor-find-matches` from an up-to-date `main` (the name already recorded in `.specify/feature.json`); commit the untracked `.specify/`, `.claude/` and `specs/001-censor-find-matches/` on it first, removing the HTML Sync Impact Report comment from the top of `.specify/memory/constitution.md` before committing
-- [ ] T002 Record the 1.1.0 baseline before any source change: run `dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks -f net10.0 -- --filter '*'` and save the results table (Mean, Allocated for CleanShortMessage, CleanLongMessage, EvasiveMessage, NormalizeLongMessage, BuildFilterFromDefaultList) to `specs/001-censor-find-matches/benchmarks.md` under a "Baseline (1.1.0)" heading
-- [ ] T003 Change `public sealed class ProfanityFilter` to `public sealed partial class ProfanityFilter` in `src/PersianTextGuard/ProfanityFilter.cs`, and create `src/PersianTextGuard/ProfanityFilter.Scan.cs` and `src/PersianTextGuard/ProfanityFilter.Regions.cs`, each containing only `namespace PersianTextGuard;` and `public sealed partial class ProfanityFilter { }`; confirm `dotnet build src/PersianTextGuard` succeeds with no warnings (`TreatWarningsAsErrors`)
+- [X] T001 Create and switch to git branch `001-censor-find-matches` from an up-to-date `main` (the name already recorded in `.specify/feature.json`); commit the untracked `.specify/`, `.claude/` and `specs/001-censor-find-matches/` on it first, removing the HTML Sync Impact Report comment from the top of `.specify/memory/constitution.md` before committing
+- [X] T002 Record the 1.1.0 baseline before any source change: run `dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks -f net10.0 -- --filter '*'` and save the results table (Mean, Allocated for CleanShortMessage, CleanLongMessage, EvasiveMessage, NormalizeLongMessage, BuildFilterFromDefaultList) to `specs/001-censor-find-matches/benchmarks.md` under a "Baseline (1.1.0)" heading
+- [X] T003 Change `public sealed class ProfanityFilter` to `public sealed partial class ProfanityFilter` in `src/PersianTextGuard/ProfanityFilter.cs`, and create `src/PersianTextGuard/ProfanityFilter.Scan.cs` and `src/PersianTextGuard/ProfanityFilter.Regions.cs`, each containing only `namespace PersianTextGuard;` and `public sealed partial class ProfanityFilter { }`; confirm `dotnet build src/PersianTextGuard` succeeds with no warnings (`TreatWarningsAsErrors`)
 
 ---
 
@@ -60,32 +60,32 @@ tests must still pass unmodified when it ends (FR-019).
 
 ### Tests for the foundation
 
-- [ ] T004 [P] Write `tests/PersianTextGuard.Tests/SourceMapTests.cs`, covering the internal source map from T005 (reachable through the existing `InternalsVisibleTo`). The tests must fail until T005 exists.
+- [X] T004 [P] Write `tests/PersianTextGuard.Tests/SourceMapTests.cs`, covering the internal source map from T005 (reachable through the existing `InternalsVisibleTo`). The tests must fail until T005 exists.
   - **Text equality:** for every string below, the mapped Comparison-normalised text equals `PersianNormalizer.Normalize(text)`, and the mapped fold and squeeze results equal `ProfanityFilter.Fold` and `ProfanityFilter.Squeeze` of that text.
     - Persian and Latin: `"كتاب‌هاي  ۱۲ ABC"`, `"ﻛﻴﺮ"`, `"fúck"`, `"u\u0301"`, `"کــیــر"`, `"کِیر"`.
     - Repeats, symbols and surrogates: `"سسسسلام"`, `"sh!t 455"`, `"🅵🆄🅲🅺"`, `"f🖕ck"`, `"hi \uD83D"`.
     - Unusual whitespace and invisible characters: `"   a \t b  "`, `"ک\u200Bیر"`, `"ج\u200Fنده"`.
   - **Map shape:** every map has exactly one element per output character, its values are non-decreasing, and every value is a valid index into the original string.
   - **Map content:** for `"ﻛﻴﺮ"` the map is `[0,1,2]`; for `"سسسسلام"` every output character maps to a source index whose character is the same letter; for `"ک\u200Bیر"` the output `"کیر"` maps to `[0,2,3]`.
-  - **Fallback:** call `SourceMap.ChunkMap(original, reading)` and `SourceMap.WholeMessageMap(original, reading)` directly (T005) with `original = "ab kir cd"` and `reading = "ab kir cd"`. For both maps, the element for reading index 3 (`k`) is ≤ 3 and the element for reading index 5 (`r`) is ≥ 5, so fallbacks only ever widen. Use static methods rather than a global switch, because xUnit runs test classes in parallel.
+  - **Fallback:** call `SourceMap.ChunkMap(original, reading)` and `SourceMap.WholeMessageMap(original, reading)` directly (T005) with `original = "ab kir cd"` and `reading = "ab kir cd"`. For both, `StartMap[3]` (`k`) is ≤ 3 and `EndMap[5]` (`r`) is ≥ 5, so fallbacks only ever widen. *(Implementation note: a mapped reading carries two maps, `StartMap` and `EndMap`. A single array cannot express the whole-message fallback, where any hit must start at 0 and end at the last character.)* Use static methods rather than a global switch, because xUnit runs test classes in parallel.
 
 ### Implementation for the foundation
 
-- [ ] T005 Create `src/PersianTextGuard/SourceMap.cs`: `internal readonly struct MappedText` holding `string Text` and `int[] Map`, where `Map[i]` is the index in the original message of the character that produced `Text[i]`. Build it with shared code, not copied code:
+- [X] T005 Create `src/PersianTextGuard/SourceMap.cs`: `internal readonly struct MappedText` holding `string Text` and `int[] Map`, where `Map[i]` is the index in the original message of the character that produced `Text[i]`. Build it with shared code, not copied code:
   - **Normalisation:** add an internal overload `PersianNormalizer.Normalize(string text, PersianNormalization steps, List<int>? map)` in `src/PersianTextGuard/PersianNormalizer.cs`. When `map` is null, the existing public `Normalize` must be byte-for-byte unchanged. When `map` is non-null:
     - Apply NFKC one segment at a time. A segment is a starter code point plus the following `NonSpacingMark`/`SpacingCombiningMark`/`EnclosingMark` code points, and every output character of a segment maps to the segment's first index.
     - Carry the map through `IsRemoved`, `UnifyLetter`, digit conversion, lower-casing, `CollapseRepeats` and `CollapseWhitespace`, including trimming.
   - **Fold and squeeze:** add `internal static string Fold(string normalized, List<int>? map)` and `internal static string Squeeze(string value, List<int>? map)` overloads in `src/PersianTextGuard/ProfanityFilter.cs`. The existing single-argument `Fold` and `Squeeze` call them with `null`. Composing maps: `mapped[i] = previousMap[foldOrSqueezeMap[i]]`.
-  - **Fallbacks (R1):** in `SourceMap`, compare the mapped text with the unmapped reading the matcher searched. If they differ, use `internal static int[] ChunkMap(string original, string reading)`. It pairs the n-th whitespace-separated chunk of `reading` with the n-th of `original`: the first character of a reading chunk maps to its original chunk's start, and every later character maps to that original chunk's last index. If the chunk counts differ, use `internal static int[] WholeMessageMap(string original, string reading)` instead: element 0 maps to 0 and every other element to `original.Length - 1`. Both maps must stay non-decreasing.
-- [ ] T006 Record entry order in `src/PersianTextGuard/ProfanityFilter.cs` for the FR-007 tie-break:
+  - **Fallbacks (R1):** in `SourceMap`, compare the mapped text with the unmapped reading the matcher searched. If they differ, use `internal static int[] ChunkMap(string original, string reading)`. It pairs the n-th whitespace-separated chunk of `reading` with the n-th of `original`: the first character of a reading chunk maps to its original chunk's start, and every later character maps to that original chunk's last index. If the chunk counts differ, use `internal static int[] WholeMessageMap(string original, string reading)` instead: element 0 maps to 0 and every other element to `original.Length - 1`. Both maps must stay non-decreasing. *(As built: `MappedText` is an internal sealed class with `Text`, `StartMap` and `EndMap`. `SourceMap.Build(original, kind)` returns the exact map as both arrays; `ChunkMap` and `WholeMessageMap` return `MappedText`, with every character of a chunk mapped to the chunk start in `StartMap` and to the chunk end in `EndMap`.)*
+- [X] T006 Record entry order in `src/PersianTextGuard/ProfanityFilter.cs` for the FR-007 tie-break:
   - Count the words enumerated in the constructor. The running index starts at 0 and increments for every `BannedWord` enumerated, duplicates included; this is the entry's order.
   - Change `_words` from `Dictionary<string, BannedWord>` to `Dictionary<string, (BannedWord Word, int Order)>`.
   - Add `int Order` to the private records `Key` and `Phrase`.
   - Keep the first-added-wins behaviour and `Count` exactly as today.
-- [ ] T007 [P] Add init-only, non-positional properties `public int Index { get; init; }` and `public int Length { get; init; }` to `public sealed record ProfanityMatch(BannedWord Word, EvasionKind Evasion)` in `src/PersianTextGuard/ProfanityMatch.cs`.
+- [X] T007 [P] Add init-only, non-positional properties `public int Index { get; init; }` and `public int Length { get; init; }` to `public sealed record ProfanityMatch(BannedWord Word, EvasionKind Evasion)` in `src/PersianTextGuard/ProfanityMatch.cs`.
   - Do not change the positional parameters.
   - XML docs must say: `Index` is "the first character of the matched words in the text as it was passed, counted in UTF-16 code units", and `Length` is "how many characters the matched words span". Both must say they are 0 on a match the caller constructs themselves.
-- [ ] T008 Move matching into a single scan engine in `src/PersianTextGuard/ProfanityFilter.Scan.cs` (R2).
+- [X] T008 Move matching into a single scan engine in `src/PersianTextGuard/ProfanityFilter.Scan.cs` (R2).
   - **Types:**
     - `internal enum ReadingKind { Normalized, Squeezed, Folded, FoldedSqueezed }`.
     - `internal readonly record struct Hit(ReadingKind Reading, int Start, int End, BannedWord Word, int Order, EvasionKind Evasion)`, where `Start`/`End` are positions in that reading and `End` is exclusive.
@@ -100,13 +100,13 @@ tests must still pass unmodified when it ends (FR-019).
     - Broken chunks: the chunk's trimmed start and end within the normalized reading, with `ReadingKind.Normalized`.
   - **Callers:** `ContainsProfanity` calls `Scan(text, null, out _) is not null`, and `FindMatch` calls the same scan (positions are added in T010). Delete the now-duplicated bodies from `src/PersianTextGuard/ProfanityFilter.cs`.
   - **Done when:** `dotnet test tests/PersianTextGuard.Tests -f net10.0` passes all 225 existing tests unmodified.
-- [ ] T009 Implement hit-to-region translation in `src/PersianTextGuard/ProfanityFilter.Regions.cs` (R3).
+- [X] T009 Implement hit-to-region translation in `src/PersianTextGuard/ProfanityFilter.Regions.cs` (R3).
   - **Signature:** `internal readonly record struct Candidate(int Start, int End, int HitLength, BannedWord Word, int Order, EvasionKind Evasion)` and `private Candidate ToCandidate(string original, in Hit hit, MappedText?[] mapCache)`. `HitLength` is `end - start` measured after translating and *before* widening; FR-007 compares on it.
   - **Map:** build the `MappedText` for `hit.Reading` lazily through `SourceMap` (T005) and cache it in `mapCache[(int)hit.Reading]`, so each reading is mapped at most once per call.
   - **Translate:** `start = map[hit.Start]`, and `end = map[hit.End - 1] + width`, where `width` is 2 when `original[map[hit.End - 1]]` is a high surrogate followed by a low surrogate, else 1.
   - **Widen to whole words:** while `start > 0` and `PersianNormalizer.IsWordCharacter(original, start - 1)`, decrement `start`. While `end < original.Length` and `PersianNormalizer.IsWordCharacter(original, end)`, increment `end`. Never stop between a high surrogate and its low surrogate.
   - **Resulting region MUST satisfy the data-model rules:** "`0 ≤ Index` and `Index + Length ≤ message.Length`; `Length ≥ 1`", "The region never starts or ends inside a surrogate pair", and "The region contains at least one letter or digit".
-- [ ] T010 Make `FindMatch` return positions in `src/PersianTextGuard/ProfanityFilter.cs` (R7).
+- [X] T010 Make `FindMatch` return positions in `src/PersianTextGuard/ProfanityFilter.cs` (R7).
   - After `Scan(text, null, out var first)` returns a match, translate `first` with `ToCandidate` (T009) and return `new ProfanityMatch(first.Word, first.Evasion) { Index = candidate.Start, Length = candidate.End - candidate.Start }`.
   - `ContainsProfanity` MUST NOT call `ToCandidate` or build any map.
   - Update `FindMatch`'s XML docs to mention `Index` and `Length`.

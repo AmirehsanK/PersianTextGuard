@@ -34,7 +34,21 @@ public static class PersianNormalizer
     /// PersianNormalizer.Normalize("كتاب‌هاي ۱۲", PersianNormalization.Standard) // "کتاب‌های ۱۲"
     /// </code>
     /// </example>
-    public static string Normalize(string? text, PersianNormalization steps = PersianNormalization.Comparison)
+    public static string Normalize(string? text, PersianNormalization steps = PersianNormalization.Comparison) =>
+        Normalize(text, steps, map: null);
+
+    /// <summary>
+    /// <see cref="Normalize(string?, PersianNormalization)"/>, also recording in <paramref name="map"/>,
+    /// for every character of the result, the index in <paramref name="text"/> it came from.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="string.Normalize()"/> cannot say where its output came from, so with a map the
+    /// compatibility step normalizes one segment at a time: a starter and the combining marks after
+    /// it, which is where composition happens. Every character a segment produces maps to the
+    /// segment's first index. For the scripts the filter handles the text is the same as whole-string
+    /// normalization; callers that need certainty compare the two (see <see cref="SourceMap"/>).
+    /// </remarks>
+    internal static string Normalize(string? text, PersianNormalization steps, List<int>? map)
     {
         if (string.IsNullOrEmpty(text))
         {
@@ -43,21 +57,37 @@ public static class PersianNormalizer
 
         // string.Normalize throws on a lone surrogate, which is what a message cut in the middle
         // of an emoji contains. User input must never be able to throw here.
-        var source = (steps & PersianNormalization.CompatibilityForms) != 0
-            ? ReplaceLoneSurrogates(text!).Normalize(NormalizationForm.FormKC)
-            : text!;
+        string source;
+        List<int>? sourceMap = null;
+        if ((steps & PersianNormalization.CompatibilityForms) == 0)
+        {
+            source = text!;
+        }
+        else if (map is null)
+        {
+            source = ReplaceLoneSurrogates(text!).Normalize(NormalizationForm.FormKC);
+        }
+        else
+        {
+            sourceMap = new List<int>(text!.Length);
+            source = NormalizeCompatibilityBySegment(ReplaceLoneSurrogates(text!), sourceMap);
+        }
 
         var sb = new StringBuilder(source.Length);
+        var stepMap = map is null ? null : new List<int>(source.Length);
         var unify = (steps & PersianNormalization.UnifyLetters) != 0;
         var lowerCase = (steps & PersianNormalization.LowerCase) != 0;
         var asciiDigits = (steps & PersianNormalization.AsciiDigits) != 0;
 
-        foreach (var raw in source)
+        for (var index = 0; index < source.Length; index++)
         {
+            var raw = source[index];
             if (IsRemoved(raw, steps))
             {
                 continue;
             }
+
+            stepMap?.Add(sourceMap is null ? index : sourceMap[index]);
 
             var c = unify ? UnifyLetter(raw) : raw;
 
@@ -80,16 +110,54 @@ public static class PersianNormalizer
 
         if ((steps & PersianNormalization.CollapseRepeats) != 0)
         {
-            result = CollapseRepeats(result);
+            result = CollapseRepeats(result, stepMap);
         }
 
         if ((steps & PersianNormalization.CollapseWhitespace) != 0)
         {
-            result = CollapseWhitespace(result);
+            result = CollapseWhitespace(result, stepMap);
         }
 
+        map?.AddRange(stepMap!);
         return result;
     }
+
+    /// <summary>NFKC one segment at a time: a code point and the combining marks that follow it.</summary>
+    private static string NormalizeCompatibilityBySegment(string text, List<int> map)
+    {
+        var sb = new StringBuilder(text.Length);
+        var i = 0;
+
+        while (i < text.Length)
+        {
+            var start = i;
+            i += CodePointLength(text, i);
+            while (i < text.Length && IsCombiningMark(text, i))
+            {
+                i += CodePointLength(text, i);
+            }
+
+            // ASCII is already in normal form; skip the allocation for the common case.
+            var segment = i - start == 1 && text[start] < 128
+                ? text.Substring(start, 1)
+                : text.Substring(start, i - start).Normalize(NormalizationForm.FormKC);
+
+            foreach (var c in segment)
+            {
+                sb.Append(c);
+                map.Add(start);
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    private static int CodePointLength(string text, int index) =>
+        char.IsHighSurrogate(text[index]) && index + 1 < text.Length && char.IsLowSurrogate(text[index + 1]) ? 2 : 1;
+
+    private static bool IsCombiningMark(string text, int index) =>
+        CharUnicodeInfo.GetUnicodeCategory(text, index) is UnicodeCategory.NonSpacingMark
+            or UnicodeCategory.SpacingCombiningMark or UnicodeCategory.EnclosingMark;
 
     /// <summary>
     /// Splits text into word tokens on whitespace, punctuation (ASCII, Persian «» ، ؛ ؟ ٫, and
@@ -99,12 +167,26 @@ public static class PersianNormalizer
     /// </summary>
     public static string[] Tokenize(string? text)
     {
+        var tokens = TokenizeWithOffsets(text);
+        var texts = new string[tokens.Length];
+
+        for (var i = 0; i < tokens.Length; i++)
+        {
+            texts[i] = tokens[i].Text;
+        }
+
+        return texts;
+    }
+
+    /// <summary><see cref="Tokenize"/>, keeping where each token starts and ends in <paramref name="text"/>.</summary>
+    internal static Token[] TokenizeWithOffsets(string? text)
+    {
         if (string.IsNullOrEmpty(text))
         {
             return [];
         }
 
-        var tokens = new List<string>();
+        var tokens = new List<Token>();
         var start = -1;
 
         for (var i = 0; i < text!.Length; i++)
@@ -121,14 +203,14 @@ public static class PersianNormalizer
 
             if (start >= 0)
             {
-                tokens.Add(text.Substring(start, i - start));
+                tokens.Add(new Token(text.Substring(start, i - start), start, i));
                 start = -1;
             }
         }
 
         if (start >= 0)
         {
-            tokens.Add(text.Substring(start));
+            tokens.Add(new Token(text.Substring(start), start, text.Length));
         }
 
         return tokens.ToArray();
@@ -270,48 +352,74 @@ public static class PersianNormalizer
         _ => c
     };
 
-    private static string CollapseRepeats(string value)
+    private static string CollapseRepeats(string value, List<int>? map)
     {
         var sb = new StringBuilder(value.Length);
+        var kept = map is null ? null : new List<int>(map.Count);
         var runChar = '\0';
         var runLength = 0;
 
-        foreach (var c in value)
+        for (var i = 0; i < value.Length; i++)
         {
+            var c = value[i];
             runLength = c == runChar ? runLength + 1 : 1;
             runChar = c;
 
             if (runLength <= 2 || char.IsWhiteSpace(c))
             {
                 sb.Append(c);
+                kept?.Add(map![i]);
             }
         }
 
+        ReplaceMap(map, kept);
         return sb.ToString();
     }
 
-    private static string CollapseWhitespace(string value)
+    private static string CollapseWhitespace(string value, List<int>? map)
     {
         var sb = new StringBuilder(value.Length);
+        var kept = map is null ? null : new List<int>(map.Count);
         var pendingSpace = false;
+        var pendingSource = 0;
 
-        foreach (var c in value)
+        for (var i = 0; i < value.Length; i++)
         {
+            var c = value[i];
             if (char.IsWhiteSpace(c))
             {
                 pendingSpace = sb.Length > 0;
+                if (map is not null)
+                {
+                    pendingSource = map[i];
+                }
+
                 continue;
             }
 
             if (pendingSpace)
             {
                 sb.Append(' ');
+                kept?.Add(pendingSource);
                 pendingSpace = false;
             }
 
             sb.Append(c);
+            kept?.Add(map![i]);
         }
 
+        ReplaceMap(map, kept);
         return sb.ToString();
+    }
+
+    private static void ReplaceMap(List<int>? map, List<int>? kept)
+    {
+        if (map is null)
+        {
+            return;
+        }
+
+        map.Clear();
+        map.AddRange(kept!);
     }
 }
