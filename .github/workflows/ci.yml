@@ -36,6 +36,9 @@ jobs:
       - name: Test (.NET 8 and .NET 10)
         run: dotnet test dotnet/tests/PersianTextGuard.Tests -c Release --no-build
 
+      - name: Conformance corpus (.NET 8 and .NET 10)
+        run: dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release --no-build
+
       # A tag v1.2.3 publishes version 1.2.3; everything else packs the version in the project file.
       - name: Pack
         run: |
@@ -60,6 +63,9 @@ jobs:
 
       - name: Test
         run: dotnet test dotnet/tests/PersianTextGuard.Tests -c Release -f net48
+
+      - name: Conformance corpus
+        run: dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release -f net48
 
   publish:
     name: Publish to NuGet
