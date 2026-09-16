@@ -311,3 +311,28 @@ All `bin/` and `obj/` directories under `dotnet/` deleted first.
 | 7 | A `v9.9.9` tag fails the publish job at the version check | Verified locally with the step's exact command (exit `1`); the tag path itself only runs in the `Publish to NuGet` job on a pushed tag | T033 |
 | 8 | No stale old-path references | ✅ with a caveat: the prescribed grep matches only correct `dotnet/`-relative paths (README layout tree, solution file). See T035. | T035 |
 | 8 | README "Performance" and "Development" show the new commands; `conformance/README.md` explains format, adding cases, fill-in tool | ✅ | T010, T034 |
+
+## Pull request, CI and branch protection (T038)
+
+- **Pull request**: [#3](https://github.com/AmirehsanK/PersianTextGuard/pull/3), `002-monorepo-conformance-corpus` → `main`, at `8e5bfcf`. Not merged.
+- **CI** on `8e5bfcf`, job names unchanged:
+
+  | Job | Conclusion |
+  | --- | --- |
+  | `Build, test, pack` | success |
+  | `Test on .NET Framework 4.8 (netstandard2.0 build)` | success |
+  | `Publish to NuGet` | skipped (not a tag) |
+
+  The job logs show every test project on every target:
+
+  | Project | `net8.0` | `net10.0` | `net48` |
+  | --- | --- | --- | --- |
+  | `PersianTextGuard.Tests` | 1,029 passed | 1,029 passed | 1,029 passed |
+  | `PersianTextGuard.Conformance` | 506 passed | 506 passed | 506 passed |
+
+- **Branch protection (FR-024)**: `GET /repos/AmirehsanK/PersianTextGuard/branches/main/protection`
+  returned **HTTP 404, "Branch not protected"**. Neither `Build, test, pack` nor
+  `Test on .NET Framework 4.8 (netstandard2.0 build)` is a required status check, so the
+  "merge only when both jobs are green" rule is not enforced by GitHub. Reported to the maintainer;
+  the change (GitHub → Settings → Branches → add a rule for `main` requiring both checks) is theirs
+  to make and was not made here.
