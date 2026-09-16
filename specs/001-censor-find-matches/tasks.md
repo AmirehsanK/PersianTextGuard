@@ -237,7 +237,7 @@ every inline message in `DefaultListTests` plus robustness inputs and a concurre
 
 > **NOTE: Write these tests FIRST, ensure they FAIL (or expose disagreements) before fixing**
 
-- [ ] T017 [P] [US3] Write `tests/PersianTextGuard.Tests/ConsistencyTests.cs`.
+- [X] T017 [P] [US3] Write `tests/PersianTextGuard.Tests/ConsistencyTests.cs`.
   - **Corpus:** use reflection, in a `public static IEnumerable<object?[]> Corpus()` member data source, over every method of `typeof(DefaultListTests)` carrying `Xunit.InlineDataAttribute`. Read each attribute's string arguments via `attribute.GetData(method)`. Tag each message as ordinary when the method name is `Ordinary_messages_pass`. Add the robustness inputs:
     - `null`, `""`, `"   "`.
     - `"hi \uD83D"`, `"\uDE00 hi"`.
@@ -254,8 +254,8 @@ every inline message in `DefaultListTests` plus robustness inputs and a concurre
 
 ### Implementation for User Story 3
 
-- [ ] T018 [US3] Run `dotnet test tests/PersianTextGuard.Tests -f net10.0 --filter FullyQualifiedName~ConsistencyTests`. Fix every failure at its source — `src/PersianTextGuard/ProfanityFilter.Scan.cs` for agreement, `src/PersianTextGuard/ProfanityFilter.Regions.cs` for regions and censoring, `src/PersianTextGuard/SourceMap.cs` for positions — never by weakening an assertion. Record each non-trivial fix, with the input that exposed it, as an added `[InlineData]` case in `tests/PersianTextGuard.Tests/FindMatchesTests.cs` or `tests/PersianTextGuard.Tests/CensorTests.cs` (Principle V: every bug fix gets a regression test).
-- [ ] T019 [US3] Verify SC-008: run `git diff main --stat -- tests/PersianTextGuard.Tests/DefaultListTests.cs tests/PersianTextGuard.Tests/ProfanityFilterTests.cs tests/PersianTextGuard.Tests/PersianNormalizerTests.cs` and confirm there is no output. Then run `dotnet test tests/PersianTextGuard.Tests`, which covers `net10.0`, `net8.0` and `net48` (the last exercises the `netstandard2.0` build), and confirm every test passes on all three.
+- [X] T018 [US3] Run `dotnet test tests/PersianTextGuard.Tests -f net10.0 --filter FullyQualifiedName~ConsistencyTests`. Fix every failure at its source — `src/PersianTextGuard/ProfanityFilter.Scan.cs` for agreement, `src/PersianTextGuard/ProfanityFilter.Regions.cs` for regions and censoring, `src/PersianTextGuard/SourceMap.cs` for positions — never by weakening an assertion. Record each non-trivial fix, with the input that exposed it, as an added `[InlineData]` case in `tests/PersianTextGuard.Tests/FindMatchesTests.cs` or `tests/PersianTextGuard.Tests/CensorTests.cs` (Principle V: every bug fix gets a regression test).
+- [X] T019 [US3] Verify SC-008: run `git diff main --stat -- tests/PersianTextGuard.Tests/DefaultListTests.cs tests/PersianTextGuard.Tests/ProfanityFilterTests.cs tests/PersianTextGuard.Tests/PersianNormalizerTests.cs` and confirm there is no output. Then run `dotnet test tests/PersianTextGuard.Tests`, which covers `net10.0`, `net8.0` and `net48` (the last exercises the `netstandard2.0` build), and confirm every test passes on all three.
 
 **Checkpoint**: All three user stories are functional and verified to agree with each other and
 with 1.1.0.
