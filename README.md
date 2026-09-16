@@ -131,9 +131,9 @@ var words = WordList.Load(File.OpenRead("banned-words.txt"));
 About 1,250 Persian, Finglish and English entries, in three files that document what is
 deliberately left out and why — `کس` also means "person", `ساک` is a bag, `shit` is in
 shiitake, and ethnic names are not slurs:
-[persian.txt](src/PersianTextGuard/WordLists/persian.txt),
-[finglish.txt](src/PersianTextGuard/WordLists/finglish.txt),
-[english.txt](src/PersianTextGuard/WordLists/english.txt). The list is **opt-in**: nothing
+[persian.txt](wordlists/persian.txt),
+[finglish.txt](wordlists/finglish.txt),
+[english.txt](wordlists/english.txt). The list is **opt-in**: nothing
 uses it unless you pass it to a filter.
 
 Every entry has a `WordCategory`, so you can block what your community needs blocked:

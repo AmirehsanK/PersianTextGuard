@@ -2,7 +2,7 @@
 
 The code in PersianTextGuard is MIT licensed (see [LICENSE](LICENSE)).
 
-The bundled word lists in `src/PersianTextGuard/WordLists/` were curated by
+The bundled word lists in `wordlists/` were curated by
 hand: entries were selected, removed and added (including Finglish and ص/ث spellings that
 none of the sources carry). They draw on the following lists, credited here under their
 licenses.
