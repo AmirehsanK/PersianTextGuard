@@ -210,6 +210,14 @@ pending cases:
 - **Literals in test bodies**: messages written directly inside `[Fact]` methods, which reflection
   cannot see. These are listed explicitly in the seeding code, taken from `FindMatchesTests`,
   `CensorTests`, `ReadmeExampleTests`, `ProfanityFilterTests` and `ConsistencyTests`.
+- **Supplementary suite**: the 305 hand-checked messages from the earlier package test run
+  (`D:\Git\PtgTest\Program.cs`), copied into the tool. Each is added as must-match or ordinary only
+  when 1.2.0's `ContainsProfanity` under `default` agrees with its hand label; disagreements (for
+  example «جن ده» or "Kir Royale cocktail") are skipped and listed, never recorded as expectations.
+  This source exists because the .NET tests alone may not reach the 300 cases SC-002 requires. If the
+  seeded total is still below 300, implementation stops and reports instead of inventing cases.
+- **Deduplication**: a case is skipped when its content key (configuration, built input and masks, or
+  the kind's equivalent) is already in the corpus, whatever its id.
 - **Other case kinds**: normalization, tokenization, word-list parsing, category selection and mask
   validation cases come from `PersianNormalizerTests`, `ProfanityFilterTests`, `DefaultListTests` and
   `CensorTests`, listed explicitly.

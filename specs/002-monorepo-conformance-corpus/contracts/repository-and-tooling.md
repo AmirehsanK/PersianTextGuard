@@ -62,7 +62,7 @@ Every command runs from the repository root.
 | --- | --- | --- | --- |
 | *(default)* | Fills `expected` for pending cases from the .NET package; compares every recorded case and prints each disagreement (id, field, expected, actual) | only the files that had pending cases, in canonical form | `0` when no recorded case disagrees; `1` otherwise |
 | `--check` | Same comparison, fills nothing | nothing | `0` / `1` as above |
-| `--seed` | Creates pending cases from the existing .NET tests (research R9), skipping ids that already exist, then fills them | the case files it creates or extends | `0` on success |
+| `--seed` | Creates pending cases from the existing .NET tests, explicit literals and the supplementary suite (research R9). It skips any case whose **content key** (configuration, built input and masks, or the equivalent for other kinds) already exists, whatever its id, then fills them exactly as the default mode does | the case files it creates (starting from `[]`) or extends | same as default mode: `0` when no recorded case disagrees, `1` otherwise |
 
 **Guarantees**:
 - An existing `expected` is never modified in any mode (spec FR-010a, Clarification 2).

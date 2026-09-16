@@ -162,7 +162,7 @@ tool.)
    whitespace other than U+0020, MUST be written as a `\uXXXX` escape. Every other character SHOULD be
    written literally.
 2. A lone surrogate MUST NOT appear as a JSON string escape; use an Input `build` object with a
-   `utf16` part.
+   `utf16` part. This applies to every text-valued field, a `mask-validation` case's `mask` included.
 3. Enum-like strings use lowerCamelCase: `wholeWord`, `repeatedLetters`, `sexual`.
 4. `evasion` arrays list names in the order `repeatedLetters`, `lookalikeCharacters`, `splitWord`.
 5. A case without `expected` is pending. Pending cases are allowed on disk only between adding a case

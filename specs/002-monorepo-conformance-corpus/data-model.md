@@ -111,7 +111,8 @@ Common fields, shared by every kind.
 
 **Validation**:
 - `ordinary` ⇒ `containsProfanity` is `false`, `firstMatch` is `null`, `matches` is empty, and
-  `censored` equals the built input. A missing input's censored text is `""`.
+  `censored` and every value of `censoredWith` equal the built input. A missing input's censored text
+  is `""`.
 - `must-match` ⇒ `containsProfanity` is `true`.
 - `robustness` ⇒ either outcome is allowed. It marks inputs that test "never throws" (Principle II).
 
@@ -174,7 +175,7 @@ The rules are:
 
 | Field | Type | Rule |
 | --- | --- | --- |
-| `mask` | string | Exactly one UTF-16 code unit, which may be written as an escape. |
+| `mask` | string or Input `build` object | Exactly one UTF-16 code unit. A lone surrogate MUST be given as `{ "build": [ { "utf16": "D83D" } ] }`, never as a JSON string escape. |
 | `expected.accepted` | boolean | |
 
 ## Shared word list

@@ -17,9 +17,9 @@ README and each language port are separate features with their own specification
 ### Session 2026-09-16
 
 - Q: When a future port is checked against the corpus, must it reproduce every detail the .NET filter
-  reports exactly, including which match `FindMatch` returns first and which disguise kinds it
+  reports exactly, including which match `FindMatch` returns first and which evasion kinds it
   reports? → A: Exact everywhere — the yes/no result, the first match, every match (entry, category,
-  disguise kinds, position) and the censored output must all equal the corpus.
+  evasion kinds, position) and the censored output must all equal the corpus.
 - Q: After the corpus is first created, how should expected results for new or changed cases be
   filled in: by hand only, or with a tool that asks the .NET filter? → A: Fill in blanks only. A tool
   fills in expectations for cases that have none yet, taken from the .NET filter. It never overwrites
@@ -51,7 +51,7 @@ must do with it:
 
 - whether it contains profanity;
 - the first match;
-- every match, with entry, category, disguise and position;
+- every match, with entry, category, evasion kinds and position;
 - the censored output.
 
 It also defines normalization and tokenization results, how word-list files are read, which entries
@@ -192,8 +192,8 @@ can see, which is why it comes after the stories that define behaviour.
 #### Conformance corpus
 
 - **FR-001**: The repository MUST contain a conformance corpus: a language-neutral set of test cases,
-  in a widely supported data format that every supported language can read in its tests, describing the
-  filter's behaviour. *(Amended during planning: the original wording required each language's standard
+  in a widely supported data format that every supported language can read in its tests (JSON, chosen in
+  research R1), describing the filter's behaviour. *(Amended during planning: the original wording required each language's standard
   library, which no suitable format satisfies — Java's and Rust's standard libraries read no structured
   format. The corpus is only read by tests and tooling, where the constitution allows test-only
   dependencies. See research R1.)*
@@ -201,11 +201,11 @@ can see, which is why it comes after the stories that define behaviour.
   - the configuration it runs under (word-list selection, custom entries if any, options);
   - whether the message contains profanity;
   - the first match's entry and region;
-  - every match's entry text, match mode, category, disguise kinds and region;
+  - every match's entry text, match mode, category, evasion kinds and region;
   - the censored output with the default mask, and with any custom mask the case names.
 
   Every recorded field is an exact expectation. A port passes a case only if every field equals the
-  corpus, including which match is first and the full set of disguise kinds. No field is checked
+  corpus, including which match is first and the full set of evasion kinds. No field is checked
   loosely or as "at least", so the same message gets the same answer in every language.
 - **FR-003**: The corpus MUST also cover:
   - normalization, with each normalization step and preset;
@@ -297,7 +297,7 @@ can see, which is why it comes after the stories that define behaviour.
   - its expected results;
   - an optional note explaining why the case exists (for example "`کسی` also means someone").
 - **Configuration**: which bundled lists or custom entries the filter is built from, and which evasion options are on. Cases share a small set of named configurations rather than repeating them.
-- **Expected match**: entry text, match mode, category, disguise kinds, and region (start and length in code points).
+- **Expected match**: entry text, match mode, category, evasion kinds, and region (start and length in code points).
 - **Shared word list**: one categorised list file in the shared location — Persian, Finglish or English — with its explanatory header.
 - **Version source**: the single root value every package takes its version from.
 - **Port**: one language's implementation in its own top-level directory. After this feature, only the .NET port exists.
@@ -317,7 +317,7 @@ can see, which is why it comes after the stories that define behaviour.
   where the version is set.
 - **SC-005**: A maintainer can add a new case — an ordinary message that must pass — by editing corpus
   data alone, and have CI check it, in under 5 minutes, without writing code. With the fill-in tool,
-  adding a must-match case, including exact positions and disguise kinds, also takes under 5 minutes.
+  adding a must-match case, including exact positions and evasion kinds, also takes under 5 minutes.
 - **SC-006**: 100% of failing cases are reported with identifier, input, expected and actual results, and
   a single run reports all failing cases.
 - **SC-007**: Every file moved by the restructure (100%) still shows its history from before the move.

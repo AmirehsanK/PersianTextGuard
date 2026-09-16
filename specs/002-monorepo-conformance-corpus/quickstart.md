@@ -116,11 +116,13 @@ Do this on a scratch commit and discard it afterwards.
 ## 8. Documentation (FR-020, FR-021)
 
 ```bash
-git grep -n -e "src/PersianTextGuard" -e "tests/PersianTextGuard" -e "benchmarks/PersianTextGuard" -- ':!specs/001-censor-find-matches' ':!dotnet/'
+git grep -nE '(^|[^[:alnum:]_/])(src|tests|benchmarks)/PersianTextGuard' -- ':!specs/001-censor-find-matches' ':!specs/002-monorepo-conformance-corpus'
 ```
 
-**Expected**: no output. Every reference points at the new paths; spec 001 is exempt as a historical
-record.
+**Expected**: no output. Every reference points at the new paths. The pattern ignores the new
+`dotnet/src/PersianTextGuard`-style paths, because an old path only counts when it is not preceded by a
+letter, digit, `_` or `/`. Spec 001 is exempt as a historical record, and spec 002 because it
+describes the move from the old paths.
 
 The README's "Performance" and development sections show the new commands. `conformance/README.md`
 explains the format, how to add a case and how to use the fill-in tool.
