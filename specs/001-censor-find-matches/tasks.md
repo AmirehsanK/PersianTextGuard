@@ -266,22 +266,22 @@ with 1.1.0.
 
 **Purpose**: Benchmarks, documentation, versioning and package checks the constitution requires.
 
-- [ ] T020 [P] Add four benchmark methods to `FilterBenchmarks` in `benchmarks/PersianTextGuard.Benchmarks/Program.cs`, keeping the five existing ones unchanged:
+- [X] T020 [P] Add four benchmark methods to `FilterBenchmarks` in `benchmarks/PersianTextGuard.Benchmarks/Program.cs`, keeping the five existing ones unchanged:
   - `FindMatchesClean` — `Filter.FindMatches(CleanShort)`.
   - `FindMatchesDirty` — `Filter.FindMatches("این کیر و f u c k و sh1t")`.
   - `CensorShortDirty` — `Filter.Censor("this is kir")`.
   - `CensorLongDirty` — `Filter.Censor(DirtyLong)`, where `DirtyLong` is the existing `CleanLong` text with `" کیر "`, `" f.u.c.k "` and `" جنده‌ها "` inserted after its first, second and third sentences, for about 60 words with three banned words.
-- [ ] T021 Run `dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks -f net10.0 -- --filter '*'` on the machine named in `README.md`. Append the table to `specs/001-censor-find-matches/benchmarks.md` under "1.2.0", next to the T002 baseline. Verify, and fix in `src/PersianTextGuard/ProfanityFilter.Scan.cs` or `src/PersianTextGuard/ProfanityFilter.Regions.cs` if any fails:
+- [X] T021 Run `dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks -f net10.0 -- --filter '*'` on the machine named in `README.md`. Append the table to `specs/001-censor-find-matches/benchmarks.md` under "1.2.0", next to the T002 baseline. Verify, and fix in `src/PersianTextGuard/ProfanityFilter.Scan.cs` or `src/PersianTextGuard/ProfanityFilter.Regions.cs` if any fails:
   - SC-005: `CleanShortMessage` Mean within 5% of the baseline, and `FindMatchesClean` ≤ 1.5 × `CleanShortMessage`.
   - SC-006: `CensorLongDirty` Mean < 100 µs.
-- [ ] T022 [P] Update `README.md`:
+- [X] T022 [P] Update `README.md`:
   - **New section:** a "Finding every match and censoring" section under "Profanity filtering", with one `FindMatches` example printing `Word.Text`, `Word.Category`, `Index` and `Length`, and one `Censor` example showing `"kir and motherfucker"` → `"**** and ****"` and a custom mask character.
   - **Mask behaviour:** state that the whole word is hidden, the mask is always four characters, censored text can differ in length from the message, and positions refer to the original message.
   - **Limitations:** replace the bullet "`FindMatch` reports the first match, not every match or its position." with a bullet saying a disguised word spread over several lines is hidden together with its line breaks.
   - **Performance table:** add rows for the new benchmarks from T021.
-- [ ] T023 Add test methods to `tests/PersianTextGuard.Tests/ReadmeExampleTests.cs`, adding only and editing no existing method, asserting every new README example from T022 exactly as printed (Principle V).
-- [ ] T024 [P] Set `<Version>1.2.0</Version>` and add `<PackageValidationBaselineVersion>1.1.0</PackageValidationBaselineVersion>` in `src/PersianTextGuard/PersianTextGuard.csproj`. Run `dotnet pack src/PersianTextGuard -c Release -o artifacts`; it must succeed with package validation reporting no breaking change against 1.1.0 (contract, Compatibility).
-- [ ] T025 [P] Write `specs/001-censor-find-matches/release-notes.md` for the GitHub release, covering:
+- [X] T023 Add test methods to `tests/PersianTextGuard.Tests/ReadmeExampleTests.cs`, adding only and editing no existing method, asserting every new README example from T022 exactly as printed (Principle V).
+- [X] T024 [P] Set `<Version>1.2.0</Version>` and add `<PackageValidationBaselineVersion>1.1.0</PackageValidationBaselineVersion>` in `src/PersianTextGuard/PersianTextGuard.csproj`. Run `dotnet pack src/PersianTextGuard -c Release -o artifacts`; it must succeed with package validation reporting no breaking change against 1.1.0 (contract, Compatibility).
+- [X] T025 [P] Write `specs/001-censor-find-matches/release-notes.md` for the GitHub release, covering:
   - **Headline:** the new `FindMatches` and `Censor`.
   - **Changes to existing members:** `FindMatch` now sets `Index` and `Length`.
   - **Behaviour change:** `ProfanityMatch` equality now includes `Index` and `Length`, so a `FindMatch` result no longer equals `new ProfanityMatch(word, evasion)` (R7 — constitution, Public API & Versioning).

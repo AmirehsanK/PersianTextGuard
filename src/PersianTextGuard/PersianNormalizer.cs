@@ -125,6 +125,18 @@ public static class PersianNormalizer
     /// <summary>NFKC one segment at a time: a code point and the combining marks that follow it.</summary>
     private static string NormalizeCompatibilityBySegment(string text, List<int> map)
     {
+        // Most messages are already in NFKC. Then every character maps to itself, and normalizing
+        // each Persian letter on its own would cost a string and a Normalize call apiece.
+        if (text.IsNormalized(NormalizationForm.FormKC))
+        {
+            for (var index = 0; index < text.Length; index++)
+            {
+                map.Add(index);
+            }
+
+            return text;
+        }
+
         var sb = new StringBuilder(text.Length);
         var i = 0;
 
@@ -167,31 +179,32 @@ public static class PersianNormalizer
     /// </summary>
     public static string[] Tokenize(string? text)
     {
-        var tokens = TokenizeWithOffsets(text);
-        var texts = new string[tokens.Length];
-
-        for (var i = 0; i < tokens.Length; i++)
-        {
-            texts[i] = tokens[i].Text;
-        }
-
-        return texts;
+        var words = new List<string>();
+        CollectTokens(text, words, tokens: null);
+        return words.ToArray();
     }
 
     /// <summary><see cref="Tokenize"/>, keeping where each token starts and ends in <paramref name="text"/>.</summary>
     internal static Token[] TokenizeWithOffsets(string? text)
     {
+        var tokens = new List<Token>();
+        CollectTokens(text, words: null, tokens);
+        return tokens.ToArray();
+    }
+
+    // One loop for both shapes, so a token means the same thing to the word list and the scanner.
+    private static void CollectTokens(string? text, List<string>? words, List<Token>? tokens)
+    {
         if (string.IsNullOrEmpty(text))
         {
-            return [];
+            return;
         }
 
-        var tokens = new List<Token>();
         var start = -1;
 
-        for (var i = 0; i < text!.Length; i++)
+        for (var i = 0; i <= text!.Length; i++)
         {
-            if (IsWordCharacter(text, i))
+            if (i < text.Length && IsWordCharacter(text, i))
             {
                 if (start < 0)
                 {
@@ -203,17 +216,12 @@ public static class PersianNormalizer
 
             if (start >= 0)
             {
-                tokens.Add(new Token(text.Substring(start, i - start), start, i));
+                var word = text.Substring(start, i - start);
+                words?.Add(word);
+                tokens?.Add(new Token(word, start, i));
                 start = -1;
             }
         }
-
-        if (start >= 0)
-        {
-            tokens.Add(new Token(text.Substring(start), start, text.Length));
-        }
-
-        return tokens.ToArray();
     }
 
     /// <summary>

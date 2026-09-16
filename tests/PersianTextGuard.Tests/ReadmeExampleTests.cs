@@ -55,6 +55,39 @@ public class ReadmeExampleTests
     }
 
     [Fact]
+    public void Find_matches_example()
+    {
+        var printed = Filter.FindMatches("sh1t and f u c k")
+            .Select(match => $"{match.Word.Text} ({match.Word.Category}) at {match.Index}, length {match.Length}")
+            .ToArray();
+
+        Assert.Equal(["shit (Profanity) at 0, length 4", "fuck (Profanity) at 9, length 7"], printed);
+    }
+
+    [Fact]
+    public void Censor_examples()
+    {
+        Assert.Equal("**** and ****", Filter.Censor("kir and motherfucker"));
+        Assert.Equal("**** رو ببین", Filter.Censor("جنده‌ها رو ببین"));
+        Assert.Equal("this is ####", Filter.Censor("this is kir", '#'));
+    }
+
+    [Fact]
+    public void Censor_claims_in_the_readme()
+    {
+        const string clean = "سلام، سفارشم کی میرسه؟";
+
+        Assert.False(Filter.ContainsProfanity(Filter.Censor("k kos i kos r")));
+        Assert.Same(clean, Filter.Censor(clean));
+        Assert.Throws<ArgumentException>(() => Filter.Censor("kir", 'x'));
+        Assert.Throws<ArgumentException>(() => Filter.Censor("kir", ' '));
+
+        var first = Filter.FindMatch("this is kir")!;
+        Assert.Equal(8, first.Index);
+        Assert.Equal(3, first.Length);
+    }
+
+    [Fact]
     public void Normalization_examples()
     {
         Assert.Equal("کتابهای 12 abc", PersianNormalizer.Normalize("كتاب‌هاي  ۱۲ ABC"));

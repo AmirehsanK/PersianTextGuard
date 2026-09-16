@@ -63,6 +63,42 @@ space is removed, so words are only joined when the result is exactly an entry, 
 are only read as letters in a run that has letters in it — `455` and `۴۵۵ تومان` are
 numbers, `4ss` is a word.
 
+### Every match, and censoring
+
+`FindMatches` returns every banned word in a message, in order, each with where it is in the text
+you passed — ready to log, to highlight for a moderator, or to decide on by the most severe
+category present:
+
+```csharp
+foreach (var match in filter.FindMatches("sh1t and f u c k"))
+{
+    Console.WriteLine($"{match.Word.Text} ({match.Word.Category}) at {match.Index}, length {match.Length}");
+}
+// shit (Profanity) at 0, length 4
+// fuck (Profanity) at 9, length 7
+```
+
+`Censor` returns the message with each banned word hidden and everything else untouched:
+
+```csharp
+filter.Censor("kir and motherfucker");   // "**** and ****"
+filter.Censor("جنده‌ها رو ببین");         // "**** رو ببین"
+filter.Censor("this is kir", '#');       // "this is ####"
+```
+
+- **Whole words are hidden.** A banned word inside a longer word or with a Persian suffix takes the
+  whole word with it, so no fragment gives it away. A disguised word such as `f u c k` or `ج.نده`
+  is hidden together with its separators.
+- **Every mask is four characters,** whatever it hides, so a reader cannot tell a short word from
+  a long one. Censored text is therefore usually a different length from the message; positions
+  from `FindMatches` always refer to the original.
+- **The output is always clean.** Checking a censored message with the same filter finds nothing.
+- **Clean text comes back as the same string**, and nothing outside a hidden word is normalized.
+- The mask character can be any symbol or punctuation; letters, digits, whitespace and control
+  characters are refused.
+
+`FindMatch` also reports `Index` and `Length`, for when the first match is all you need.
+
 ### Your own words
 
 ```csharp
@@ -165,15 +201,20 @@ BenchmarkDotNet):
 
 | Operation | Mean | Allocated |
 | --- | ---: | ---: |
-| Short clean message (5 words) | 2.4 µs | 2.8 KB |
-| Long clean message (60 words) | 22.3 µs | 20.9 KB |
-| Message with evasions | 1.7 µs | 2.3 KB |
-| Normalize a long message | 5.6 µs | 3.3 KB |
-| Build a filter from the bundled list | 552 µs | 1,039 KB |
+| Short clean message (5 words) | 2.4 µs | 2.7 KB |
+| Long clean message (60 words) | 21.3 µs | 21.9 KB |
+| Message with evasions | 1.9 µs | 3.1 KB |
+| Normalize a long message | 5.9 µs | 3.3 KB |
+| Build a filter from the bundled list | 553 µs | 1,061 KB |
+| `FindMatches`, clean short message | 2.4 µs | 2.7 KB |
+| `FindMatches`, message with three banned words | 6.6 µs | 9.7 KB |
+| `Censor`, short message with one banned word | 4.5 µs | 6.4 KB |
+| `Censor`, 60-word message with three banned words | 93.0 µs | 97.3 KB |
 
 Whole-word entries are looked up by token rather than searched for one by one, so checking a
-message barely notices how long the list is: 1.1.0 checks a message in half the time 1.0.1
-took, against three times as many entries.
+message barely notices how long the list is. Positions are only worked out for a message that
+contains a banned word, so `FindMatches` and `Censor` cost the same as `ContainsProfanity` on
+clean text.
 
 Build the filter once. Checking a message is cheap enough to run on every chat message or
 form submission.
@@ -188,7 +229,9 @@ dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks
   words, sarcasm and threats need human moderation or a classifier.
 - Finglish has no fixed spelling. The bundled list covers common spellings; add the ones
   your community uses.
-- `FindMatch` reports the first match, not every match or its position.
+- `Censor` hides a disguised word spread over several lines (`f`, `u`, `c`, `k` on separate
+  lines) together with its line breaks, so the censored message has fewer lines. Keeping them would
+  show how many letters were hidden.
 - A word split in the middle stays hidden unless the halves join into exactly an entry, so
   `fu ck` is caught but `fuc k` is not, and two ordinary Persian words are never glued
   together (`هر کس ده تا` is not `کسده`).

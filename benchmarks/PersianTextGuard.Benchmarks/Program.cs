@@ -18,6 +18,16 @@ public class FilterBenchmarks
 
     private const string Evasion = "ye k0s kesh inja f.u.c.k";
 
+    private const string DirtyShort = "this is kir";
+
+    private const string DirtyMixed = "این کیر و f u c k و sh1t";
+
+    // CleanLong with three banned words inserted after its first three sentences: about 60 words.
+    private const string DirtyLong =
+        "سلام وقت بخیر. کیر من هفته پیش یک گوشی از فروشگاه شما سفارش دادم و هنوز به دستم نرسیده. f.u.c.k " +
+        "کد رهگیری را هم در پنل کاربری پیدا نکردم. جنده‌ها لطفا بررسی کنید و نتیجه را از طریق ایمیل " +
+        "یا پیامک اطلاع بدید. اگر امکانش هست هزینه ارسال را هم برگردانید. ممنون از پشتیبانی خوبتان.";
+
     [Benchmark(Baseline = true)]
     public bool CleanShortMessage() => Filter.ContainsProfanity(CleanShort);
 
@@ -32,4 +42,16 @@ public class FilterBenchmarks
 
     [Benchmark]
     public int BuildFilterFromDefaultList() => new ProfanityFilter(WordList.PersianDefault).Count;
+
+    [Benchmark]
+    public int FindMatchesClean() => Filter.FindMatches(CleanShort).Count;
+
+    [Benchmark]
+    public int FindMatchesDirty() => Filter.FindMatches(DirtyMixed).Count;
+
+    [Benchmark]
+    public string CensorShortDirty() => Filter.Censor(DirtyShort);
+
+    [Benchmark]
+    public string CensorLongDirty() => Filter.Censor(DirtyLong);
 }

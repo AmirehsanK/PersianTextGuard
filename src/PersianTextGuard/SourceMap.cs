@@ -42,31 +42,76 @@ internal static class SourceMap
     /// fall back to whole whitespace-separated chunks and then to the whole message: a coarser map
     /// can hide more than the word, but never less.
     /// </remarks>
-    internal static MappedText Build(string original, ReadingKind kind)
+    internal static MappedText Build(string original, ReadingKind kind) =>
+        Build(original, kind, new MappedText?[(int)ReadingKind.FoldedSqueezed + 1]);
+
+    /// <summary>
+    /// As <see cref="Build(string, ReadingKind)"/>, reusing and filling <paramref name="cache"/> (one
+    /// slot per <see cref="ReadingKind"/>), so each reading is mapped once per message and the folded
+    /// and squeezed readings are derived from the mapped normalized one rather than rebuilt.
+    /// </summary>
+    internal static MappedText Build(string original, ReadingKind kind, MappedText?[] cache)
+    {
+        if (cache[(int)kind] is { } cached)
+        {
+            return cached;
+        }
+
+        var mapped = kind switch
+        {
+            ReadingKind.Normalized => Normalized(original),
+            ReadingKind.Squeezed => Derive(Build(original, ReadingKind.Normalized, cache), SqueezeStep),
+            ReadingKind.Folded => Derive(Build(original, ReadingKind.Normalized, cache), FoldStep),
+            _ => Derive(Build(original, ReadingKind.Folded, cache), SqueezeStep),
+        };
+
+        cache[(int)kind] = mapped;
+        return mapped;
+    }
+
+    private static readonly Func<string, List<int>, string> FoldStep = static (value, map) => ProfanityFilter.Fold(value, map);
+
+    private static readonly Func<string, List<int>, string> SqueezeStep = static (value, map) => ProfanityFilter.Squeeze(value, map);
+
+    /// <summary>
+    /// The mapped normalized reading, checked against the reading the filter searched. Folding and
+    /// squeezing are plain functions of their input, so once this one matches, every reading derived
+    /// from it matches too.
+    /// </summary>
+    private static MappedText Normalized(string original)
     {
         var map = new List<int>(original.Length);
         var text = PersianNormalizer.Normalize(original, PersianNormalization.Comparison, map);
         var expected = PersianNormalizer.Normalize(original);
 
-        if (kind is ReadingKind.Folded or ReadingKind.FoldedSqueezed)
+        if (text != expected)
         {
-            text = Apply(text, ref map, static (value, stepMap) => ProfanityFilter.Fold(value, stepMap));
-            expected = ProfanityFilter.Fold(expected);
+            return ChunkMap(original, expected);
         }
 
-        if (kind is ReadingKind.Squeezed or ReadingKind.FoldedSqueezed)
+        var exact = map.ToArray();
+        return new MappedText(text, exact, exact);
+    }
+
+    private static MappedText Derive(MappedText source, Func<string, List<int>, string> step)
+    {
+        var stepMap = new List<int>(source.Text.Length);
+        var text = step(source.Text, stepMap);
+
+        var exact = ReferenceEquals(source.StartMap, source.EndMap);
+        var starts = new int[stepMap.Count];
+        var ends = exact ? starts : new int[stepMap.Count];
+
+        for (var i = 0; i < stepMap.Count; i++)
         {
-            text = Apply(text, ref map, static (value, stepMap) => ProfanityFilter.Squeeze(value, stepMap));
-            expected = ProfanityFilter.Squeeze(expected);
+            starts[i] = source.StartMap[stepMap[i]];
+            if (!exact)
+            {
+                ends[i] = source.EndMap[stepMap[i]];
+            }
         }
 
-        if (text == expected)
-        {
-            var exact = map.ToArray();
-            return new MappedText(text, exact, exact);
-        }
-
-        return ChunkMap(original, expected);
+        return new MappedText(text, starts, ends);
     }
 
     /// <summary>
@@ -121,21 +166,6 @@ internal static class SourceMap
         }
 
         return new MappedText(reading, starts, ends);
-    }
-
-    private static string Apply(string text, ref List<int> map, Func<string, List<int>, string> step)
-    {
-        var stepMap = new List<int>(text.Length);
-        var result = step(text, stepMap);
-
-        var composed = new List<int>(stepMap.Count);
-        foreach (var index in stepMap)
-        {
-            composed.Add(map[index]);
-        }
-
-        map = composed;
-        return result;
     }
 
     private static List<(int Start, int Last)> Chunks(string text)

@@ -216,65 +216,42 @@ public sealed partial class ProfanityFilter
         var result = new List<Token>(tokens.Length);
         var sb = new StringBuilder();
         var positions = new List<int>();
-        var run = new StringBuilder();
-        var runPositions = new List<int>();
-        var runStart = 0;
-        var runEnd = 0;
 
-        void Append(string value, List<int> valuePositions)
+        for (var i = 0; i < tokens.Length;)
         {
             if (sb.Length > 0)
             {
+                // The separating space maps to where the previous token ended, keeping the map in order.
                 sb.Append(' ');
                 positions.Add(positions[positions.Count - 1]);
             }
 
-            sb.Append(value);
-            positions.AddRange(valuePositions);
-        }
-
-        void FlushRun()
-        {
-            if (run.Length == 0)
+            if (!IsSingleLetter(tokens[i]))
             {
-                return;
-            }
-
-            var value = run.ToString();
-            result.Add(new Token(value, runStart, runEnd));
-            Append(value, runPositions);
-            run.Clear();
-            runPositions.Clear();
-        }
-
-        foreach (var token in tokens)
-        {
-            if (IsSingleLetter(token))
-            {
-                if (run.Length == 0)
+                var token = tokens[i++];
+                result.Add(token);
+                sb.Append(token.Text);
+                for (var k = 0; k < token.Text.Length; k++)
                 {
-                    runStart = token.Start;
+                    positions.Add(token.Start + k);
                 }
 
-                run.Append(token.Text);
-                runPositions.Add(token.Start);
-                runEnd = token.End;
                 continue;
             }
 
-            FlushRun();
-            result.Add(token);
-
-            var tokenPositions = new List<int>(token.Text.Length);
-            for (var k = 0; k < token.Text.Length; k++)
+            // A run of single letters, including a run of one, which stays as it was.
+            var runStart = sb.Length;
+            var first = tokens[i];
+            var last = first;
+            while (i < tokens.Length && IsSingleLetter(tokens[i]))
             {
-                tokenPositions.Add(token.Start + k);
+                last = tokens[i++];
+                sb.Append(last.Text);
+                positions.Add(last.Start);
             }
 
-            Append(token.Text, tokenPositions);
+            result.Add(new Token(sb.ToString(runStart, sb.Length - runStart), first.Start, last.End));
         }
-
-        FlushRun();
 
         joined = result.ToArray();
         text = sb.ToString();

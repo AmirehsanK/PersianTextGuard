@@ -26,7 +26,7 @@ public sealed partial class ProfanityFilter
     /// </summary>
     private static Candidate ToCandidate(string original, in Hit hit, MappedText?[] mapCache)
     {
-        var mapped = mapCache[(int)hit.Reading] ??= SourceMap.Build(original, hit.Reading);
+        var mapped = SourceMap.Build(original, hit.Reading, mapCache);
 
         var start = mapped.StartMap[hit.Start];
         var last = mapped.EndMap[hit.End - 1];
