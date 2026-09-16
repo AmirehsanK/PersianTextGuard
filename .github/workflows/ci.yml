@@ -39,12 +39,9 @@ jobs:
       - name: Conformance corpus (.NET 8 and .NET 10)
         run: dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release --no-build
 
-      # A tag v1.2.3 publishes version 1.2.3; everything else packs the version in the project file.
+      # The version comes from the VERSION file only; the publish job checks the tag against it.
       - name: Pack
-        run: |
-          VERSION_ARG=""
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then VERSION_ARG="-p:Version=${GITHUB_REF_NAME#v}"; fi
-          dotnet pack dotnet/src/PersianTextGuard -c Release --no-build -o artifacts $VERSION_ARG
+        run: dotnet pack dotnet/src/PersianTextGuard -c Release --no-build -o artifacts
 
       - uses: actions/upload-artifact@v4
         with:
@@ -77,6 +74,12 @@ jobs:
       contents: read
       id-token: write   # NuGet trusted publishing: no long-lived API key stored in GitHub
     steps:
+      - uses: actions/checkout@v5
+
+      # A tag must name the version being released: v1.2.3 only when VERSION says 1.2.3.
+      - name: Check tag matches VERSION
+        run: test "${GITHUB_REF_NAME#v}" = "$(tr -d '[:space:]' < VERSION)" || { echo "Tag $GITHUB_REF_NAME does not match VERSION $(cat VERSION)"; exit 1; }
+
       - uses: actions/download-artifact@v4
         with:
           name: packages

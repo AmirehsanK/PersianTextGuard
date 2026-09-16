@@ -10,7 +10,6 @@
     <RootNamespace>PersianTextGuard</RootNamespace>
 
     <PackageId>PersianTextGuard</PackageId>
-    <Version>1.2.0</Version>
     <Authors>Amirehsan Kohannasab</Authors>
     <Description>Persian text normalization and evasion-resistant profanity filtering for .NET. Folds Arabic/Persian look-alike letters, zero-width and bidi characters, and all three digit ranges, and catches the ways people get around a word list: spaced or dotted letters, held keys, leetspeak, filler symbols, Cyrillic look-alikes and Finglish. Finds every match with its position in the original text and censors messages with a fixed mask. Ships an optional curated Persian/Finglish/English word list of about 1,250 entries, categorised as profanity, sexual, insult, slur, harassment or mild.</Description>
     <PackageTags>persian;farsi;finglish;profanity;profanity-filter;moderation;normalization;arabic;text;rtl</PackageTags>
@@ -25,8 +24,8 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <!-- 1.2.0 must be additive over the last release (constitution, Public API & Versioning). -->
-    <PackageValidationBaselineVersion>1.1.0</PackageValidationBaselineVersion>
+    <!-- Every release must be additive over the last one (constitution, Public API & Versioning). -->
+    <PackageValidationBaselineVersion>1.2.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <ItemGroup>
