@@ -42,8 +42,8 @@ US2 and US3 are independent of each other; both only need Foundational.
 
 **Purpose**: Confirm the starting point and fetch the published package to compare against.
 
-- [ ] T001 Confirm the branch is `002-monorepo-conformance-corpus` with a clean working tree (`git status --short` prints nothing). Run `dotnet test tests/PersianTextGuard.Tests`: all 1,029 tests pass on `net10.0`, `net8.0` and `net48`. Create `specs/002-monorepo-conformance-corpus/verification.md` with a heading "Baseline (before restructure)" and record the commit hash and the three test counts.
-- [ ] T002 [P] Download the published package: run `dotnet add package PersianTextGuard --version 1.2.0` in a throwaway console project at `artifacts/compare/published/`, which is under the git-ignored `artifacts/`. Copy the restored `persiantextguard.1.2.0.nupkg` from the NuGet cache (`~/.nuget/packages/persiantextguard/1.2.0/`) to `artifacts/compare/persiantextguard.1.2.0.nupkg`. Nothing under `artifacts/` is committed.
+- [X] T001 Confirm the branch is `002-monorepo-conformance-corpus` with a clean working tree (`git status --short` prints nothing). Run `dotnet test tests/PersianTextGuard.Tests`: all 1,029 tests pass on `net10.0`, `net8.0` and `net48`. Create `specs/002-monorepo-conformance-corpus/verification.md` with a heading "Baseline (before restructure)" and record the commit hash and the three test counts.
+- [X] T002 [P] Download the published package: run `dotnet add package PersianTextGuard --version 1.2.0` in a throwaway console project at `artifacts/compare/published/`, which is under the git-ignored `artifacts/`. Copy the restored `persiantextguard.1.2.0.nupkg` from the NuGet cache (`~/.nuget/packages/persiantextguard/1.2.0/`) to `artifacts/compare/persiantextguard.1.2.0.nupkg`. Nothing under `artifacts/` is committed.
 
 ---
 
@@ -53,8 +53,8 @@ US2 and US3 are independent of each other; both only need Foundational.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete and all 1,029 existing tests pass from `dotnet/`.
 
-- [ ] T003 Add a root `.gitattributes` containing exactly these two lines: `wordlists/*.txt text eol=lf` and `conformance/**/*.json text eol=lf`. Commit it on its own as "Pin LF line endings for shared data".
-- [ ] T004 Move `src/`, `tests/`, `benchmarks/`, `PersianTextGuard.slnx` and `Directory.Build.props` under `dotnet/`, and the word lists to `wordlists/`, with history — renames only, in one commit.
+- [X] T003 Add a root `.gitattributes` containing exactly these two lines: `wordlists/*.txt text eol=lf` and `conformance/**/*.json text eol=lf`. Commit it on its own as "Pin LF line endings for shared data".
+- [X] T004 Move `src/`, `tests/`, `benchmarks/`, `PersianTextGuard.slnx` and `Directory.Build.props` under `dotnet/`, and the word lists to `wordlists/`, with history — renames only, in one commit.
   1. `git mv src dotnet/src`
   2. `git mv tests dotnet/tests`
   3. `git mv benchmarks dotnet/benchmarks`
@@ -64,18 +64,18 @@ US2 and US3 are independent of each other; both only need Foundational.
   7. Remove the now-empty `dotnet/src/PersianTextGuard/WordLists/` directory
 
   Commit as "Move .NET port under dotnet/ and word lists to wordlists/ (renames only)". Verify with `git show --stat -M HEAD`: every entry is a rename with no content change (`{… => …}` with 0 insertions and 0 deletions). Record the output summary in `verification.md`.
-- [ ] T005 Fix the paths the build needs in `dotnet/src/PersianTextGuard/PersianTextGuard.csproj`:
+- [X] T005 Fix the paths the build needs in `dotnet/src/PersianTextGuard/PersianTextGuard.csproj`:
   - change `<EmbeddedResource Include="WordLists\*.txt" LogicalName="PersianTextGuard.WordLists.%(Filename)%(Extension)" />` to `<EmbeddedResource Include="..\..\..\wordlists\*.txt" LogicalName="PersianTextGuard.WordLists.%(Filename)%(Extension)" />`, keeping the `LogicalName` identical so resource names stay `PersianTextGuard.WordLists.{name}.txt` (research R14);
   - change `..\..\README.md`, `..\..\icon.png` and `..\..\THIRD-PARTY-NOTICES.md` to `..\..\..\README.md`, `..\..\..\icon.png` and `..\..\..\THIRD-PARTY-NOTICES.md`.
 
   The `ProjectReference` paths in `dotnet/tests/PersianTextGuard.Tests/PersianTextGuard.Tests.csproj` and `dotnet/benchmarks/PersianTextGuard.Benchmarks/PersianTextGuard.Benchmarks.csproj`, and the project paths in `dotnet/PersianTextGuard.slnx`, stay unchanged: they are relative and moved together.
-- [ ] T006 Update `.github/workflows/ci.yml` so CI builds from the new location, keeping every job name unchanged:
+- [X] T006 Update `.github/workflows/ci.yml` so CI builds from the new location, keeping every job name unchanged:
   - `dotnet restore dotnet/PersianTextGuard.slnx`
   - `dotnet build dotnet/PersianTextGuard.slnx -c Release --no-restore`
   - `dotnet test dotnet/tests/PersianTextGuard.Tests -c Release --no-build`
   - the pack step packs `dotnet/src/PersianTextGuard`, still using `$VERSION_ARG`, which T033 replaces
   - the net48 job runs `dotnet test dotnet/tests/PersianTextGuard.Tests -c Release -f net48`
-- [ ] T007 Verify the build: `dotnet build dotnet/PersianTextGuard.slnx` succeeds with no warnings, and `dotnet test dotnet/tests/PersianTextGuard.Tests` passes 1,029 tests on all three targets. Commit T005 and T006 together as "Fix paths after moving the .NET port". Record the counts in `verification.md`.
+- [X] T007 Verify the build: `dotnet build dotnet/PersianTextGuard.slnx` succeeds with no warnings, and `dotnet test dotnet/tests/PersianTextGuard.Tests` passes 1,029 tests on all three targets. Commit T005 and T006 together as "Fix paths after moving the .NET port". Record the counts in `verification.md`.
 
 **Checkpoint**: The layout matches the constitution, the build and all existing tests pass from `dotnet/`, and history is intact.
 
@@ -89,8 +89,8 @@ US2 and US3 are independent of each other; both only need Foundational.
 
 ### Corpus scaffolding
 
-- [ ] T008 [P] [US1] Create `conformance/corpus.json` containing exactly `{ "formatVersion": 1, "recordedFrom": "1.2.0", "positionUnit": "codePoint" }`, pretty-printed with two-space indentation, LF, and a trailing newline.
-- [ ] T009 [P] [US1] Create `conformance/configurations.json` as an array of configuration objects, per data-model "Configuration".
+- [X] T008 [P] [US1] Create `conformance/corpus.json` containing exactly `{ "formatVersion": 1, "recordedFrom": "1.2.0", "positionUnit": "codePoint" }`, pretty-printed with two-space indentation, LF, and a trailing newline.
+- [X] T009 [P] [US1] Create `conformance/configurations.json` as an array of configuration objects, per data-model "Configuration".
 
   **Bundled configurations**:
 
@@ -124,7 +124,7 @@ US2 and US3 are independent of each other; both only need Foundational.
   | `custom-readme` | `اسپم` wholeWord; `casino` anywhere | — |
 
   Data-model rule: a configuration's `name` is "Unique. `default` is required."
-- [ ] T010 [P] [US1] Write `conformance/README.md` in English, covering:
+- [X] T010 [P] [US1] Write `conformance/README.md` in English, covering:
   - what the corpus is: the specification of behaviour, per constitution Principle V;
   - the file layout (research R2);
   - one example of each case kind, copied from `specs/002-monorepo-conformance-corpus/contracts/corpus-format.md`;
@@ -134,14 +134,14 @@ US2 and US3 are independent of each other; both only need Foundational.
 
 ### Runner project and shared evaluation code
 
-- [ ] T011 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/PersianTextGuard.Conformance.csproj`, mirroring `dotnet/tests/PersianTextGuard.Tests/PersianTextGuard.Tests.csproj`:
+- [X] T011 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/PersianTextGuard.Conformance.csproj`, mirroring `dotnet/tests/PersianTextGuard.Tests/PersianTextGuard.Tests.csproj`:
   - **Targets**: `<TargetFrameworks>net8.0;net10.0</TargetFrameworks>`, plus `net48` when `'$(OS)' == 'Windows_NT'`.
   - **Packages**: the same xUnit, test SDK and `Microsoft.NETFramework.ReferenceAssemblies` references and versions, `<IsPackable>false</IsPackable>`, `<Using Include="Xunit" />`, and `System.Text.Json` version `9.0.0` for `net48` only (in-box on the others).
   - **Project references**: `..\..\src\PersianTextGuard\PersianTextGuard.csproj`, and `..\PersianTextGuard.Tests\PersianTextGuard.Tests.csproj`, needed for the `[InlineData]` coverage guard.
   - **Corpus path attribute**: an `AssemblyAttribute` item of type `System.Reflection.AssemblyMetadataAttribute`, with `_Parameter1` = `ConformanceDirectory` and `_Parameter2` = `$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\..\conformance'))`.
 
   Add the project to `dotnet/PersianTextGuard.slnx` under the `/tests/` folder.
-- [ ] T012 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/Corpus.cs` with no xUnit dependency; T017 compiles the same file into the fill-in tool.
+- [X] T012 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/Corpus.cs` with no xUnit dependency; T017 compiles the same file into the fill-in tool.
   - **Loading**: `Corpus.Load(string directory)` reads `corpus.json`, `configurations.json` and every `cases/*.json` with `System.Text.Json`. Every loading error — a missing directory, a file that does not parse, or an unknown case `kind` — MUST throw an exception that names the file.
   - **Case model**: represents every case kind and field from data-model.md. `CorpusCase` keeps `Id`, `Kind`, `File`, the raw `JsonObject`, and whether `expected` is absent (pending).
   - **Input building**: `BuildInput(JsonNode? input)` returns `string?`. JSON `null` becomes `null`; a string is itself; for `{ "build": [...] }` it concatenates parts: `{ "text" }` literal; `{ "repeat", "times" }` repeated (`times ≥ 1`); `{ "utf16": "XXXX" }` the single `char` parsed from four hex digits, lone surrogates included.
@@ -156,7 +156,7 @@ US2 and US3 are independent of each other; both only need Foundational.
   - **Kind rules** (quoted from data-model.md): `ordinary` ⇒ `containsProfanity` is `false`, `firstMatch` is `null`, `matches` is empty, and `censored` and every value of `censoredWith` equal the built input (the missing input censors to `""`); `must-match` ⇒ `containsProfanity` is `true`; `robustness` ⇒ either outcome is allowed. `CheckKindRules` returns violations as strings.
   - **Comparison**: `Compare(JsonNode expected, JsonNode actual)` returns a list of `(path, expected, actual)` differences, comparing every field exactly.
   - **Display**: `ShowInvisible(string?)` escapes as `\uXXXX` every character in categories Cf, Cc, Zl and Zp, every whitespace other than U+0020, and lone surrogates.
-- [ ] T013 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/CorpusGuardTests.cs`, with one `[Fact]` each (FR-013, research R12):
+- [X] T013 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/CorpusGuardTests.cs`, with one `[Fact]` each (FR-013, research R12):
   - `The_corpus_directory_exists_and_loads`: reads the path from `AssemblyMetadataAttribute("ConformanceDirectory")` and calls `Corpus.Load`.
   - `The_format_version_is_understood`: `formatVersion == 1`.
   - `There_are_at_least_300_cases`.
@@ -165,31 +165,31 @@ US2 and US3 are independent of each other; both only need Foundational.
   - `No_file_contains_an_unescaped_invisible_character`: scans each raw file for characters in Cf, Cc other than LF, Zl, Zp, whitespace other than U+0020 and LF, and lone surrogates, and reports file, line and code point.
   - `Every_configuration_a_case_names_exists`.
   - `Every_existing_test_input_is_in_the_corpus` (FR-005, research R9): reflects over every public method of every type in the `PersianTextGuard.Tests` assembly that carries `Xunit.InlineDataAttribute`. For each row from `attribute.GetData(method)`, the **first** `string` argument, when there is one, must equal the built `input` of at least one case, or the `text` of a word-list-parsing case. It lists every missing input.
-- [ ] T014 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/MatchingCaseTests.cs`: a `[Theory]` with `[MemberData(nameof(Ids), DisableDiscoveryEnumeration = false)]`, where `Ids` yields the ids (plain ASCII strings) of cases of kind `ordinary`, `must-match` and `robustness`. For each id:
+- [X] T014 [US1] Create `dotnet/tests/PersianTextGuard.Conformance/MatchingCaseTests.cs`: a `[Theory]` with `[MemberData(nameof(Ids), DisableDiscoveryEnumeration = false)]`, where `Ids` yields the ids (plain ASCII strings) of cases of kind `ordinary`, `must-match` and `robustness`. For each id:
   1. Load the case.
   2. Assert no kind-rule violations; the failure message says "kind rule".
   3. Compute `Corpus.Evaluate`.
   4. Assert `Corpus.Compare(expected, actual)` is empty.
 
   On failure, the message MUST contain the case id, the file name, `ShowInvisible(built input)`, and one line per difference: `path: expected … actual …` (FR-012). Add the same theory shape for the other kinds in T015 and T016.
-- [ ] T015 [P] [US1] Create `dotnet/tests/PersianTextGuard.Conformance/TextCaseTests.cs` with the same theory pattern and failure message as T014, for kinds `normalization` and `tokenization`.
-- [ ] T016 [P] [US1] Create `dotnet/tests/PersianTextGuard.Conformance/ListCaseTests.cs` with the same theory pattern and failure message as T014, for kinds `word-list-parsing`, `category-selection` and `mask-validation`.
+- [X] T015 [P] [US1] Create `dotnet/tests/PersianTextGuard.Conformance/TextCaseTests.cs` with the same theory pattern and failure message as T014, for kinds `normalization` and `tokenization`.
+- [X] T016 [P] [US1] Create `dotnet/tests/PersianTextGuard.Conformance/ListCaseTests.cs` with the same theory pattern and failure message as T014, for kinds `word-list-parsing`, `category-selection` and `mask-validation`.
 
 ### Fill-in tool
 
-- [ ] T017 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/PersianTextGuard.CorpusFill.csproj`:
+- [X] T017 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/PersianTextGuard.CorpusFill.csproj`:
   - `<OutputType>Exe</OutputType>`, `<TargetFramework>net10.0</TargetFramework>`, `<IsPackable>false</IsPackable>`;
   - `ProjectReference` to `..\..\src\PersianTextGuard\PersianTextGuard.csproj` and `..\..\tests\PersianTextGuard.Tests\PersianTextGuard.Tests.csproj`, the latter for seeding by reflection;
   - `<Compile Include="..\..\tests\PersianTextGuard.Conformance\Corpus.cs" Link="Corpus.cs" />`.
 
   Add it to `dotnet/PersianTextGuard.slnx` under a new `/tools/` folder.
-- [ ] T018 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/CaseWriter.cs`: writes a JSON value in the canonical form of research R8.
+- [X] T018 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/CaseWriter.cs`: writes a JSON value in the canonical form of research R8.
   - **Formatting**: two-space indentation; LF; trailing newline.
   - **Key order**: `id`, `kind`, `configuration`, `note`, `selection`, `mask`, `masks`, `steps`, `text`, `input`, `expected`, then any remaining keys in their existing order. Inside `expected`: `containsProfanity`, `firstMatch`, `matches`, `censored`, `censoredWith`, `output`, `tokens`, `entries`, `error`, `count`, `first`, `last`, `rules`, `accepted`. Inside a match: `entry`, `evasion`, `start`, `length`. Inside an entry: `text`, `mode`, `category`.
   - **Strings**: written by its own escaper, **not** System.Text.Json's encoder. `"` and `\` are escaped. Characters in Cf, Cc, Zl and Zp, and every whitespace other than U+0020, become `\uXXXX` with uppercase hex. Every other character, Persian included, is written literally.
   - **Lone surrogates**: must never reach the writer; `Evaluate` already turns them into `build` objects. The writer throws if it sees one.
   - **Tested by** a `[Fact]` in `dotnet/tests/PersianTextGuard.Conformance/CorpusGuardTests.cs`, `Canonical_writer_escapes_invisible_characters_and_keeps_persian_literal`, which compiles `CaseWriter.cs` via `<Compile Include="..\..\tools\PersianTextGuard.CorpusFill\CaseWriter.cs" Link="CaseWriter.cs" />` in the conformance project. It asserts that the string `"کی\u200Cر"` is written as `"کی\u200Cر"`, with the zero-width non-joiner as a six-character escape and the Persian letters literal.
-- [ ] T019 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/Program.cs` implementing the contract in `specs/002-monorepo-conformance-corpus/contracts/repository-and-tooling.md` → "Fill-in tool".
+- [X] T019 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/Program.cs` implementing the contract in `specs/002-monorepo-conformance-corpus/contracts/repository-and-tooling.md` → "Fill-in tool".
   - **Finding the corpus**: walk up from `AppContext.BaseDirectory` until a directory containing both `VERSION` and `conformance/` is found. Otherwise print "Could not find the repository root (a directory with VERSION and conformance/)" and exit 2. Until T020 creates `VERSION`, also accept a directory containing `conformance/` and `dotnet/`.
   - **Default mode**:
     - Fill each pending case with `Evaluate`.
@@ -202,8 +202,8 @@ US2 and US3 are independent of each other; both only need Foundational.
 
 ### Seeding and recording the corpus
 
-- [ ] T020 [US1] Create the root `VERSION` file containing `1.2.0` and a trailing newline. Only the file is created here; the build reads it in US3 (T030). The fill-in tool uses it to locate the repository root.
-- [ ] T021 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/Seeds.cs` for `--seed` (research R9). It appends pending cases to the files named below. The rules below apply to every source.
+- [X] T020 [US1] Create the root `VERSION` file containing `1.2.0` and a trailing newline. Only the file is created here; the build reads it in US3 (T030). The fill-in tool uses it to locate the repository root.
+- [X] T021 [US1] Create `dotnet/tools/PersianTextGuard.CorpusFill/Seeds.cs` for `--seed` (research R9). It appends pending cases to the files named below. The rules below apply to every source.
   - **Missing files**: if a named case file does not exist yet, create it containing `[]`; T008–T010 do not create `conformance/cases/`.
   - **No duplicates**, whatever the id (spec, Edge Cases, "Duplicate messages"). Before adding a case, skip it if the corpus already holds a case with the same **content key**:
     - matching kinds (`ordinary`, `must-match`, `robustness`): configuration, the built input (the JSON value, compared structurally), and `masks` sorted;
@@ -298,11 +298,11 @@ US2 and US3 are independent of each other; both only need Foundational.
       - **Skip** it when 1.2.0 disagrees with `Bad` — known gaps such as `"جن ده"`, and judgment calls such as `"Kir Royale cocktail"` — so the corpus stays a record of 1.2.0 behaviour (FR-009) and never pins a known gap as expected.
     - **Other rules**: `Note`, when not empty, becomes the case `note`. Category `FA *` goes to `matching-persian.json`, `Finglish*` to `matching-finglish.json`, and `EN *` to `matching-english.json`. The content-key rule above removes tuples already covered by the existing tests.
     - **Record** the numbers included, skipped as disagreements, and skipped as duplicates in `verification.md` (T023).
-- [ ] T022 [US1] Add hand-written cases that seeding cannot produce, as pending cases (no `expected`), to `conformance/cases/matching-persian.json` and `conformance/cases/mask-validation.json`:
+- [X] T022 [US1] Add hand-written cases that seeding cannot produce, as pending cases (no `expected`), to `conformance/cases/matching-persian.json` and `conformance/cases/mask-validation.json`:
   - **Emoji before a match** (`matching-persian.json`, Story 1 scenario 2): `"😀 کیر"` → `must-match`/`default`. Its code-point `start` (2) differs from its UTF-16 index (3), which proves the conversion.
   - **Invisible characters inside words** (`matching-persian.json`): `"ک\u200Cی\u200Cر"`, `"ک\u200Bیر"`, `"کی\u00ADر"`, `"ج\u200Fنده"` → `must-match`, written with escapes.
   - **Lone-surrogate mask** (`mask-validation.json`): `{"mask":{"build":[{"utf16":"D83D"}]}}`.
-- [ ] T023 [US1] Seed and record the corpus in `conformance/cases/`.
+- [X] T023 [US1] Seed and record the corpus in `conformance/cases/`.
   1. Run `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill -- --seed`. It must exit `0` and print "Filled N case(s); 0 disagreement(s)".
      - **If the corpus holds fewer than 300 cases** after seeding, **stop and report** the count to the user. Do not invent cases to reach the number. The only permitted sources are the existing tests, the explicit literals and the supplementary suite in T021, and a shortfall means one of them was not fully seeded.
      - Otherwise continue.
@@ -313,12 +313,12 @@ US2 and US3 are independent of each other; both only need Foundational.
      - the three test counts.
   4. Review the generated files for readability: Persian literal, invisible characters escaped.
   5. Commit `conformance/`, `VERSION` and the new projects as "Add the conformance corpus, recorded from 1.2.0, with .NET runner and fill-in tool".
-- [ ] T024 [US1] Update `.github/workflows/ci.yml` so both jobs run the corpus:
+- [X] T024 [US1] Update `.github/workflows/ci.yml` so both jobs run the corpus:
   - the Linux job adds `dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release --no-build` after the existing test step;
   - the Windows job adds `dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release -f net48`.
 
   Keep job names unchanged.
-- [ ] T025 [US1] Check failure reporting against `conformance/cases/`, per quickstart §5 and §6, on scratch changes that are reverted afterwards:
+- [X] T025 [US1] Check failure reporting against `conformance/cases/`, per quickstart §5 and §6, on scratch changes that are reverted afterwards:
   1. Add a new `ordinary` case with `expected` written by hand, and run the corpus: it passes. Then corrupt one `must-match` case's `expected.censored`, and set one `ordinary` case's `containsProfanity` to `true`. Run the corpus on `net10.0`: both fail in the same run; the messages show id, file, escaped input and field differences; the ordinary one says "kind rule".
   2. Rename `conformance/` temporarily: the guard test fails with "not found", not zero cases.
   3. Add a pending `"this is kir"` case: the corpus fails with the fill-in hint; running the tool fills only that case and file.
@@ -338,19 +338,19 @@ US2 and US3 are independent of each other; both only need Foundational.
 
 **Independent Test**: An entry-by-entry comparison of every selection between the published 1.2.0 package and the new build shows 0 differences. Exactly one copy of each list exists, and a list edit is picked up after a rebuild.
 
-- [ ] T026 [P] [US2] Compare bundled entries using two throwaway console projects under `artifacts/compare/` (git-ignored). **Reuse** T002's `artifacts/compare/published/` project, which already references `PersianTextGuard 1.2.0`. Create only `artifacts/compare/current/`, with a `ProjectReference` to `dotnet/src/PersianTextGuard/PersianTextGuard.csproj`. Give both the same `Program.cs`, which writes to stdout:
+- [X] T026 [P] [US2] Compare bundled entries using two throwaway console projects under `artifacts/compare/` (git-ignored). **Reuse** T002's `artifacts/compare/published/` project, which already references `PersianTextGuard 1.2.0`. Create only `artifacts/compare/current/`, with a `ProjectReference` to `dotnet/src/PersianTextGuard/PersianTextGuard.csproj`. Give both the same `Program.cs`, which writes to stdout:
   - for each of `WordList.All`, `WordList.PersianDefault`, and `WordList.Bundled(c)` for every `WordCategory` value, a header line `## <selection> <count>`, then one line per entry: `text<TAB>mode<TAB>category`, in order;
   - `typeof(WordList).Assembly.GetManifestResourceNames()`, sorted, under `## resources`.
 
   Run both with output redirected to `artifacts/compare/published.txt` and `artifacts/compare/current.txt`, then `git diff --no-index artifacts/compare/published.txt artifacts/compare/current.txt`. **Expected: no differences** (FR-016, SC-003). Record the command and "0 differences" in `verification.md`.
-- [ ] T027 [P] [US2] Verify there is exactly one copy of each list: `git ls-files | grep -E '(^|/)(persian|finglish|english)\.txt$'` prints exactly `wordlists/english.txt`, `wordlists/finglish.txt` and `wordlists/persian.txt` (FR-014, SC-004). Record in `verification.md`.
-- [ ] T028 [US2] Verify an edit to `wordlists/english.txt` is picked up (Story 2, scenario 2), then revert.
+- [X] T027 [P] [US2] Verify there is exactly one copy of each list: `git ls-files | grep -E '(^|/)(persian|finglish|english)\.txt$'` prints exactly `wordlists/english.txt`, `wordlists/finglish.txt` and `wordlists/persian.txt` (FR-014, SC-004). Record in `verification.md`.
+- [X] T028 [US2] Verify an edit to `wordlists/english.txt` is picked up (Story 2, scenario 2), then revert.
   1. Append `zzqqtestword` under `[insult]` in `wordlists/english.txt`.
   2. Rebuild, and run `artifacts/compare/current`. The `## all` section contains `zzqqtestword`.
   3. Run the corpus: at least the `category-selection` cases for `all` and `insult` fail (Story 2, scenario 4).
 
   Revert the edit, re-run the corpus to confirm it passes, and record in `verification.md`.
-- [ ] T029 [P] [US2] Update word-list path references in `README.md` and `THIRD-PARTY-NOTICES.md`:
+- [X] T029 [P] [US2] Update word-list path references in `README.md` and `THIRD-PARTY-NOTICES.md`:
   - in `README.md`, the three links `src/PersianTextGuard/WordLists/persian.txt`, `…/finglish.txt` and `…/english.txt` become `wordlists/persian.txt`, `wordlists/finglish.txt` and `wordlists/english.txt`;
   - in `THIRD-PARTY-NOTICES.md`, `src/PersianTextGuard/WordLists/` becomes `wordlists/`.
 
@@ -368,23 +368,23 @@ US2 and US3 are independent of each other; both only need Foundational.
 - `git log --follow` shows history from before the move for moved files.
 - No reference to an old path remains.
 
-- [ ] T030 [US3] Make `VERSION` the only version source (FR-018, research R13):
+- [X] T030 [US3] Make `VERSION` the only version source (FR-018, research R13):
   - add `<Version>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)../VERSION').Trim())</Version>` inside the `PropertyGroup` of `dotnet/Directory.Build.props`;
   - delete `<Version>1.2.0</Version>` from `dotnet/src/PersianTextGuard/PersianTextGuard.csproj`;
   - in the same file, change `<PackageValidationBaselineVersion>1.1.0</PackageValidationBaselineVersion>` to `1.2.0` (FR-022, research R14).
 
   Verify `git grep -n "<Version>" -- '*.csproj' '*.props'` prints only the `Directory.Build.props` line.
-- [ ] T031 [US3] Verify the version source and compatibility by packing `dotnet/src/PersianTextGuard`:
+- [X] T031 [US3] Verify the version source and compatibility by packing `dotnet/src/PersianTextGuard`:
   1. `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts` produces `artifacts/PersianTextGuard.1.2.0.nupkg` with package validation against 1.2.0 and no errors.
   2. Temporarily set `VERSION` to `1.2.1` and pack: the file is `PersianTextGuard.1.2.1.nupkg` (Story 3, scenario 2). Revert `VERSION` to `1.2.0`.
 
   Record both in `verification.md`.
-- [ ] T032 [US3] Compare the contents of `artifacts/PersianTextGuard.1.2.0.nupkg` with the published 1.2.0 (research R14):
+- [X] T032 [US3] Compare the contents of `artifacts/PersianTextGuard.1.2.0.nupkg` with the published 1.2.0 (research R14):
   1. List the entries of `artifacts/compare/persiantextguard.1.2.0.nupkg` and of `artifacts/PersianTextGuard.1.2.0.nupkg` with `unzip -l`, or `[System.IO.Compression.ZipFile]::OpenRead(...).Entries` in PowerShell.
   2. Diff the sorted entry names, ignoring `.nuspec`, `_rels/`, `package/services/metadata/` and `[Content_Types].xml`. **Expected: no differences.**
 
   Resource names were already compared in T026. Record in `verification.md`.
-- [ ] T033 [US3] Replace the CI version override with a check, in `.github/workflows/ci.yml`:
+- [X] T033 [US3] Replace the CI version override with a check, in `.github/workflows/ci.yml`:
   - in the pack step, remove the `VERSION_ARG` lines and pack with `dotnet pack dotnet/src/PersianTextGuard -c Release --no-build -o artifacts`;
   - in the `Publish to NuGet` job, add a first step `actions/checkout@v5`;
   - then a step "Check tag matches VERSION" running `test "${GITHUB_REF_NAME#v}" = "$(tr -d '[:space:]' < VERSION)" || { echo "Tag $GITHUB_REF_NAME does not match VERSION $(cat VERSION)"; exit 1; }` before the push step.
@@ -394,13 +394,13 @@ US2 and US3 are independent of each other; both only need Foundational.
   - with `GITHUB_REF_NAME=v9.9.9`: it exits `1` and prints `Tag v9.9.9 does not match VERSION 1.2.0`.
 
   For example: `GITHUB_REF_NAME=v9.9.9 bash -c 'test "${GITHUB_REF_NAME#v}" = "$(tr -d "[:space:]" < VERSION)" || { echo "Tag $GITHUB_REF_NAME does not match VERSION $(cat VERSION)"; exit 1; }'; echo "exit $?"`. Record both exit codes in `verification.md`.
-- [ ] T034 [P] [US3] Update `README.md` for the new layout (FR-020, FR-021), in English per the constitution's adoption clause:
+- [X] T034 [P] [US3] Update `README.md` for the new layout (FR-020, FR-021), in English per the constitution's adoption clause:
   - in "Performance", change `dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks` to `dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0`;
   - add a section "Development" before "Limitations" that shows the repository layout tree from `specs/002-monorepo-conformance-corpus/contracts/repository-and-tooling.md` → "Layout", and a table of the commands from that contract's "Commands" (build, existing tests, corpus, benchmarks, pack, fill-in tool);
   - that section states that `conformance/` is the specification every port must pass, and links to `conformance/README.md`.
 
   Every new command in the section must be one verified in T007, T023 or T031.
-- [ ] T035 [US3] Verify history and references, recording results in `specs/002-monorepo-conformance-corpus/verification.md`:
+- [X] T035 [US3] Verify history and references, recording results in `specs/002-monorepo-conformance-corpus/verification.md`:
   1. `git log --follow --oneline -- dotnet/src/PersianTextGuard/ProfanityFilter.cs | tail -1` shows `889a667`, and `git log --follow --oneline -- wordlists/persian.txt | tail -1` shows `889a667` (FR-019, SC-007).
   2. `git grep -nE '(^|[^[:alnum:]_/])(src|tests|benchmarks)/PersianTextGuard' -- ':!specs/001-censor-find-matches' ':!specs/002-monorepo-conformance-corpus'` prints nothing (FR-020). The pattern only matches an old path that is **not** preceded by a letter, digit, `_` or `/`. The new `dotnet/src/PersianTextGuard`, which appears throughout the README, CI and these specs, therefore never matches, while an old link such as `(src/PersianTextGuard/WordLists/…)` or `` `src/PersianTextGuard` `` does. Spec 001 is excluded as a historical record, and spec 002 because it describes the move from the old paths.
 
@@ -412,8 +412,8 @@ US2 and US3 are independent of each other; both only need Foundational.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T036 Run the full matrix once more from a clean build: `dotnet build dotnet/PersianTextGuard.slnx`; `dotnet test dotnet/tests/PersianTextGuard.Tests` (1,029 on each of three targets); `dotnet test dotnet/tests/PersianTextGuard.Conformance` (all cases on three targets). Time the `net10.0` conformance run: under 30 seconds (SC-008). Record the counts and the time in `verification.md`.
-- [ ] T037 Walk through `specs/002-monorepo-conformance-corpus/quickstart.md` sections 1–8 and tick each expected outcome in `verification.md`, referencing the task that produced each result. Mark any outcome that cannot be checked locally, such as the tag check needing a pushed tag, as "verified in CI" with the job name.
+- [X] T036 Run the full matrix once more from a clean build: `dotnet build dotnet/PersianTextGuard.slnx`; `dotnet test dotnet/tests/PersianTextGuard.Tests` (1,029 on each of three targets); `dotnet test dotnet/tests/PersianTextGuard.Conformance` (all cases on three targets). Time the `net10.0` conformance run: under 30 seconds (SC-008). Record the counts and the time in `verification.md`.
+- [X] T037 Walk through `specs/002-monorepo-conformance-corpus/quickstart.md` sections 1–8 and tick each expected outcome in `verification.md`, referencing the task that produced each result. Mark any outcome that cannot be checked locally, such as the tag check needing a pushed tag, as "verified in CI" with the job name.
 - [ ] T038 Commit the remaining changes (T024, T029, T030–T034, `verification.md`) in logical commits. Push `002-monorepo-conformance-corpus`, open a pull request to `main` whose description summarizes the restructure and links `specs/002-monorepo-conformance-corpus/verification.md`, and confirm both CI jobs are green. The logs must show the conformance tests on `net8.0`, `net10.0` and `net48`.
 
   Then check how `main` is protected (FR-024): read `GET https://api.github.com/repos/AmirehsanK/PersianTextGuard/branches/main/protection` with the git credential used for pushing. Record in `verification.md` whether both `Build, test, pack` and `Test on .NET Framework 4.8 (netstandard2.0 build)` are **required** status checks.
