@@ -220,8 +220,49 @@ Build the filter once. Checking a message is cheap enough to run on every chat m
 form submission.
 
 ```bash
-dotnet run -c Release --project benchmarks/PersianTextGuard.Benchmarks
+dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0
 ```
+
+## Development
+
+The repository is laid out so that ports to other languages can sit next to the .NET one and share
+the same word lists, version and behaviour:
+
+```text
+/
+├── VERSION                         # the only version value, e.g. "1.2.0"
+├── wordlists/
+│   ├── persian.txt
+│   ├── finglish.txt
+│   └── english.txt
+├── conformance/                    # the behaviour every port must pass
+├── dotnet/
+│   ├── PersianTextGuard.slnx
+│   ├── Directory.Build.props
+│   ├── src/PersianTextGuard/
+│   ├── tests/PersianTextGuard.Tests/
+│   ├── tests/PersianTextGuard.Conformance/
+│   ├── benchmarks/PersianTextGuard.Benchmarks/
+│   └── tools/PersianTextGuard.CorpusFill/
+├── README.md  LICENSE  THIRD-PARTY-NOTICES.md  icon.png
+├── .github/workflows/ci.yml
+└── .specify/  .claude/  specs/
+```
+
+[`conformance/`](conformance/README.md) is the specification: a language-neutral set of cases, with
+exact expected results, that every port must pass. A change in behaviour is a change to the corpus,
+made on purpose in the same pull request.
+
+Every command runs from the repository root:
+
+| Purpose | Command |
+| --- | --- |
+| Build everything | `dotnet build dotnet/PersianTextGuard.slnx` |
+| Existing tests | `dotnet test dotnet/tests/PersianTextGuard.Tests` |
+| Conformance corpus | `dotnet test dotnet/tests/PersianTextGuard.Conformance` |
+| Benchmarks | `dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0` |
+| Pack | `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts` |
+| Fill in pending corpus cases | `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill` |
 
 ## Limitations
 
