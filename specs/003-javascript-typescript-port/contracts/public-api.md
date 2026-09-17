@@ -24,6 +24,9 @@ export interface BannedWord {
   readonly category?: WordCategory;    // default 'uncategorized'
 }
 
+/** An entry with every field present, as the bundled lists and matches hold it. Frozen. */
+export type ResolvedWord = Readonly<Required<BannedWord>>;
+
 export declare class WordListFormatError extends Error {
   readonly line: number;
 }

@@ -296,7 +296,7 @@ The TypeScript consumer compiles with no `@types` package.
 
 ### Tests for User Story 1 (write first; they fail until T030–T034)
 
-- [ ] T028 [P] [US1] Create `js/test/api.test.ts`. It imports from `../src/index.ts` and covers spec acceptance scenarios 1–6 and the JavaScript-specific behaviour in FR-019 and the public API contract's G2, G4, G5, G6, G7 and G8:
+- [X] T028 [P] [US1] Create `js/test/api.test.ts`. It imports from `../src/index.ts` and covers spec acceptance scenarios 1–6 and the JavaScript-specific behaviour in FR-019 and the public API contract's G2, G4, G5, G6, G7 and G8:
   - **Scenario 1**: `containsProfanity('f u c k')` is `true`.
   - **Scenario 2**: `'هر کس پلات بالاست پیام بده'` has no match, and `censor` returns the same string.
   - **Scenario 3**: `findMatches('sh1t and f u c k')` returns `[{ word.text 'shit', category 'profanity', evasion ['lookalikeCharacters'], index 0, length 4 }, { word.text 'fuck', evasion ['splitWord'], index 9, length 7 }]`.
@@ -318,20 +318,20 @@ The TypeScript consumer compiles with no `@types` package.
     - matches are ordered and non-overlapping, and lie inside the text.
   - **`WordListFormatError`**: `WordList.parse('[nonsense]\nword\n')` throws it with `line === 1`, and the error is `instanceof Error`.
 
-- [ ] T029 [US1] Add a temporary `js/src/index.ts` that exports only what the foundational phase provides (`WordList`, `normalize`, `tokenize`, `toPersianDigits`, `toAsciiDigits`, and the types from `types.ts`), so `js/test/api.test.ts` compiles. Run `npx vitest run test/api.test.ts` and confirm it fails because `ProfanityFilter` is missing (red). Record the failing count in `verification.md` under "US1".
+- [X] T029 [US1] Add a temporary `js/src/index.ts` that exports only what the foundational phase provides (`WordList`, `normalize`, `tokenize`, `toPersianDigits`, `toAsciiDigits`, and the types from `types.ts`), so `js/test/api.test.ts` compiles. Run `npx vitest run test/api.test.ts` and confirm it fails because `ProfanityFilter` is missing (red). Record the failing count in `verification.md` under "US1".
 
 ### Implementation for User Story 1
 
-- [ ] T030 [US1] Port the token-level reading machinery from `dotnet/src/PersianTextGuard/ProfanityFilter.Scan.cs` to `js/src/scan.ts`. Import `ReadingKind` from `./source-map.ts`, and `fold`, `squeeze`, `isFiller`, `isRunBoundary` and `LATIN_BASE_LETTERS` from `./fold.ts`, which the foundational phase already ported; do **not** port them again. Port:
+- [X] T030 [US1] Port the token-level reading machinery from `dotnet/src/PersianTextGuard/ProfanityFilter.Scan.cs` to `js/src/scan.ts`. Import `ReadingKind` from `./source-map.ts`, and `fold`, `squeeze`, `isFiller`, `isRunBoundary` and `LATIN_BASE_LETTERS` from `./fold.ts`, which the foundational phase already ported; do **not** port them again. Port:
   - `Token` (reused from `normalizer.ts`'s `tokenizeWithOffsets`) and `Hit`;
   - `PERSIAN_SUFFIXES`;
   - `tryJoinSingleLetters`, `isSingleLetter`, `hasSuffix`, `isPersianLetter`, `isLatinWord`;
   - `maskedPattern`, `fitsMaskAnywhere`, `fitsMask`, `phraseStartsAt`.
 
   Follow the porting conventions exactly. Every `char.Is…` and category call goes through `unicode.ts`.
-- [ ] T031 [US1] Complete `js/src/scan.ts` with the filter-dependent scan functions, taking the filter's internal state as an argument or as methods on an internal class used by `filter.ts`: `scan(state, text, all, firstRef)`, `report`, `matchTokens`, `matchAnywhere`, `matchSplitHalves`, `matchBrokenChunks` and `tryFindWord`. Keep `MinimumBrokenWordLength = 4` and the same order of readings as the .NET `Scan` method.
-- [ ] T032 [US1] Port `dotnet/src/PersianTextGuard/ProfanityFilter.Regions.cs` to `js/src/regions.ts`: `Candidate`, `toCandidate(original, hit, mapCache)`, `merge(candidates)`, `censorMatches(filter, text, matches, mask)` (including the re-mask loop that keeps the output clean), `applyMask` and `isSurrogatePairAt`.
-- [ ] T033 [US1] Port `dotnet/src/PersianTextGuard/ProfanityFilter.cs` to `js/src/filter.ts`: `export class ProfanityFilter`.
+- [X] T031 [US1] Complete `js/src/scan.ts` with the filter-dependent scan functions, taking the filter's internal state as an argument or as methods on an internal class used by `filter.ts`: `scan(state, text, all, firstRef)`, `report`, `matchTokens`, `matchAnywhere`, `matchSplitHalves`, `matchBrokenChunks` and `tryFindWord`. Keep `MinimumBrokenWordLength = 4` and the same order of readings as the .NET `Scan` method.
+- [X] T032 [US1] Port `dotnet/src/PersianTextGuard/ProfanityFilter.Regions.cs` to `js/src/regions.ts`: `Candidate`, `toCandidate(original, hit, mapCache)`, `merge(candidates)`, `censorMatches(filter, text, matches, mask)` (including the re-mask loop that keeps the output clean), `applyMask` and `isSurrogatePairAt`.
+- [X] T033 [US1] Port `dotnet/src/PersianTextGuard/ProfanityFilter.cs` to `js/src/filter.ts`: `export class ProfanityFilter`.
   - **Constructor**:
     - `words` must be a non-null, non-string iterable (`TypeError` otherwise);
     - each entry is validated (object with a string `text`; `mode` in `'wholeWord' | 'anywhere'`; `category` in `WORD_CATEGORIES`) and snapshotted into a frozen `ResolvedWord` with defaults filled;
@@ -347,8 +347,8 @@ The TypeScript consumer compiles with no `@types` package.
     4. no match → the same string.
 
   TSDoc on the class and every member, adapted from the .NET XML docs, including thread and async safety and immutability.
-- [ ] T034 [US1] Create `js/src/index.ts`, which exports exactly the declarations in [contracts/public-api.md](contracts/public-api.md) and nothing else: types and `WORD_CATEGORIES` and `WordListFormatError` from `types.ts`, `WordList` from `word-list.ts`, `ProfanityFilter` from `filter.ts`, and `normalize`, `tokenize`, `toPersianDigits` and `toAsciiDigits` from `normalizer.ts`. Run `npm test`: `api.test.ts` passes. Run `npm run lint`: clean.
-- [ ] T035 [US1] Create `js/scripts/pack.mjs` (research R9):
+- [X] T034 [US1] Create `js/src/index.ts`, which exports exactly the declarations in [contracts/public-api.md](contracts/public-api.md) and nothing else: types and `WORD_CATEGORIES` and `WordListFormatError` from `types.ts`, `WordList` from `word-list.ts`, `ProfanityFilter` from `filter.ts`, and `normalize`, `tokenize`, `toPersianDigits` and `toAsciiDigits` from `normalizer.ts`. Run `npm test`: `api.test.ts` passes. Run `npm run lint`: clean.
+- [X] T035 [US1] Create `js/scripts/pack.mjs` (research R9):
   1. Find the repository root (as T009), and read and trim `VERSION`.
   2. Run `npm run build`.
   3. Recreate `js/.pack/` and copy in `dist/index.mjs`, `dist/index.cjs`, `dist/index.d.mts`, `dist/index.d.cts`, `js/README.md`, and the root `LICENSE` and `THIRD-PARTY-NOTICES.md`.
@@ -356,17 +356,17 @@ The TypeScript consumer compiles with no `@types` package.
   5. Run `npm pack --pack-destination ../artifacts` in `.pack/`.
   6. Print the tarball path.
   7. Fail if the tarball's file list (from `npm pack --dry-run --json`) is not exactly the eight files in the package contract.
-- [ ] T036 [P] [US1] Create a placeholder `js/README.md` holding only the title and one English quick-start example. T056 writes the full README, but `pack.mjs` needs the file now.
-- [ ] T037 [P] [US1] Create `js/consumers/esm/`: `package.json` (`"type": "module"`, `"private": true`) and `index.js`. It imports `{ ProfanityFilter, WordList }` from `'persian-text-guard'`, builds a filter from `WordList.persianDefault`, and asserts, with `node:assert/strict`, the four facts from the Independent Test above. It prints `esm ok`.
-- [ ] T038 [P] [US1] Create `js/consumers/cjs/`: `package.json` (`"type": "commonjs"`) and `index.js`, the same as T037 but with `require('persian-text-guard')`. It prints `cjs ok`.
-- [ ] T039 [P] [US1] Create `js/consumers/typescript/`:
+- [X] T036 [P] [US1] Create a placeholder `js/README.md` holding only the title and one English quick-start example. T056 writes the full README, but `pack.mjs` needs the file now.
+- [X] T037 [P] [US1] Create `js/consumers/esm/`: `package.json` (`"type": "module"`, `"private": true`) and `index.js`. It imports `{ ProfanityFilter, WordList }` from `'persian-text-guard'`, builds a filter from `WordList.persianDefault`, and asserts, with `node:assert/strict`, the four facts from the Independent Test above. It prints `esm ok`.
+- [X] T038 [P] [US1] Create `js/consumers/cjs/`: `package.json` (`"type": "commonjs"`) and `index.js`, the same as T037 but with `require('persian-text-guard')`. It prints `cjs ok`.
+- [X] T039 [P] [US1] Create `js/consumers/typescript/`:
   - `package.json` with a pinned `typescript` dev dependency;
   - `tsconfig.json` with `"strict": true`, `"module": "node16"`, `"moduleResolution": "node16"` and `"noEmit": true`;
   - `index.mts` with the same four facts, typed variables (`const m: ProfanityMatch | null`, `const c: WordCategory = 'slur'`), and three `// @ts-expect-error` lines: an unknown option `{ squeezeLetters: false }`, a category `'rude'`, and `censor` called with a number mask;
   - `index.cts` doing the same through `require`.
 
   The check runs `tsc -p .`, which must exit `0` (spec scenario 7).
-- [ ] T040 [P] [US1] Create `js/consumers/browser/`:
+- [X] T040 [P] [US1] Create `js/consumers/browser/`:
   - **`entry-full.js`**: imports the package and runs the same four facts, throwing on failure.
   - **`entry-normalize.js`**: imports only `normalize` and calls it.
   - **`bundle.mjs`**:
@@ -374,13 +374,13 @@ The TypeScript consumer compiles with no `@types` package.
     2. runs `out/entry-full.js` in `node:vm` with `vm.runInNewContext(code, {})`, a context with no `require`, `process` or `Buffer`;
     3. asserts that `out/entry-normalize.js` does not contain the string `'[profanity]'`, a marker present in the bundled word-list text (research R6, R12);
     4. prints `browser ok`.
-- [ ] T041 [US1] Create `js/scripts/check-consumers.mjs`:
+- [X] T041 [US1] Create `js/scripts/check-consumers.mjs`:
   - **Build and pack**: run `npm run pack` unless `--no-pack` is passed, then find `js/artifacts/persian-text-guard-*.tgz`.
   - **Each consumer** (`esm`, `cjs`, `typescript`, `browser`): run `npm install --no-save <tarball>` (and `npm install` for its own dev dependencies), then its check: `node index.js`, `npx tsc -p .` or `node bundle.mjs`.
   - **Result**: exit non-zero on the first failure with the consumer's name.
 
   Run `npm run check:consumers`: 4 of 4 pass.
-- [ ] T042 [US1] Record in `verification.md` under "US1": the `api.test.ts` result, the tarball name and file list, and the four consumer results. Commit T028–T042 as "Port the profanity filter to TypeScript with ESM, CJS, types and browser checks".
+- [X] T042 [US1] Record in `verification.md` under "US1": the `api.test.ts` result, the tarball name and file list, and the four consumer results. Commit T028–T042 as "Port the profanity filter to TypeScript with ESM, CJS, types and browser checks".
 
 **Checkpoint**: The package builds, packs and works as users install it, through all four consumers.
 

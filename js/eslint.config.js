@@ -10,6 +10,13 @@ export default tseslint.config(
   },
   js.configs.recommended,
   {
+    // Build scripts, tests, benchmarks and consumer checks run on Node.js.
+    files: ['scripts/**', 'test/**', 'bench/**', '*.config.*', 'eslint.config.js'],
+    languageOptions: {
+      globals: { console: 'readonly', process: 'readonly', URL: 'readonly', setTimeout: 'readonly' },
+    },
+  },
+  {
     files: ['src/**/*.ts'],
     extends: [...tseslint.configs.strictTypeChecked],
     languageOptions: {

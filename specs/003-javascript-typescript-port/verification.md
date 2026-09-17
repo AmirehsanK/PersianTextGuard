@@ -106,3 +106,21 @@ No file was rewritten. The regression proof for the recorded cases is T066.
   - the bundled lists: `all` 1,250 and `persianDefault` 1,025.
 - **ESLint** on `src/` and **`tsc --noEmit`** for both configs: clean.
 - **Deviation from T005**: `tsconfig.node.json` uses `"module": "ESNext"` and `"moduleResolution": "Bundler"`, not `NodeNext`. Tests import `src/` files, which use extensionless relative imports resolved by tsup and Vitest, and NodeNext would demand `.js` extensions there. Node.js types are still available only to tests, benchmarks and scripts.
+
+## US1: the filter as users install it (T028–T042)
+
+- **Red run (T029).** With a temporary `index.ts` that had no `ProfanityFilter`, `npx vitest run test/api.test.ts` failed at load with `TypeError: ProfanityFilter is not a constructor`.
+- **Port.** `src/scan.ts`, `src/regions.ts`, `src/filter.ts` and `src/index.ts`, faithful to `ProfanityFilter.cs`, `.Scan.cs` and `.Regions.cs`. Two .NET details are kept: `MaskedPattern` trims with `char.IsLetterOrDigit(string, int)` (code points) but classifies with the `char` overload (units), and `Merge` compares entries by value.
+- **Tests.** `test/api.test.ts`: **47 passed**, covering spec scenarios 1–6 and contract guarantees G2, G4–G8. The whole suite: **132 passed**. ESLint and both `tsc` configs are clean.
+- **Build (tsup).** `dist/index.mjs`, `dist/index.cjs`, `dist/index.d.mts` and `dist/index.d.cts`. Three adjustments:
+  - tsup's declaration build sets `baseUrl`, which TypeScript 6 rejects as deprecated, so the declaration build alone gets `ignoreDeprecations: '6.0'`;
+  - in a `"type": "module"` package tsup names the ESM declarations `index.d.ts`, and ignores a `dts` extension from a config function, so `scripts/finish-build.mjs` renames the file to `index.d.mts` and checks all four files exist;
+  - `ResolvedWord` (`Readonly<Required<BannedWord>>`) is exported, because public declarations reference it; the public API contract was updated.
+- **Pack (T035).** `artifacts/persian-text-guard-1.2.0.tgz` has exactly the eight contract files, an unpacked size of **228,393 bytes** (under 1 MB) and version 1.2.0 read from `VERSION`. Two fixes came out of this:
+  - the script's own contents check caught that `"files": ["dist"]` left out `THIRD-PARTY-NOTICES.md`, so it is now listed;
+  - npm 12 prints `npm pack --json` as an object keyed by name rather than an array, and the script handles both.
+- **Consumer checks (T037–T041).** `node scripts/check-consumers.mjs --no-pack`: **4 of 4 passed**.
+  - `esm`: `esm ok`.
+  - `cjs`: `cjs ok`.
+  - `typescript`: strict, `node16`, no `@types`. `tsc -p .` succeeds, including three `@ts-expect-error` lines (an unknown option, an unknown category, a number mask) in `index.mts` and one in `index.cts`; TypeScript would fail on any of them that did not error.
+  - `browser`: esbuild with `platform: 'browser'`, run in a bare `vm` context with no `require`, `process` or `Buffer`. `browser ok`: the full bundle is 94,223 characters; the normalize-only bundle is 39,563 characters and does not contain the word lists.

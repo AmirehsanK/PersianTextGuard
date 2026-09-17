@@ -47,7 +47,7 @@
   },
   "scripts": {
     "generate": "node scripts/generate-wordlists.mjs",
-    "build": "npm run generate && tsup",
+    "build": "npm run generate && tsup && node scripts/finish-build.mjs",
     "lint": "npm run generate && eslint . && tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
     "test": "npm run generate && vitest run --exclude test/corpus.test.ts --exclude test/readme.test.ts",
     "corpus": "npm run generate && vitest run test/corpus.test.ts",

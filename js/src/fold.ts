@@ -118,7 +118,8 @@ function codePointOf(high: number, low: number): number {
   return 0x10000 + ((high - 0xd800) << 10) + (low - 0xdc00);
 }
 
-function foldCharacter(c: number, mapDigits: boolean): number {
+/** One unit read as the Latin letter it imitates; digits only when `mapDigits` (a run with letters in it). */
+export function foldCharacter(c: number, mapDigits: boolean): number {
   if (mapDigits) {
     switch (c) {
       case 0x30: return 0x6f; // 0 → o

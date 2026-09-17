@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "types": [],
+    "module": "node16",
+    "moduleResolution": "node16",
+    "noEmit": true,
+    "skipLibCheck": false
+  },
+  "include": ["index.mts", "index.cts"]
+}
