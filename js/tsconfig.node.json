@@ -10,5 +10,5 @@
     "allowJs": true,
     "checkJs": false
   },
-  "include": ["test", "bench", "scripts", "vitest.config.ts", "tsup.config.ts", "eslint.config.js"]
+  "include": ["test", "scripts", "vitest.config.ts", "tsup.config.ts", "eslint.config.js"]
 }

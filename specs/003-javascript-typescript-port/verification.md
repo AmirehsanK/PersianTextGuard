@@ -216,3 +216,71 @@ No file was rewritten. The regression proof for the recorded cases is T066.
   - `npm run test:all`: **665 passed** in 5 files (132 unit, 520 corpus, 13 README).
   - `npm run api`: passes.
   - `npm run api:compat`: first-release baseline.
+
+## Full matrix from a clean state (T064)
+
+`js/node_modules`, `js/dist`, `js/artifacts`, the contents of `js/.pack`, and every `bin/` and `obj/` under `dotnet/` were deleted first.
+
+- **.NET**:
+  - `dotnet build dotnet/PersianTextGuard.slnx`: 0 warnings, 0 errors.
+  - `PersianTextGuard.Tests`: 1,029 × 3.
+  - `PersianTextGuard.Conformance`: 522 × 3 (`net8.0`, `net10.0`, `net48`).
+- **JavaScript** (`npm ci`: 291 packages):
+
+  | Step | Result |
+  | --- | --- |
+  | `npm run test:all` | 665 passed |
+  | `npm run pack` | `persian-text-guard-1.3.0.tgz`, 8 files, **242,197 bytes unpacked** (under 1 MB; the README grew) |
+  | `check:package` | publint "All good!", attw "No problems found" |
+  | `api` | completed successfully |
+  | `api:compat` | first-release baseline |
+  | `check:consumers -- --no-pack` | 4 of 4 |
+
+- **Found and fixed**: `npm run lint` failed (exit 2) straight after `npm ci`, before `dist/` existed. `bench/filter.bench.ts` imports `../dist/index.mjs` and was type-checked by `tsconfig.node.json`. CI runs lint before build, so this would have failed there. `bench` was removed from that config's `include`, and `npm run lint` now passes with `dist/` deleted (exit 0).
+
+## Quickstart walkthrough (T065)
+
+| § | Expected outcome | Result | From |
+| --- | --- | --- | --- |
+| 1 | 1,029 .NET tests × 3 | ✅ | T017, T064 |
+| 1 | Corpus passes × 3, including noncharacter and heading cases | ✅ 522 × 3 | T017, T064 |
+| 1 | `[3]`, `[+4]`, `[ 03 ]` are errors; `[ Insult ]`, `[SLUR]` accepted | ✅ | T017 |
+| 1 | `--check` 0 disagreements | ✅ | T017 |
+| 1 | No raw noncharacters in `conformance/` | ✅ | T017 |
+| 1 | .NET benchmarks before/after, README table refreshed | ✅ | T014, T018 |
+| 1 | Regression proof on 1.2.0 code | ✅ | T066 |
+| 2 | Lint and type check clean; unit tests pass on Node.js 22 and 24 | ✅ 132 on 22.23.2 and on 26.4.0; CI runs 22 and 24 | T048, T063, T064 |
+| 2 | `TypeError`, `RangeError`, `WordListFormatError`, frozen results, R1 cases | ✅ | T028, T021, T026 |
+| 3 | Corpus passes on Node.js 22 and 24, 0 not applicable | ✅ 520 on 22.23.2 and 24.21.0 | T047, T048 |
+| 3 | Failure reporting; missing corpus is "not found" | ✅ | T049 |
+| 4 | Bundled lists equal .NET, 0 differences | ✅ | T050 |
+| 5 | Tarball has 8 files, < 1 MB, no dependencies | ✅ 242,197 bytes | T035, T064 |
+| 5 | publint and attw clean | ✅ | T052 |
+| 5 | API report matches; `api:compat` baseline, and fails on a changed declaration | ✅ | T058, T059 |
+| 5 | 4 of 4 consumer checks; normalize-only bundle without word lists | ✅ | T041, T064 |
+| 5 | Version from `VERSION` | ✅ 1.2.0 tarball before T055, 1.3.0 after | T035, T055 |
+| 6 | README examples pass | ✅ 13 | T057 |
+| 6 | Benchmarks under limits, README table filled | ✅ 2.4 ms, 11.0 µs, 30.7 ms | T060 |
+| 6 | npm README bilingual; root README updated | ✅ | T056, T061 |
+| 6 | Onboarding (SC-003) under 5 minutes | ✅ JS 4.0 s, TS 4.5 s (scripted) | below |
+| 7 | CI green, tag gate dry run, registries | Pending: T067–T077 | |
+
+**Onboarding (SC-003).** In two empty directories under the session scratchpad, a script followed only the npm README's installation and quick-start steps, installing `js/artifacts/persian-text-guard-1.3.0.tgz` in place of the registry name:
+1. `npm init -y`;
+2. `npm install <tarball>`;
+3. save the quick-start block as `index.mjs` (JavaScript) or `index.ts` (TypeScript, run by Node.js 26's built-in type stripping);
+4. run it.
+
+Both printed `false true true`: the JavaScript project in **3,963 ms**, the TypeScript project in **4,475 ms**. No step outside the README was needed. The timings are scripted, so they measure the steps, not a person reading and typing; both are far under 5 minutes.
+
+## Regression proof on 1.2.0 code (T066)
+
+`git worktree add ../ptg-1.2.0 main` (the 1.2.0 code) was given the branch's `conformance/`, then `dotnet test ../ptg-1.2.0/dotnet/tests/PersianTextGuard.Conformance`:
+
+| Target | Result | Failing cases |
+| --- | --- | --- |
+| `net8.0` | Failed 7, Passed 515 | U+FFFE: `robustness-noncharacter-fffe-between-words`, `-fffe-alone`, `-fffe-inside-persian-word`, `normalization-noncharacter-fffe-comparison`; headings: `word-list-parsing-heading-number`, `-signed-number`, `-spaced-number` |
+| `net10.0` | Failed 7, Passed 515 | the same 7 |
+| `net48` | Failed 15, Passed 507 | all 12 noncharacter cases and the 3 numeric headings |
+
+`word-list-parsing-heading-name-spaced-and-upper-case` passes on 1.2.0 too, as it should. The worktree was removed.

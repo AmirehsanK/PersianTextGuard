@@ -609,7 +609,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
 
 **Purpose**: Full verification, the pull request, and the irreversible release. The user delegated steps T073–T077 in advance (memory: `persiantextguard-npm-release-delegation`). Perform them without asking again, but only when every precondition in the task holds, and report each outcome.
 
-- [ ] T064 Run the full matrix from a clean state:
+- [X] T064 Run the full matrix from a clean state:
   - delete `js/node_modules`, `js/dist`, `js/.pack`, `js/artifacts`, and every `bin/` and `obj/` under `dotnet/`;
   - `dotnet build dotnet/PersianTextGuard.slnx` (0 warnings);
   - `dotnet test dotnet/tests/PersianTextGuard.Tests` (1,029 × 3);
@@ -617,13 +617,13 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   - in `js/`: `npm ci`, `npm run lint`, `npm run test:all`, `npm run pack`, `npm run check:package`, `npm run api`, `npm run api:compat`, `npm run check:consumers -- --no-pack`.
 
   Record the counts, and the unpacked size from `npm pack --dry-run --json` (must be under 1 MB, SC-004), in `verification.md`.
-- [ ] T065 Walk through [quickstart.md](quickstart.md) §1–§6 and tick each expected outcome in `verification.md` with the task that produced it. §7 is completed by the dry-run and release tasks below. As part of §6, run the SC-003 onboarding check:
+- [X] T065 Walk through [quickstart.md](quickstart.md) §1–§6 and tick each expected outcome in `verification.md` with the task that produced it. §7 is completed by the dry-run and release tasks below. As part of §6, run the SC-003 onboarding check:
   1. Create two empty temporary directories outside the repository, one for plain JavaScript and one for TypeScript.
   2. Start a timer, and follow **only** the steps written in `js/README.md`'s quick start, installing `js/artifacts/persian-text-guard-1.3.0.tgz` in place of the registry name.
   3. Stop the timer when the example flags `"ک.ی.ر"`.
 
   Both runs must finish in under 5 minutes and need no step the README does not state; any missing step is a README fix. Record both times in `verification.md`.
-- [ ] T066 Run the quickstart §1 regression proof:
+- [X] T066 Run the quickstart §1 regression proof:
   1. Create a separate checkout of the pre-fix code with `git worktree add ../ptg-1.2.0 main`, leaving the feature branch untouched.
   2. Copy the current `conformance/` over the worktree's.
   3. Run `dotnet test ../ptg-1.2.0/dotnet/tests/PersianTextGuard.Conformance`. On 1.2.0 code, these recorded cases fail:
