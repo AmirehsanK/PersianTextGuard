@@ -10,3 +10,14 @@ artifacts/
 *.snupkg
 *.suo
 packages/
+
+# JavaScript port (js/)
+node_modules/
+js/dist/
+js/src/generated/
+js/.pack/
+js/artifacts/
+js/temp/
+js/consumers/*/node_modules/
+js/consumers/*/package-lock.json
+js/consumers/browser/out/

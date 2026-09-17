@@ -71,9 +71,9 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
 **Purpose**: Scaffold `js/` with pinned dev tools, and record the starting point.
 
 - [X] T001 Confirm the branch is `003-javascript-typescript-port` and that `git status --short` shows only `specs/003-javascript-typescript-port/` (and the unrelated, untracked `graphify-out/`, which must never be committed). Run `dotnet test dotnet/tests/PersianTextGuard.Tests` and `dotnet test dotnet/tests/PersianTextGuard.Conformance`: 1,029 and 506 passed on each of `net8.0`, `net10.0` and `net48`. Create `specs/003-javascript-typescript-port/verification.md` with a heading "Baseline", the commit hash and those six counts. Also record `node --version` and `npm --version`, and note that CI covers Node.js 22 and 24.
-- [ ] T002 Commit the spec, plan and design documents on their own: `git add specs/003-javascript-typescript-port .specify/feature.json`, then commit as "Add spec, plan and design for the JavaScript/TypeScript port (spec 003)". Do not add `graphify-out/`.
-- [ ] T003 Append the JavaScript build outputs to the root `.gitignore`: `node_modules/`, `js/dist/`, `js/src/generated/`, `js/.pack/`, `js/artifacts/`, `js/temp/`, `js/consumers/*/node_modules/`, `js/consumers/*/package-lock.json`, `js/consumers/browser/out/`.
-- [ ] T004 Create `js/package.json`:
+- [X] T002 Commit the spec, plan and design documents on their own: `git add specs/003-javascript-typescript-port .specify/feature.json`, then commit as "Add spec, plan and design for the JavaScript/TypeScript port (spec 003)". Do not add `graphify-out/`.
+- [X] T003 Append the JavaScript build outputs to the root `.gitignore`: `node_modules/`, `js/dist/`, `js/src/generated/`, `js/.pack/`, `js/artifacts/`, `js/temp/`, `js/consumers/*/node_modules/`, `js/consumers/*/package-lock.json`, `js/consumers/browser/out/`.
+- [X] T004 Create `js/package.json`:
   - **Identity**: `"name": "persian-text-guard"`, `"version": "0.0.0-development"` (placeholder; research R9), `"description"` (the NuGet description adapted for JavaScript/TypeScript), `"license": "MIT"`, `"author": "Amirehsan Kohannasab"`.
   - **Keywords**: `persian`, `farsi`, `finglish`, `profanity`, `profanity-filter`, `moderation`, `normalization`, `arabic`, `text`, `rtl`, `typescript`.
   - **Links**: `"repository": { "type": "git", "url": "git+https://github.com/AmirehsanK/PersianTextGuard.git", "directory": "js" }`, `"homepage": "https://github.com/AmirehsanK/PersianTextGuard/tree/main/js#readme"`, `"bugs": "https://github.com/AmirehsanK/PersianTextGuard/issues"`.
@@ -97,7 +97,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
     | `bench` | `npm run build && node --import tsx bench/filter.bench.ts` |
 
   - **devDependencies**: install with `npm install --save-dev --save-exact` using the current stable versions of `typescript`, `tsup`, `vitest`, `eslint`, `@eslint/js`, `typescript-eslint`, `eslint-plugin-jsdoc`, `@microsoft/api-extractor`, `publint`, `@arethetypeswrong/cli`, `tinybench`, `tsx`, `esbuild` and `@types/node`. Commit the resulting `js/package-lock.json`.
-- [ ] T005 [P] Create two TypeScript configs:
+- [X] T005 [P] Create two TypeScript configs:
   - **`js/tsconfig.json`**, for the library only:
     - **Compiler options**: `"strict": true`, `"target": "ES2020"`, `"lib": ["ES2020"]` (no DOM), `"types": []` (no Node.js types, so a Node.js-only API in the library fails the type check, FR-003), `"module": "ESNext"`, `"moduleResolution": "Bundler"`, `"declaration": true`, `"noEmit": true`, `"isolatedModules": true`, `"noUncheckedIndexedAccess": true`, `"exactOptionalPropertyTypes": true`, `"verbatimModuleSyntax": true`.
     - **`include`**: `["src"]` only.
@@ -107,9 +107,9 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
     - **`include`**: `["test", "bench", "scripts", "vitest.config.ts", "tsup.config.ts", "eslint.config.js"]`, plus `"allowJs": true` and `"checkJs": false`, so the `.mjs` scripts are part of the project without being type-checked strictly.
 
   **Verify**: once T010 has run `npm ci`, a file under `test/` that imports `node:fs` and `../src/index.ts` type-checks with `tsc --noEmit -p tsconfig.node.json`, and `process.env` in `src/` fails `tsc --noEmit -p tsconfig.json`. Check both with a throwaway file, then delete it.
-- [ ] T006 [P] Create `js/tsup.config.ts`: entry `src/index.ts`; `format: ['esm', 'cjs']`; `dts: true`, emitting `dist/index.d.mts` and `dist/index.d.cts`; `target: 'es2020'`; `platform: 'neutral'`; `sourcemap: false`; `clean: true`; `treeshake: true`; `outExtension` giving `.mjs` for ESM and `.cjs` for CJS.
-- [ ] T007 [P] Create `js/vitest.config.ts` with `test.include: ['test/**/*.test.ts']`, `testTimeout: 60000` (the 132,000-character corpus cases), `reporters: ['default']`, and `pool: 'forks'`.
-- [ ] T008 [P] Create `js/eslint.config.js` (flat config):
+- [X] T006 [P] Create `js/tsup.config.ts`: entry `src/index.ts`; `format: ['esm', 'cjs']`; `dts: true`, emitting `dist/index.d.mts` and `dist/index.d.cts`; `target: 'es2020'`; `platform: 'neutral'`; `sourcemap: false`; `clean: true`; `treeshake: true`; `outExtension` giving `.mjs` for ESM and `.cjs` for CJS.
+- [X] T007 [P] Create `js/vitest.config.ts` with `test.include: ['test/**/*.test.ts']`, `testTimeout: 60000` (the 132,000-character corpus cases), `reporters: ['default']`, and `pool: 'forks'`.
+- [X] T008 [P] Create `js/eslint.config.js` (flat config):
   - the `@eslint/js` recommended rules and `typescript-eslint` `strictTypeChecked` for `src/**`;
   - `eslint-plugin-jsdoc` with `jsdoc/require-jsdoc`, which requires a doc comment on every exported function, class, method, interface, type alias and variable in `src/**` (FR-023, SC-006), and `jsdoc/check-tag-names` with TSDoc tags allowed;
   - `no-restricted-globals` for `process`, `Buffer`, `require`, `__dirname` and `global` in `src/**` (FR-003);
@@ -119,12 +119,12 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
     - `NewExpression[callee.name='RegExp'] > Literal[value=/\\s|\\S/]`;
   - **Lint self-check**: after T010, a throwaway `src/x.ts` containing `'A'.toLowerCase()` and `/\s/` makes `npm run lint` report both, then delete it;
   - ignore `dist/`, `temp/`, `src/generated/`, `consumers/` and `.pack/`.
-- [ ] T009 Create `js/scripts/generate-wordlists.mjs`:
+- [X] T009 Create `js/scripts/generate-wordlists.mjs`:
   - **Root**: find the repository root by walking up from the script's directory to the first directory containing both `VERSION` and `wordlists/`; if none is found, exit `1` with "Could not find the repository root (VERSION and wordlists/)".
   - **Input**: read `wordlists/persian.txt`, `wordlists/finglish.txt` and `wordlists/english.txt` as UTF-8.
   - **Output**: write `js/src/generated/wordlists.ts` with a header comment "Generated from wordlists/ by scripts/generate-wordlists.mjs. Do not edit." and `export const BUNDLED_WORD_LISTS: readonly string[] = [<persian>, <finglish>, <english>];`, each text as a `JSON.stringify` string literal, in that order (research R6).
   - **Stable output**: write the file only when the content changed, so watch mode does not loop.
-- [ ] T010 Run `npm ci` and `npm run generate` in `js/`. Confirm `src/generated/wordlists.ts` exists and that `git status` does not list it. Commit T003–T010 as "Scaffold the JavaScript port in js/".
+- [X] T010 Run `npm ci` and `npm run generate` in `js/`. Confirm `src/generated/wordlists.ts` exists and that `git status` does not list it. Commit T003–T010 as "Scaffold the JavaScript port in js/".
 
 ---
 
