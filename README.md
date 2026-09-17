@@ -201,15 +201,15 @@ BenchmarkDotNet):
 
 | Operation | Mean | Allocated |
 | --- | ---: | ---: |
-| Short clean message (5 words) | 2.4 µs | 2.7 KB |
-| Long clean message (60 words) | 21.3 µs | 21.9 KB |
+| Short clean message (5 words) | 2.5 µs | 2.7 KB |
+| Long clean message (60 words) | 23.0 µs | 21.9 KB |
 | Message with evasions | 1.9 µs | 3.1 KB |
-| Normalize a long message | 5.9 µs | 3.3 KB |
-| Build a filter from the bundled list | 553 µs | 1,061 KB |
-| `FindMatches`, clean short message | 2.4 µs | 2.7 KB |
-| `FindMatches`, message with three banned words | 6.6 µs | 9.7 KB |
-| `Censor`, short message with one banned word | 4.5 µs | 6.4 KB |
-| `Censor`, 60-word message with three banned words | 93.0 µs | 97.3 KB |
+| Normalize a long message | 6.0 µs | 3.3 KB |
+| Build a filter from the bundled list | 600 µs | 1,061 KB |
+| `FindMatches`, clean short message | 2.9 µs | 2.7 KB |
+| `FindMatches`, message with three banned words | 7.8 µs | 9.7 KB |
+| `Censor`, short message with one banned word | 4.7 µs | 6.4 KB |
+| `Censor`, 60-word message with three banned words | 99.5 µs | 97.3 KB |
 
 Whole-word entries are looked up by token rather than searched for one by one, so checking a
 message barely notices how long the list is. Positions are only worked out for a message that

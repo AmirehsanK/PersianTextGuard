@@ -56,7 +56,8 @@ public static class PersianNormalizer
         }
 
         // string.Normalize throws on a lone surrogate, which is what a message cut in the middle
-        // of an emoji contains. User input must never be able to throw here.
+        // of an emoji contains, and on noncharacters (see NormalizeKeepingNoncharacters). User input
+        // must never be able to throw here.
         string source;
         List<int>? sourceMap = null;
         if ((steps & PersianNormalization.CompatibilityForms) == 0)
@@ -65,7 +66,7 @@ public static class PersianNormalizer
         }
         else if (map is null)
         {
-            source = ReplaceLoneSurrogates(text!).Normalize(NormalizationForm.FormKC);
+            source = NormalizeKeepingNoncharacters(ReplaceLoneSurrogates(text!));
         }
         else
         {
@@ -127,7 +128,9 @@ public static class PersianNormalizer
     {
         // Most messages are already in NFKC. Then every character maps to itself, and normalizing
         // each Persian letter on its own would cost a string and a Normalize call apiece.
-        if (text.IsNormalized(NormalizationForm.FormKC))
+        // IsNormalized throws on noncharacters just as Normalize does, so text containing one takes
+        // the segment path, which normalizes around them.
+        if (!ContainsNoncharacter(text) && text.IsNormalized(NormalizationForm.FormKC))
         {
             for (var index = 0; index < text.Length; index++)
             {
@@ -149,10 +152,11 @@ public static class PersianNormalizer
                 i += CodePointLength(text, i);
             }
 
-            // ASCII is already in normal form; skip the allocation for the common case.
+            // ASCII is already in normal form; skip the allocation for the common case. A segment
+            // whose starter is a noncharacter keeps it unchanged and normalizes only its marks.
             var segment = i - start == 1 && text[start] < 128
                 ? text.Substring(start, 1)
-                : text.Substring(start, i - start).Normalize(NormalizationForm.FormKC);
+                : NormalizeKeepingNoncharacters(text.Substring(start, i - start));
 
             foreach (var c in segment)
             {
@@ -162,6 +166,82 @@ public static class PersianNormalizer
         }
 
         return sb.ToString();
+    }
+
+    /// <summary>
+    /// NFKC that never throws on Unicode noncharacters (U+FDD0–U+FDEF, and every code point ending in
+    /// FFFE or FFFF).
+    /// </summary>
+    /// <remarks>
+    /// <see cref="string.Normalize(NormalizationForm)"/> throws <see cref="ArgumentException"/> on
+    /// noncharacters: U+FFFE on .NET 8 and .NET 10, all of them on .NET Framework, so PersianTextGuard
+    /// 1.2.0 threw on messages containing one. A noncharacter has no decomposition and composes with
+    /// nothing, so normalizing the text around each one and copying it through gives exactly the
+    /// result whole-string normalization gives where that does not throw.
+    /// </remarks>
+    private static string NormalizeKeepingNoncharacters(string text)
+    {
+        if (!ContainsNoncharacter(text))
+        {
+            return text.Normalize(NormalizationForm.FormKC);
+        }
+
+        var sb = new StringBuilder(text.Length);
+        var start = 0;
+        var i = 0;
+
+        while (i < text.Length)
+        {
+            if (!IsNoncharacterAt(text, i, out var length))
+            {
+                i++;
+                continue;
+            }
+
+            if (i > start)
+            {
+                sb.Append(text.Substring(start, i - start).Normalize(NormalizationForm.FormKC));
+            }
+
+            sb.Append(text, i, length);
+            i += length;
+            start = i;
+        }
+
+        if (start < text.Length)
+        {
+            sb.Append(text.Substring(start).Normalize(NormalizationForm.FormKC));
+        }
+
+        return sb.ToString();
+    }
+
+    private static bool ContainsNoncharacter(string text)
+    {
+        for (var i = 0; i < text.Length; i++)
+        {
+            if (IsNoncharacterAt(text, i, out _))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>Whether a noncharacter starts at <paramref name="index"/>, and how many UTF-16 units it takes.</summary>
+    private static bool IsNoncharacterAt(string text, int index, out int length)
+    {
+        var c = text[index];
+        if (char.IsHighSurrogate(c) && index + 1 < text.Length && char.IsLowSurrogate(text[index + 1]))
+        {
+            var codePoint = char.ConvertToUtf32(c, text[index + 1]);
+            length = 2;
+            return (codePoint & 0xFFFE) == 0xFFFE;
+        }
+
+        length = 1;
+        return (c >= '﷐' && c <= '﷯') || c >= '￾';
     }
 
     private static int CodePointLength(string text, int index) =>

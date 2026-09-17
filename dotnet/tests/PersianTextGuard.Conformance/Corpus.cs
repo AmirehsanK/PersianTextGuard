@@ -942,7 +942,16 @@ public sealed class Corpus
             var c = text[i];
             if (IsPairAt(text, i))
             {
-                sb.Append(c).Append(text[i + 1]);
+                if (IsNoncharacter(char.ConvertToUtf32(c, text[i + 1])))
+                {
+                    sb.Append("\\u").Append(((int)c).ToString("X4", CultureInfo.InvariantCulture))
+                      .Append("\\u").Append(((int)text[i + 1]).ToString("X4", CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    sb.Append(c).Append(text[i + 1]);
+                }
+
                 i++;
             }
             else if (char.IsSurrogate(c) || IsInvisible(c))
@@ -963,8 +972,16 @@ public sealed class Corpus
     {
         var category = CharUnicodeInfo.GetUnicodeCategory(c);
         return category is UnicodeCategory.Format or UnicodeCategory.Control or UnicodeCategory.LineSeparator or UnicodeCategory.ParagraphSeparator
-               || (char.IsWhiteSpace(c) && c != ' ');
+               || (char.IsWhiteSpace(c) && c != ' ')
+               || IsNoncharacter(c);
     }
+
+    /// <summary>
+    /// A Unicode noncharacter: U+FDD0–U+FDEF, or a code point whose low 16 bits are FFFE or FFFF.
+    /// Written as escapes in the corpus, and PersianTextGuard 1.2.0 threw on them (spec 003, FR-028).
+    /// </summary>
+    public static bool IsNoncharacter(int codePoint) =>
+        (codePoint >= 0xFDD0 && codePoint <= 0xFDEF) || (codePoint & 0xFFFE) == 0xFFFE;
 
     /// <summary>A short, readable description of what a case feeds in.</summary>
     public static string DescribeInput(CorpusCase corpusCase)

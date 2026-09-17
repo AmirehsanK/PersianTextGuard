@@ -231,7 +231,17 @@ public static class CaseWriter
 
             if (char.IsHighSurrogate(c) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
             {
-                sb.Append(c).Append(text[i + 1]);
+                if (Corpus.IsNoncharacter(char.ConvertToUtf32(c, text[i + 1])))
+                {
+                    // A supplementary noncharacter is as invisible as a BMP one; its two escapes form a valid pair.
+                    sb.Append("\\u").Append(((int)c).ToString("X4", CultureInfo.InvariantCulture))
+                      .Append("\\u").Append(((int)text[i + 1]).ToString("X4", CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    sb.Append(c).Append(text[i + 1]);
+                }
+
                 i++;
             }
             else if (char.IsSurrogate(c))
@@ -256,6 +266,7 @@ public static class CaseWriter
     {
         var category = CharUnicodeInfo.GetUnicodeCategory(c);
         return category is UnicodeCategory.Format or UnicodeCategory.Control or UnicodeCategory.LineSeparator or UnicodeCategory.ParagraphSeparator
-               || (char.IsWhiteSpace(c) && c != ' ');
+               || (char.IsWhiteSpace(c) && c != ' ')
+               || Corpus.IsNoncharacter(c);
     }
 }

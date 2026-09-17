@@ -77,6 +77,12 @@ public class CorpusGuardTests
 
                 if (char.IsHighSurrogate(c) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
                 {
+                    var codePoint = char.ConvertToUtf32(c, text[i + 1]);
+                    if (Corpus.IsNoncharacter(codePoint))
+                    {
+                        problems.Add($"{Path.GetFileName(path)} line {line}: U+{codePoint:X}");
+                    }
+
                     i++;
                 }
                 else if (char.IsSurrogate(c) || Corpus.IsInvisible(c))
@@ -153,5 +159,8 @@ public class CorpusGuardTests
     {
         Assert.Equal("\"کی\\u200Cر\"", CaseWriter.Write(JsonValue.Create("کی‌ر")));
         Assert.Throws<ArgumentException>(() => CaseWriter.WriteString("hi \uD83D"));
+
+        // Noncharacters are invisible too; a supplementary one is written as its two (valid) surrogate escapes.
+        Assert.Equal("\"a\\uFFFEb\\uD83F\\uDFFE\"", CaseWriter.Write(JsonValue.Create("a￾b🿾")));
     }
 }

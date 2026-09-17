@@ -229,5 +229,26 @@
     "steps": "toAsciiDigits",
     "input": "۱۴۰۴/۰۵/۱۴",
     "expected": { "output": "1404/05/14" }
+  },
+  {
+    "id": "normalization-noncharacter-fffe-comparison",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ﻛﻴﺮ \uFFFE BOOOK",
+    "expected": { "output": "کیر \uFFFE book" }
+  },
+  {
+    "id": "normalization-noncharacter-fdd0-between-presentation-forms",
+    "kind": "normalization",
+    "steps": "comparison",
+    "input": "ﻛﻴ\uFDD0ﺮ",
+    "expected": { "output": "کی\uFDD0ر" }
+  },
+  {
+    "id": "normalization-noncharacter-10ffff-standard",
+    "kind": "normalization",
+    "steps": "standard",
+    "input": "كتاب\uDBFF\uDFFF  ۱۲",
+    "expected": { "output": "کتاب\uDBFF\uDFFF ۱۲" }
   }
 ]

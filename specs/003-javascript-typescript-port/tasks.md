@@ -138,7 +138,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
 
 ### .NET: noncharacters never throw, headings are names (FR-028, FR-029; research R2, R3, R17)
 
-- [ ] T011 Extend the corpus escaping rule to noncharacters (research R3). A noncharacter is a code point in U+FDD0–U+FDEF, or one whose low 16 bits are `FFFE` or `FFFF`. In UTF-16 that means a BMP unit U+FDD0–U+FDEF, U+FFFE or U+FFFF, or a surrogate pair decoding to U+nFFFE or U+nFFFF.
+- [X] T011 Extend the corpus escaping rule to noncharacters (research R3). A noncharacter is a code point in U+FDD0–U+FDEF, or one whose low 16 bits are `FFFE` or `FFFF`. In UTF-16 that means a BMP unit U+FDD0–U+FDEF, U+FFFE or U+FFFF, or a surrogate pair decoding to U+nFFFE or U+nFFFF.
   - **`dotnet/tools/PersianTextGuard.CorpusFill/CaseWriter.cs`**: `NeedsEscape` also returns `true` for BMP noncharacters. In `AppendString`, a valid surrogate pair whose code point is a noncharacter is written as two `\uXXXX` escapes (uppercase hex) instead of literally.
   - **`dotnet/tests/PersianTextGuard.Conformance/Corpus.cs`**:
     - add `public static bool IsNoncharacter(int codePoint)`;
@@ -150,7 +150,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   - **`conformance/README.md`** → "Writing rules": rule 1 adds "Unicode noncharacters (U+FDD0–U+FDEF and every code point ending in FFFE or FFFF)"; mirror the sentence in `specs/002-monorepo-conformance-corpus/contracts/corpus-format.md` rule 1.
 
   Run `dotnet test dotnet/tests/PersianTextGuard.Conformance`: all 506 still pass on three targets, since no existing file contains a noncharacter.
-- [ ] T012 Add the regression cases as **pending** cases (no `expected`). Write every noncharacter as a JSON string escape: supplementary ones as their surrogate-pair escapes, e.g. `\uD83F\uDFFE`, which is a valid pair. Ids and inputs are exactly:
+- [X] T012 Add the regression cases as **pending** cases (no `expected`). Write every noncharacter as a JSON string escape: supplementary ones as their surrogate-pair escapes, e.g. `\uD83F\uDFFE`, which is a valid pair. Ids and inputs are exactly:
   - **`conformance/cases/robustness.json`**, each `"kind": "robustness"`, `"configuration": "default"`, with `"note": "PersianTextGuard 1.2.0 threw on noncharacters (U+FFFE on .NET 8/10, all of them on .NET Framework 4.8)."` on the first case:
 
     | Id | Input |
@@ -174,7 +174,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
     | `normalization-noncharacter-10ffff-standard` | `"standard"` | `"كتاب\uDBFF\uDFFF  ۱۲"` |
 
   Then run `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill` and record in `verification.md`, under "Before the fixes", what the unfixed tool does. The expected result is an unhandled `ArgumentException` ("String contains invalid Unicode code points"): `Program.cs` catches only `InvalidDataException`, `FormatException` and `InvalidOperationException`. That crash is the observed failure before the fix. The regression proof that the **recorded** cases fail on 1.2.0 comes later, in T066. Do not commit a file changed by the crashed run; the tool writes only after evaluating every case, so none should be.
-- [ ] T013 Add the word-list heading cases (research R17) as **pending** cases to `conformance/cases/word-list-parsing.json`, each `"kind": "word-list-parsing"`, with `"note": "Headings are category names only; PersianTextGuard 1.2.0 also accepted category numbers."` on the first:
+- [X] T013 Add the word-list heading cases (research R17) as **pending** cases to `conformance/cases/word-list-parsing.json`, each `"kind": "word-list-parsing"`, with `"note": "Headings are category names only; PersianTextGuard 1.2.0 also accepted category numbers."` on the first:
 
   | Id | Text |
   | --- | --- |
@@ -184,8 +184,8 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   | `word-list-parsing-heading-name-spaced-and-upper-case` | `"# list\n[ Insult ]\nword\n[SLUR]\n~other\n"` |
 
   Do not fill them yet: the fill-in tool would record 1.2.0's acceptance of numbers. Also, in `conformance/README.md`, add a "Word-list format" note next to the `word-list-parsing` example: a heading is a category name in any letter case, and numbers are not categories.
-- [ ] T014 Record the .NET "before" benchmarks: run the full suite with `dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0 -- --filter "*"` on this machine. It is the Intel Core i7-9700K the README's .NET table names; confirm with `Get-CimInstance Win32_Processor`, and stop and report if it differs. Copy the Mean and Allocated columns of all nine benchmarks into `verification.md` under ".NET benchmarks → before" (constitution Principle IV).
-- [ ] T015 Fix `dotnet/src/PersianTextGuard/PersianNormalizer.cs` (research R2). Add `private static bool IsNoncharacterAt(string text, int index, out int length)`, which recognises BMP noncharacters (length 1) and surrogate pairs forming noncharacters (length 2). Then:
+- [X] T014 Record the .NET "before" benchmarks: run the full suite with `dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0 -- --filter "*"` on this machine. It is the Intel Core i7-9700K the README's .NET table names; confirm with `Get-CimInstance Win32_Processor`, and stop and report if it differs. Copy the Mean and Allocated columns of all nine benchmarks into `verification.md` under ".NET benchmarks → before" (constitution Principle IV).
+- [X] T015 Fix `dotnet/src/PersianTextGuard/PersianNormalizer.cs` (research R2). Add `private static bool IsNoncharacterAt(string text, int index, out int length)`, which recognises BMP noncharacters (length 1) and surrogate pairs forming noncharacters (length 2). Then:
   1. **Whole-string path** (line 68): replace `ReplaceLoneSurrogates(text!).Normalize(NormalizationForm.FormKC)` with `NormalizeKeepingNoncharacters(ReplaceLoneSurrogates(text!))`. The new method walks the text, applies `Normalize(NormalizationForm.FormKC)` to each maximal run that contains no noncharacter (skipping empty runs), and appends each noncharacter's units unchanged. When the text contains no noncharacter, it returns `text.Normalize(NormalizationForm.FormKC)`, so the common path makes one call as before.
   2. **Segment path** (`NormalizeCompatibilityBySegment`):
      - **Fast path**: guard the `text.IsNormalized(NormalizationForm.FormKC)` fast path so it is only used when the text contains no noncharacter.
@@ -193,10 +193,10 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   3. **Comments**: add a comment at both sites explaining that `string.Normalize` throws on noncharacters (U+FFFE on .NET 8/10, all of them on .NET Framework), and that a noncharacter is a starter that composes with nothing, so normalizing around it gives the same result as normalizing through it where that does not throw.
 
   No other file changes. Build with `TreatWarningsAsErrors`: 0 warnings.
-- [ ] T016 Change `dotnet/src/PersianTextGuard/WordList.cs` so section headings are names only (research R17). In `Parse`, the section branch accepts the heading only when the trimmed `name` is non-empty, **every** character is a letter (`name.All(char.IsLetter)`), and `Enum.TryParse(name, ignoreCase: true, out category) && Enum.IsDefined(typeof(WordCategory), category)` holds. Otherwise it throws the existing `FormatException($"Line {lineNumber}: unknown word category '{name}'.")`.
+- [X] T016 Change `dotnet/src/PersianTextGuard/WordList.cs` so section headings are names only (research R17). In `Parse`, the section branch accepts the heading only when the trimmed `name` is non-empty, **every** character is a letter (`name.All(char.IsLetter)`), and `Enum.TryParse(name, ignoreCase: true, out category) && Enum.IsDefined(typeof(WordCategory), category)` holds. Otherwise it throws the existing `FormatException($"Line {lineNumber}: unknown word category '{name}'.")`.
   - **Docs**: update the XML doc remark on `WordList` to say "`[insult]`: a category name, in any letter case" and add `<exception>` wording that numbers are not category names.
   - **Tests**: run `dotnet test dotnet/tests/PersianTextGuard.Tests`. All 1,029 still pass on three targets, since no existing test or bundled list uses a numeric heading.
-- [ ] T017 Fill and verify:
+- [X] T017 Fill and verify:
   1. `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill` prints "Filled 16 case(s); 0 disagreement(s)" and exits `0` (12 noncharacter cases and 4 heading cases).
   2. **Review the diff**:
      - every noncharacter in the recorded `expected` values is escaped, and `git grep -nP '[\x{FDD0}-\x{FDEF}\x{FFFE}\x{FFFF}]' -- conformance` prints nothing;
@@ -206,14 +206,14 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   4. `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill -- --check` reports 0 disagreements.
 
   Record the counts in `verification.md`. If the fill-in count or test totals differ from these numbers because an id was added or removed, record the real numbers and why.
-- [ ] T018 Record the .NET "after" benchmarks with the same full-suite command as T014. Add them next to the "before" numbers in `verification.md`, with a before/after table (Operation, Mean before, Mean after, Allocated before, Allocated after). A regression in Mean or Allocated beyond noise (more than 5%) must be explained there.
+- [X] T018 Record the .NET "after" benchmarks with the same full-suite command as T014. Add them next to the "before" numbers in `verification.md`, with a before/after table (Operation, Mean before, Mean after, Allocated before, Allocated after). A regression in Mean or Allocated beyond noise (more than 5%) must be explained there.
   - **README**: refresh the root `README.md` "Performance" table for .NET with the "after" Mean and Allocated values. Keep its rows, units and the machine line (Intel Core i7-9700K, BenchmarkDotNet, .NET 10), as constitution Principle IV requires.
   - **Commit** everything from the start of this .NET track as "Never throw on Unicode noncharacters; word-list headings are names only (corpus cases, benchmarks)".
 
 ### JavaScript: shared layers
 
-- [ ] T019 [P] Create `js/src/types.ts` with every public type from [contracts/public-api.md](contracts/public-api.md): `WordMatchMode`, `WordCategory`, `WORD_CATEGORIES` (frozen, in the order `'uncategorized', 'profanity', 'sexual', 'insult', 'slur', 'harassment', 'mild'`), `BannedWord`, `ProfanityFilterOptions`, `EvasionKind`, `ProfanityMatch`, `NormalizationStep`, `NormalizationSteps`, and `class WordListFormatError extends Error`. The class has a `readonly line: number`, sets `name = 'WordListFormatError'`, and takes the message `` `Line ${line}: unknown word category '${name}'.` ``, matching .NET's message. Also add the internal type `ResolvedWord = Readonly<Required<BannedWord>>`. Every export gets a TSDoc comment explaining behaviour and edge cases (FR-023); adapt the .NET XML docs in `dotnet/src/PersianTextGuard/BannedWord.cs`, `ProfanityMatch.cs` and `ProfanityFilterOptions.cs`.
-- [ ] T020 [P] Create `js/src/unicode.ts`, which implements research R1 exactly:
+- [X] T019 [P] Create `js/src/types.ts` with every public type from [contracts/public-api.md](contracts/public-api.md): `WordMatchMode`, `WordCategory`, `WORD_CATEGORIES` (frozen, in the order `'uncategorized', 'profanity', 'sexual', 'insult', 'slur', 'harassment', 'mild'`), `BannedWord`, `ProfanityFilterOptions`, `EvasionKind`, `ProfanityMatch`, `NormalizationStep`, `NormalizationSteps`, and `class WordListFormatError extends Error`. The class has a `readonly line: number`, sets `name = 'WordListFormatError'`, and takes the message `` `Line ${line}: unknown word category '${name}'.` ``, matching .NET's message. Also add the internal type `ResolvedWord = Readonly<Required<BannedWord>>`. Every export gets a TSDoc comment explaining behaviour and edge cases (FR-023); adapt the .NET XML docs in `dotnet/src/PersianTextGuard/BannedWord.cs`, `ProfanityMatch.cs` and `ProfanityFilterOptions.cs`.
+- [X] T020 [P] Create `js/src/unicode.ts`, which implements research R1 exactly:
   - `isWhiteSpace(unit)`: `true` for categories Zs, Zl, Zp, and for U+0009–U+000D, U+0085 and U+00A0. **Not** `\s`: U+FEFF is not whitespace.
   - `categoryOfUnit(unit)`: the general category of one UTF-16 unit, from `/^\p{gc=XX}$/u` tests on `String.fromCharCode(unit)`. A lone surrogate is `'Cs'`; no match is `'Cn'`. ASCII (0–127) is answered from a constant table. Other results are cached in a lazily allocated `Uint8Array(65536)`, where 0 means not computed.
   - `categoryAt(text, index)`: the category of the code point at `index`, using the pair when `index` starts a valid surrogate pair, else `categoryOfUnit`.
@@ -224,7 +224,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   - `nfd(text)`: `text.normalize('NFD')`.
 
   TSDoc on each function says which .NET API it reproduces.
-- [ ] T021 [P] Create `js/test/unicode.test.ts` (research R1 findings as tests):
+- [X] T021 [P] Create `js/test/unicode.test.ts` (research R1 findings as tests):
   - **Whitespace**: `isWhiteSpace(0x85) === true`, `isWhiteSpace(0xFEFF) === false`, `isWhiteSpace(0xA0) === true`, `isWhiteSpace(0x200B) === false`.
   - **Lower-casing**: `toLowerInvariant(0x130) === 0x130`, `toLowerInvariant(0x3A3) === 0x3C3`, `toLowerInvariant(0x41) === 0x61`.
   - **Categories**: `categoryOfUnit(0xD83D) === 'Cs'`, `categoryOfUnit(0x0643) === 'Lo'`, `categoryOfUnit(0x064B) === 'Mn'`, `categoryAt('😀', 0) === 'So'`.
