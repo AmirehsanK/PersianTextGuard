@@ -232,7 +232,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   - **Noncharacters**: `isNoncharacterAt('\uD83F\uDFFE', 0) === 2`.
 
   Run `npx vitest run test/unicode.test.ts`: it fails before T020 and passes after.
-- [ ] T022 Port `dotnet/src/PersianTextGuard/PersianNormalizer.cs` and `PersianNormalization.cs` to `js/src/normalizer.ts`, including the T015 fix and following the porting conventions.
+- [X] T022 Port `dotnet/src/PersianTextGuard/PersianNormalizer.cs` and `PersianNormalization.cs` to `js/src/normalizer.ts`, including the T015 fix and following the porting conventions.
   - **Internal step flags**: a `const enum`-free numeric bit set with the same bit values as .NET's `PersianNormalization`.
   - **`resolveSteps(steps: NormalizationSteps): number`**:
     - `'comparison'`, `'standard'` and `'none'` map to the preset values;
@@ -242,7 +242,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   - **Internal ports**: `normalizeWithMap(text, stepBits, map: number[] | null)`, the segment-wise NFKC with map, `replaceLoneSurrogates` (appending U+FFFD), `isRemoved`, `unifyLetter`, `collapseRepeats`, `collapseWhitespace`, `tokenizeWithOffsets(text)` returning `{ text, start, end }[]`, and `isWordCharacter(text, index)`.
   - **Public exports**: `normalize(text, steps?)`, `tokenize(text)`, `toPersianDigits(text)`, `toAsciiDigits(text)`, each with full TSDoc.
   - **Argument checks**: `assertText(value, name)`, shared with `filter.ts` and exported internally, throws `TypeError(`${name} must be a string, null or undefined`)` when `value` is not `string`, `null` or `undefined`. `null` and `undefined` produce `''` or `[]` exactly as .NET does for `null`.
-- [ ] T023 Port `dotnet/src/PersianTextGuard/WordList.cs` to `js/src/word-list.ts`.
+- [X] T023 Port `dotnet/src/PersianTextGuard/WordList.cs` to `js/src/word-list.ts`.
   - **`parse(text)`**:
     - a non-string throws `TypeError`;
     - split on `'\n'`, trim each line with a whitespace trim equivalent to .NET `string.Trim()` (use `isWhiteSpace` from `unicode.ts`, not `String.prototype.trim`, which also strips U+FEFF);
@@ -259,15 +259,15 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
     - `parse`.
 
   TSDoc adapted from the .NET XML docs.
-- [ ] T024 Port the character-level reading helpers from `dotnet/src/PersianTextGuard/ProfanityFilter.Scan.cs` to `js/src/fold.ts`. They are the ones `SourceMap.cs` and the scanner both use, so they belong to this foundational layer and are ported **only here**:
+- [X] T024 Port the character-level reading helpers from `dotnet/src/PersianTextGuard/ProfanityFilter.Scan.cs` to `js/src/fold.ts`. They are the ones `SourceMap.cs` and the scanner both use, so they belong to this foundational layer and are ported **only here**:
   - `LATIN_BASE_LETTERS`, built as in `BuildLatinBaseLetters` with `nfd` and `toLowerInvariant`, plus the stroke and hook overrides (`ø`, `Ø`, `đ`, `Đ`, `ł`, `Ł`, `ƒ`, `ħ`, `ı`, `ß`);
   - `fold(normalized, map)` and `foldCharacter`;
   - `isFiller`, `isRunBoundary` and `enclosedLetter`;
   - `squeeze(value, map)`.
 
   Follow the porting conventions; every category and character test goes through `unicode.ts`. Export them internally (not from `index.ts`).
-- [ ] T025 Port `dotnet/src/PersianTextGuard/SourceMap.cs` to `js/src/source-map.ts`: `MappedText` (`text`, `startMap`, `endMap`), `ReadingKind` (a numeric `const` object and type with the .NET enum's values, declared here and imported by `scan.ts`), `build(original, kind, cache)`, `chunkMap` and `wholeMessageMap`. The fold and squeeze steps are imported from `./fold.ts`. Keep the .NET fallback that compares the mapped normalization with whole-string normalization, and uses the chunk map and then the whole-message map when they differ.
-- [ ] T026 Port the internal normalizer and source-map tests to `js/test/internals.test.ts`:
+- [X] T025 Port `dotnet/src/PersianTextGuard/SourceMap.cs` to `js/src/source-map.ts`: `MappedText` (`text`, `startMap`, `endMap`), `ReadingKind` (a numeric `const` object and type with the .NET enum's values, declared here and imported by `scan.ts`), `build(original, kind, cache)`, `chunkMap` and `wholeMessageMap`. The fold and squeeze steps are imported from `./fold.ts`. Keep the .NET fallback that compares the mapped normalization with whole-string normalization, and uses the chunk map and then the whole-message map when they differ.
+- [X] T026 Port the internal normalizer and source-map tests to `js/test/internals.test.ts`:
   - `dotnet/tests/PersianTextGuard.Tests/SourceMapTests.cs`: the same 14 samples, including `"hi \uD83D"` and the zero-width and RLM samples written with `\u` escapes, and every theory and fact;
   - `PersianNormalizerTests.cs` facts that the corpus does not cover by construction: `normalize` of `null` gives `''`, and the digits helpers keep letters;
   - for each sample, `normalizeWithMap` equals `normalize`;
@@ -276,7 +276,7 @@ description: "Task list for the JavaScript/TypeScript port published to npm (rel
   - `WordList.parse` heading tests (FR-029): `'[3]\nword\n'`, `'[+4]\nword\n'` and `'[ 03 ]\nword\n'` throw `WordListFormatError` with `line === 1`; `'[ Insult ]\nword\n[SLUR]\n~other\n'` yields `word` (insult, `wholeWord`) and `other` (slur, `anywhere`); `'[]\n'` is a word `'[]'`, as in .NET, because a section needs more than 2 characters.
 
   Run `npm test`: `unicode.test.ts` and `internals.test.ts` pass, including `SourceMapTests`' fold and squeeze theories, which use `./fold.ts`.
-- [ ] T027 Commit the JavaScript shared-layer tasks as "Port the Unicode layer, normalizer, word lists, fold helpers and source maps to TypeScript".
+- [X] T027 Commit the JavaScript shared-layer tasks as "Port the Unicode layer, normalizer, word lists, fold helpers and source maps to TypeScript".
 
 **Checkpoint**: The .NET corpus (513 cases) passes on three targets with both .NET fixes. The JavaScript shared layers are ported and their unit tests pass.
 

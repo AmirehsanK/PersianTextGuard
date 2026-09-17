@@ -94,3 +94,15 @@ No file was rewritten. The regression proof for the recorded cases is T066.
 - **The two means above 5% are machine drift, not the fix.** A rerun of `FindMatches*` and `CleanShortMessage` together gave CleanShortMessage 2.735 µs, FindMatchesClean 2.884 µs (ratio 1.05) and FindMatchesDirty 7.541 µs (ratio 2.76). The baseline benchmark itself drifted +12% between runs with no change on its path, while the ratios fell from 1.11 and 2.83 in the "before" run.
 - **The only per-message addition** is one scan for noncharacters in text that is compatibility-normalized.
 - **README**: the .NET "Performance" table was refreshed from the "after" run.
+
+## JavaScript shared layers (T019–T027)
+
+- **Files**: `src/types.ts`, `src/unicode.ts`, `src/normalizer.ts`, `src/word-list.ts`, `src/fold.ts` and `src/source-map.ts`.
+- **`npx vitest run test/unicode.test.ts test/internals.test.ts`**: **85 passed** (26 + 59).
+  - the R1 findings: U+0085 and U+FEFF whitespace, U+0130 and Σ lower-casing, `Cs` for lone surrogates, NFKC around all 66 noncharacters;
+  - every `SourceMapTests` theory on the same 14 samples, and its facts;
+  - the heading rule: `[3]`, `[+4]` and `[ 03 ]` throw `WordListFormatError` with `line` 1, and `[ Insult ]`/`[SLUR]` parse;
+  - a normalization-with-map of a 320,000-character message;
+  - the bundled lists: `all` 1,250 and `persianDefault` 1,025.
+- **ESLint** on `src/` and **`tsc --noEmit`** for both configs: clean.
+- **Deviation from T005**: `tsconfig.node.json` uses `"module": "ESNext"` and `"moduleResolution": "Bundler"`, not `NodeNext`. Tests import `src/` files, which use extensionless relative imports resolved by tsup and Vitest, and NodeNext would demand `.js` extensions there. Node.js types are still available only to tests, benchmarks and scripts.
