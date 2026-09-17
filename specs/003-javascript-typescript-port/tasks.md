@@ -394,18 +394,18 @@ The TypeScript consumer compiles with no `@types` package.
 
 The runner modules (T043–T045) can be written in parallel with Phase 3; the full pass (T047) needs Phase 3.
 
-- [ ] T043 [P] [US2] Create `js/test/corpus/load.ts` (a port of the loading part of `dotnet/tests/PersianTextGuard.Conformance/Corpus.cs`):
+- [X] T043 [P] [US2] Create `js/test/corpus/load.ts` (a port of the loading part of `dotnet/tests/PersianTextGuard.Conformance/Corpus.cs`):
   - **`findRepositoryRoot()`**: walks up from `import.meta.dirname` to a directory containing `VERSION` and `conformance/`.
   - **`loadCorpus(directory)`**: reads `corpus.json`, `configurations.json` and `cases/*.json` in ordinal file-name order, with `JSON.parse`. It throws an `Error` naming the file for a missing directory (message starting "Conformance corpus not found:"), a missing file, an unparsable file, a non-array case file, a case without a string `id` or `kind`, or an unknown `kind`.
   - **Return value**: `{ metadata, configurations: Map<name, object>, files, cases: { id, kind, file, json, pending }[] }`.
-- [ ] T044 [P] [US2] Create `js/test/corpus/values.ts`, porting the text and position helpers from `Corpus.cs`:
+- [X] T044 [P] [US2] Create `js/test/corpus/values.ts`, porting the text and position helpers from `Corpus.cs`:
   - `buildInput(node)`: string, `null`, or `{ build: [...] }` with `text`, `repeat`/`times ≥ 1` and `utf16` parts. It throws on anything else.
   - `isText(node)`.
   - `codePointsToUtf16(text, start, length)` and `utf16ToCodePoints(text, index, length)`: a valid pair counts as one code point and two units; any other unit counts as one of each.
   - `showInvisible(text)`: escapes Cf, Cc, Zl, Zp, whitespace other than U+0020, lone surrogates and noncharacters as `\uXXXX`, using `unicode.ts` categories.
   - `display(node)`.
   - `compare(expected, actual)`, which returns `{ path, expected, actual }[]`: exact field-by-field comparison where two text values (string or build) compare by built text, and missing keys are reported as `(missing)`.
-- [ ] T045 [US2] Create `js/test/corpus/evaluate.ts`, the counterpart of `Corpus.Evaluate` and `CheckKindRules`, evaluating against `../../src/index.ts`.
+- [X] T045 [US2] Create `js/test/corpus/evaluate.ts`, the counterpart of `Corpus.Evaluate` and `CheckKindRules`, evaluating against `../../src/index.ts`.
   - **Filters**: `filterFor(corpus, name)` caches one filter per configuration. `bundled: "default"` → `WordList.persianDefault`; `"all"` → `WordList.all`; an array → `WordList.bundled(...)`; `entries` → the entries as given; `options` → the three booleans.
   - **Result shapes**: `evaluate(corpus, case)` returns the kind's `expected` shape with **code-point positions**, converting each match's `index`/`length` with `utf16ToCodePoints`.
     - **Matching kinds**: `containsProfanity`, `firstMatch`, `matches` (`entry` `{ text, mode, category }`, `evasion`, `start`, `length`), `censored` (`''` for a missing input), and `censoredWith` for each of `masks`.
@@ -416,7 +416,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
     - **Mask validation**: `accepted` is `false` when `censor('kir', mask)` throws `RangeError`.
   - **Comparing text**: output text that contains a lone surrogate is compared by built text, so no special serialization is needed.
   - **`checkKindRules(case)`**: `ordinary` requires `containsProfanity` `false`, `firstMatch` `null`, an empty `matches`, and `censored` plus every `censoredWith` value equal to the built input (`''` for a missing input); `must-match` requires `containsProfanity` `true`. The violation strings match .NET's wording.
-- [ ] T046 [US2] Create `js/test/corpus.test.ts`:
+- [X] T046 [US2] Create `js/test/corpus.test.ts`:
   - **Loading**: at module load, `const corpus = loadCorpus(join(findRepositoryRoot(), 'conformance'))`.
   - **Guard tests** (one `test` each):
     - the corpus loads;
@@ -427,21 +427,21 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
     - every matching case's configuration exists;
     - 0 not-applicable cases, since every build part is representable in JavaScript.
   - **Case tests**: `describe.each` per kind with `test.each(ids)`, one test per case named by id. Each test checks pending, then the kind rules (message "breaks its kind rule"), then `compare`. On any problem it throws an `Error` whose message is `Case '<id>' in <file>: <problem>` on the first line, then `  input "<showInvisible(built input)>"`, then one line per difference, `  <path>: expected <expected> actual <actual>` (FR-016, spec US2 scenario 2).
-- [ ] T047 [US2] Run `npm run corpus`. Every case passes (513 cases + guards).
+- [X] T047 [US2] Run `npm run corpus`. Every case passes (513 cases + guards).
   - **Failures**: for each failing case, find the root cause by comparing `js/src` with the .NET source it ports, and fix the port. **Never** edit the corpus to match the port. If a failure is a genuine engine Unicode difference (research R1), stop and report it to the user with the case id and code points. Do not add a workaround without their decision.
   - **Record** in `verification.md`: the pass count, the Node.js version and the run time.
-- [ ] T048 [US2] Run the corpus locally on both supported Node.js releases (research R19), since this machine's default Node.js is 26:
+- [X] T048 [US2] Run the corpus locally on both supported Node.js releases (research R19), since this machine's default Node.js is 26:
   1. Install fnm with `winget install Schniz.fnm --accept-source-agreements --accept-package-agreements`, then `fnm install 22` and `fnm install 24`. Both come from the official nodejs.org builds.
   2. In `js/`, run `fnm exec --using=22 npm run corpus` and `fnm exec --using=24 npm run corpus`. Every case must pass on both.
   3. A failure on only one release is a Unicode-data difference (research R1): stop and report it to the user with the case id, the code points and both Node.js versions.
 
   Record `node --version`, `process.versions.unicode` and the pass counts for each release in `verification.md`.
-- [ ] T049 [US2] Check failure reporting on scratch edits, reverted afterwards with `git checkout -- conformance`:
+- [X] T049 [US2] Check failure reporting on scratch edits, reverted afterwards with `git checkout -- conformance`:
   1. Change `fa-emoji-before-word`'s `expected.censored` to `"😀 ####"`, and set `matching-persian-ordinary-messages-pass-001`'s `containsProfanity` to `true`. `npm run corpus` fails exactly those 2 tests in one run, with the messages specified in T046; the second says "breaks its kind rule".
   2. Rename `conformance/` to `conformance.off`. `npm run corpus` fails with "Conformance corpus not found". Rename it back.
 
   Record both outputs in `verification.md`.
-- [ ] T050 [US2] Compare the bundled selections with .NET (FR-018, SC-002):
+- [X] T050 [US2] Compare the bundled selections with .NET (FR-018, SC-002):
   1. Build, then run the `node --input-type=module -e …` dump from [quickstart.md](quickstart.md) §4 into `artifacts/compare/js.txt`.
   2. Rebuild the .NET dump with `dotnet run --project artifacts/compare/current > artifacts/compare/current.txt` (its project from feature 002 still exists locally; if not, recreate it as in 002's T029).
   3. Convert the .NET dump's mode and category names to lowerCamelCase, and its section headers to the JavaScript ones (`## Profanity` → `## profanity`, and so on; drop the `## resources` section) into `artifacts/compare/dotnet-normalized.txt`, with a small Node.js script run inline.

@@ -124,3 +124,44 @@ No file was rewritten. The regression proof for the recorded cases is T066.
   - `cjs`: `cjs ok`.
   - `typescript`: strict, `node16`, no `@types`. `tsc -p .` succeeds, including three `@ts-expect-error` lines (an unknown option, an unknown category, a number mask) in `index.mts` and one in `index.cts`; TypeScript would fail on any of them that did not error.
   - `browser`: esbuild with `platform: 'browser'`, run in a bare `vm` context with no `require`, `process` or `Buffer`. `browser ok`: the full bundle is 94,223 characters; the normalize-only bundle is 39,563 characters and does not contain the word lists.
+
+## US2: same answers as .NET, proven by the corpus (T043–T050)
+
+- **Runner.** `test/corpus/load.ts`, `values.ts` and `evaluate.ts`, and `test/corpus.test.ts`, following the corpus-format runner obligations. Positions are converted to code points; text compares by built value; kind rules are checked before fields.
+- **First full run (T047), local Node.js 26.4.0.** `npm run corpus`: **520 passed**, in 0.9 s.
+
+  | Group | Passed |
+  | --- | --- |
+  | guards | 7 |
+  | `ordinary` | 148 |
+  | `must-match` | 281 |
+  | `robustness` | 20 |
+  | `normalization` | 36 |
+  | `tokenization` | 4 |
+  | `word-list-parsing` | 8 |
+  | `category-selection` | 9 |
+  | `mask-validation` | 7 |
+
+  The cases add up to 513, equal to the .NET runner's count, and 0 are not applicable. No port change was needed.
+- **Supported releases (T048).** fnm 1.39.0 could not install Node.js on this machine ("The system cannot move the file to a different disk drive", os error 17, even with `FNM_DIR`, `TEMP` and the working directory all on C:), and was uninstalled. Instead, the official `node-v22.23.2-win-x64.zip` and `node-v24.21.0-win-x64.zip` were downloaded from nodejs.org into the session scratchpad and checked against `SHASUMS256.txt`. Both report `process.versions.unicode` 17.0.
+
+  | Node.js | `corpus.test.ts` | unit tests |
+  | --- | --- | --- |
+  | 22.23.2 | 520 passed | 132 passed |
+  | 24.21.0 | 520 passed | — |
+
+- **Failure reporting (T049)**, on scratch edits reverted with `git checkout -- conformance`:
+  1. With `fa-emoji-before-word`'s `censored` set to `"😀 ####"` and `matching-persian-ordinary-messages-pass-001`'s `containsProfanity` set to `true`: **2 failed | 518 passed**.
+
+     ```text
+     Error: Case 'matching-persian-ordinary-messages-pass-001' in matching-persian.json: breaks its kind rule
+       input "هر کس پلات بالاست پیام بده"
+       ordinary requires containsProfanity to be false
+     Error: Case 'fa-emoji-before-word' in matching-persian.json: 1 field(s) differ
+       input "😀 کیر"
+       expected.censored: expected "😀 ####" actual "😀 ****"
+     ```
+
+  2. With `conformance/` renamed, the first run failed with "Could not find the repository root (a directory with VERSION and conformance/)". The root lookup was then changed to look for `VERSION` and `wordlists/`, and the run fails with `Error: Conformance corpus not found: 'D:\Git\PersianTextGuard\conformance' does not exist.` (Test Files 1 failed, no tests). After restoring the corpus: 520 passed.
+- **Bundled selections (T050).** The dump of `dist/index.mjs` versus feature 002's .NET dump (`artifacts/compare/current`, with names converted to lowerCamelCase and the resources section dropped): `git diff --no-index` exits 0, **0 differences**. `all` 1,250; `default` 1,025; `uncategorized` 0; `profanity` 93; `sexual` 353; `insult` 400; `slur` 146; `harassment` 33; `mild` 225.
+- **`npm run lint`** (ESLint, and `tsc` for `src` and for tests, benchmarks and scripts): clean.
