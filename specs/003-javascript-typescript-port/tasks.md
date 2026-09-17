@@ -526,7 +526,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
 - `npm run lint` reports no undocumented export;
 - `npm run bench` meets SC-005 and matches the README table.
 
-- [ ] T056 [US4] Write the full `js/README.md` (FR-024, research R16). The first line is `# persian-text-guard`, followed by a one-line English description, then:
+- [X] T056 [US4] Write the full `js/README.md` (FR-024, research R16). The first line is `# persian-text-guard`, followed by a one-line English description, then:
   1. **English**:
      - **Installation**: `npm install persian-text-guard`.
      - **Quick start**: TypeScript examples, each in its own fenced `ts` block that imports from `'persian-text-guard'` and ends with `console.log` lines showing the result as comments:
@@ -549,8 +549,8 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   2. **Persian**, inside `<div dir="rtl">` … `</div>`, with a `## فارسی` heading: installation, and a quick start with the first two examples (build and check; censor) reusing the same code blocks, with a Persian comment line added to each. Also a Persian sentence for the input-validation note, and a link to the full project README.
 
   Every fenced block is `ts` and self-contained, so T057 can run it.
-- [ ] T057 [US4] Create `js/test/readme.test.ts`. It reads `js/README.md`, extracts every fenced block tagged `ts`, rewrites `from 'persian-text-guard'` to an absolute `file://` URL of `js/dist/index.mjs`, writes each block to a temporary `.mts` file in `js/temp/readme/`, and runs it with `node --import tsx <file>`. Each block must exit `0`. For each `console.log(x); // → value` line, the test asserts the printed value equals `value`. Name each test `README block <n>: <first comment or line>`. Run `npm run test:readme`: every block passes.
-- [ ] T058 [US4] Create `js/api-extractor.json`:
+- [X] T057 [US4] Create `js/test/readme.test.ts`. It reads `js/README.md`, extracts every fenced block tagged `ts`, rewrites `from 'persian-text-guard'` to an absolute `file://` URL of `js/dist/index.mjs`, writes each block to a temporary `.mts` file in `js/temp/readme/`, and runs it with `node --import tsx <file>`. Each block must exit `0`. For each `console.log(x); // → value` line, the test asserts the printed value equals `value`. Name each test `README block <n>: <first comment or line>`. Run `npm run test:readme`: every block passes.
+- [X] T058 [US4] Create `js/api-extractor.json`:
   - `mainEntryPointFilePath: "<projectFolder>/dist/index.d.mts"`;
   - `apiReport: { enabled: true, reportFolder: "<projectFolder>/etc/", reportTempFolder: "<projectFolder>/temp/" }`;
   - `docModel.enabled: false` and `dtsRollup.enabled: false`;
