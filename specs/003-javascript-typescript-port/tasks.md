@@ -560,7 +560,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   If API Extractor does not accept `.d.mts` as the entry point, add a `build:api-dts` step that emits a plain `temp/api/index.d.ts` with `tsc -p tsconfig.api.json --emitDeclarationOnly`, point `mainEntryPointFilePath` at it, and record the reason in `api-extractor.json` as a comment.
 
   Run `npx api-extractor run --local` to create `js/etc/persian-text-guard.api.md`. Review that it lists exactly the declarations in the public API contract (FR-022). Then `npm run api` (non-local) passes.
-- [ ] T059 [US4] Create `js/scripts/check-api-compat.mjs` (research R14; constitution: compare "against the previous release"):
+- [X] T059 [US4] Create `js/scripts/check-api-compat.mjs` (research R14; constitution: compare "against the previous release"):
   1. **Previous release**: run `git describe --tags --abbrev=0 --match "v[0-9]*" <ref>`, where `<ref>` is `HEAD`, or `HEAD^` when `git tag --points-at HEAD` lists a `v*` tag, so a release build compares with the release before it. If no tag is found, print "No previous release tag; baseline only" and exit `0`.
   2. **Previous report**: `git show <tag>:js/etc/persian-text-guard.api.md`. If the file does not exist at that tag, print "No previous npm release report (first release); baseline only" and exit `0`.
   3. **Compare**: extract the lines inside the fenced `ts` block of both the previous report and the current `js/etc/persian-text-guard.api.md`, trimming trailing whitespace and ignoring blank lines and `//` comment lines. Every previous declaration line must appear in the current block.
@@ -571,12 +571,12 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   - `npm run api:compat` prints the first-release baseline message.
   - Create a local tag `v1.3.0-compat-test` on `HEAD`, commit a scratch change that edits the `censor` line in the report, and run the script: it prints `BREAKING:` for that line and exits `1`.
   - Revert the commit, delete the tag, and record both outputs in `verification.md`.
-- [ ] T060 [US4] Create `js/bench/filter.bench.ts` with tinybench, mirroring `dotnet/benchmarks/PersianTextGuard.Benchmarks/Program.cs`. Copy the same message constants (`CleanShort`, `CleanLong`, `Evasion`, `DirtyShort`, `DirtyMixed`, `DirtyLong`) verbatim, and add the same nine tasks: `CleanShortMessage`, `CleanLongMessage`, `EvasiveMessage`, `NormalizeLongMessage`, `BuildFilterFromDefaultList`, `FindMatchesClean`, `FindMatchesDirty`, `CensorShortDirty` and `CensorLongDirty`. It imports from `../dist/index.mjs`, runs with a warm-up, and prints a Markdown table: Operation | Mean | Throughput.
+- [X] T060 [US4] Create `js/bench/filter.bench.ts` with tinybench, mirroring `dotnet/benchmarks/PersianTextGuard.Benchmarks/Program.cs`. Copy the same message constants (`CleanShort`, `CleanLong`, `Evasion`, `DirtyShort`, `DirtyMixed`, `DirtyLong`) verbatim, and add the same nine tasks: `CleanShortMessage`, `CleanLongMessage`, `EvasiveMessage`, `NormalizeLongMessage`, `BuildFilterFromDefaultList`, `FindMatchesClean`, `FindMatchesDirty`, `CensorShortDirty` and `CensorLongDirty`. It imports from `../dist/index.mjs`, runs with a warm-up, and prints a Markdown table: Operation | Mean | Throughput.
   - **Extra task**: add `VeryLongMessage`, which checks `containsProfanity` on the 132,000-character message (`"سلام این یک متن معمولی است و هیچ مشکلی ندارد. hello this is fine. "` repeated 2000 times, then `" کیر"`), for the spec's "very long messages" edge case.
   - **Run** `npm run bench` on Node.js 24 on this machine, using `fnm exec --using=24` if needed.
   - **Check the limits**: `BuildFilterFromDefaultList` under 50 ms and `CleanShortMessage` under 50 µs (SC-005), and `VeryLongMessage` under 100 ms (spec Edge Cases). If any fails, stop and report it to the user with the numbers before optimising.
   - **Record**: fill the README's "Performance" table with the numbers, the machine (read the CPU model from `wmic cpu get name` or `Get-CimInstance Win32_Processor`) and the Node.js version.
-- [ ] T061 [US4] Update the root `README.md` (FR-025):
+- [X] T061 [US4] Update the root `README.md` (FR-025):
   1. After the introduction, add an "Install" subsection listing both packages: `dotnet add package PersianTextGuard` and `npm install persian-text-guard`, linking `js/README.md`.
   2. In "Development": add `js/` to the layout tree, and to the commands table add `cd js && npm ci`, `npm run build`, `npm test`, `npm run corpus`, `npm run bench` and `npm run pack`.
   3. Add a "Releasing" section:
@@ -594,12 +594,12 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
      The Persian half follows with the bilingual README feature, under the adoption clause.
 
   Every new command must be one verified in T010–T060.
-- [ ] T062 [US4] Draft the bilingual release notes in `specs/003-javascript-typescript-port/release-notes-1.3.0.md` (research R15). It has an English section and a Persian summary in `<div dir="rtl">`.
+- [X] T062 [US4] Draft the bilingual release notes in `specs/003-javascript-typescript-port/release-notes-1.3.0.md` (research R15). It has an English section and a Persian summary in `<div dir="rtl">`.
   - **New npm package**: `persian-text-guard`, with install and quick start, and a link to `js/README.md`.
   - **Fixed**: .NET no longer throws `ArgumentException` for messages containing Unicode noncharacters (U+FFFE on .NET 8/10, all noncharacters on .NET Framework 4.8). This is called out as a change in matching behaviour for inputs that used to throw.
   - **Changed**: word-list section headings must be category names (`[insult]`, any case). A category number such as `[3]` or `[+4]`, which 1.2.0 accepted, is now reported as an unknown category.
   - **Unchanged**: no other change to .NET behaviour, API or bundled entries.
-- [ ] T063 [US4] Run `npm run lint` (clean, no undocumented export), `npm run test:all` (unit tests, corpus and README all pass), `npm run api` (passes) and `npm run api:compat` (first-release baseline). Record the results in `verification.md`. Commit the US4 tasks as "Document, benchmark and record the API of the npm package".
+- [X] T063 [US4] Run `npm run lint` (clean, no undocumented export), `npm run test:all` (unit tests, corpus and README all pass), `npm run api` (passes) and `npm run api:compat` (first-release baseline). Record the results in `verification.md`. Commit the US4 tasks as "Document, benchmark and record the API of the npm package".
 
 **Checkpoint**: The feature is complete and documented, and ready for a pull request.
 

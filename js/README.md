@@ -213,7 +213,24 @@ if (typeof body.message !== 'string') {
 
 ## Performance
 
-<!-- performance-table -->
+Against `WordList.persianDefault` (about 1,000 entries), on Node.js 24.21.0 (Intel Core i7-9700K,
+tinybench, mean of at least 2 seconds per operation):
+
+| Operation | Mean |
+| --- | ---: |
+| Short clean message (5 words) | 11.0 µs |
+| Long clean message (60 words) | 92.8 µs |
+| Message with evasions | 7.9 µs |
+| Normalize a long message | 32.5 µs |
+| Build a filter from the bundled list | 2.4 ms |
+| `findMatches`, clean short message | 11.0 µs |
+| `findMatches`, message with three banned words | 29.0 µs |
+| `censor`, short message with one banned word | 13.2 µs |
+| `censor`, 60-word message with three banned words | 372 µs |
+| A 132,000-character message | 30.7 ms |
+
+Build the filter once and reuse it. The messages are the same as the .NET benchmarks'; run them with
+`npm run bench` in `js/`.
 
 ## Limitations
 

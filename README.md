@@ -21,6 +21,13 @@ dotnet add package PersianTextGuard
 Targets .NET Standard 2.0 (so .NET Framework 4.6.1+ works), .NET 8 and .NET 10, and the
 tests run on .NET Framework 4.8, .NET 8 and .NET 10. No dependencies.
 
+For JavaScript and TypeScript, the same filter is on npm, with types included and the same answers
+for every message ([JavaScript README](js/README.md)):
+
+```bash
+npm install persian-text-guard
+```
+
 ## Profanity filtering
 
 ```csharp
@@ -223,6 +230,17 @@ form submission.
 dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0
 ```
 
+## Changes in 1.3.0 for .NET users
+
+- A message containing a Unicode noncharacter (such as U+FFFE) no longer throws. 1.2.0 threw
+  `ArgumentException` for U+FFFE on .NET 8 and .NET 10, and for every noncharacter on .NET Framework 4.8.
+- A section heading in a word-list file must be a category name, such as `[insult]` in any letter
+  case. A number such as `[3]`, which 1.2.0 accepted as the category with that internal number, is
+  now reported as an unknown category.
+
+Nothing else changes for .NET users. See the
+[release notes](https://github.com/AmirehsanK/PersianTextGuard/releases).
+
 ## Development
 
 The repository is laid out so that ports to other languages can sit next to the .NET one and share
@@ -244,6 +262,9 @@ the same word lists, version and behaviour:
 │   ├── tests/PersianTextGuard.Conformance/
 │   ├── benchmarks/PersianTextGuard.Benchmarks/
 │   └── tools/PersianTextGuard.CorpusFill/
+├── js/                             # the npm package persian-text-guard
+│   ├── src/  test/  bench/  consumers/  scripts/
+│   └── etc/persian-text-guard.api.md
 ├── README.md  LICENSE  THIRD-PARTY-NOTICES.md  icon.png
 ├── .github/workflows/ci.yml
 └── .specify/  .claude/  specs/
@@ -264,6 +285,32 @@ Every command runs from the repository root:
 | Pack | `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts` |
 | Fill in pending corpus cases | `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill` |
 
+For the JavaScript port, run these in `js/` (Node.js 22 or later):
+
+| Purpose | Command |
+| --- | --- |
+| Install the development tools | `npm ci` |
+| Build | `npm run build` |
+| Lint and type check | `npm run lint` |
+| Unit tests | `npm test` |
+| Conformance corpus | `npm run corpus` |
+| README examples | `npm run test:readme` |
+| Benchmarks | `npm run bench` |
+| Pack | `npm run pack` |
+| API report and compatibility | `npm run api`, `npm run api:compat` |
+
+### Releasing
+
+Every package is released together, at the version in `VERSION`:
+
+1. Set `VERSION` in the pull request, and merge it once CI is green for every port.
+2. Tag the merge commit `vX.Y.Z`, matching `VERSION`, and push the tag.
+3. CI publishes `PersianTextGuard` to NuGet and `persian-text-guard` to npm, only when every build and
+   test job for every port is green and the tag matches `VERSION`. The npm package is published with
+   provenance from this workflow.
+4. If one registry's publish job fails after the other succeeded, fix the cause and re-run the failed
+   job: NuGet skips a version it already has, and so does the npm job.
+
 ## Limitations
 
 - It finds words and phrases; it does not understand meaning. Insults made of ordinary
@@ -278,6 +325,9 @@ Every command runs from the repository root:
   together (`هر کس ده تا` is not `کسده`).
 - Transposed letters (`fcuk`) and a letter typed as a different letter (`cvnt`) are
   spellings, not typography: add the ones your community uses.
+- The JavaScript package uses the JavaScript engine's Unicode data, so characters added in Unicode 16
+  or later, and results in Firefox and Safari, can differ; see its
+  [limitations](js/README.md#limitations).
 
 ## Background
 

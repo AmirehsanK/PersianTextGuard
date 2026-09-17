@@ -184,3 +184,35 @@ No file was rewritten. The regression proof for the recorded cases is T066.
 - **`VERSION` → 1.3.0 (T055).**
   - `npm run pack` produces `persian-text-guard-1.3.0.tgz` (8 files, 228,393 bytes unpacked).
   - `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts` creates `PersianTextGuard.1.3.0.nupkg` and `.snupkg` with no errors or warnings. Package validation ran against the 1.2.0 baseline (`PackageValidationBaselineVersion` is still `1.2.0`), so the noncharacter and heading fixes changed no public API.
+
+## US4: documented, measured and kept compatible (T056–T063)
+
+- **`js/README.md` (T056).** English sections: installation, quick start, matches and positions, censoring, categories, your own words, options, normalization, validating input, the .NET-to-JavaScript table, performance, limitations and links. Then a Persian section in `<div dir="rtl">` with installation, quick start, censoring and the input-validation note.
+- **README examples (T057).** `npm run test:readme`: **13 passed**, 12 `ts` blocks plus a check that there are at least 10, each run with `tsx` against `dist/index.mjs` and its printed lines compared with the block's `// → …` comments. Changing one expected value (`→ #### and ****`) made exactly 1 test fail; restored, 13 passed.
+- **API report (T058).** `api-extractor.json` reads `dist/index.d.mts` directly; no plain `.d.ts` workaround was needed. `etc/persian-text-guard.api.md` lists exactly the contract's declarations, plus `ResolvedWord` and `WordListFormatError`'s constructor. `npm run api` (non-local): "API Extractor completed successfully", with no TSDoc errors. It analyses with its bundled TypeScript 5.9.3; a notice says the project uses 6.0.3, which does not affect reading declaration files.
+- **API compatibility (T059).** `scripts/check-api-compat.mjs`:
+  - On this branch it prints "No previous npm release report at v1.2.0 (first release); baseline only" and exits 0.
+  - **Proof it catches a break.** The report was committed (`f7e103e`) and tagged locally `v1.3.0-compat-test`, followed by an empty scratch commit and an edit of the report's `censor` line to `censor(text: string, mask?: string): string;`. The script printed `BREAKING: censor(text: string | null | undefined, mask?: string): string;` and "1 declaration(s) from v1.3.0-compat-test were removed or changed; that needs a MAJOR version.", exit 1. The edit, the scratch commit and the local tag (never pushed) were then removed.
+- **Benchmarks (T060).** `bench/filter.bench.ts` (tinybench 6.2.0, 2 s per task after 0.5 s warm-up) uses the .NET suite's six messages extracted verbatim from `Program.cs`, plus the 132,000-character message. Node.js v24.21.0, Intel Core i7-9700K:
+
+  | Benchmark | Mean | Limit |
+  | --- | ---: | ---: |
+  | CleanShortMessage | 11.0 µs | < 50 µs (SC-005) ✅ |
+  | CleanLongMessage | 92.8 µs | |
+  | EvasiveMessage | 7.9 µs | |
+  | NormalizeLongMessage | 32.5 µs | |
+  | BuildFilterFromDefaultList | 2.4 ms | < 50 ms (SC-005) ✅ |
+  | FindMatchesClean | 11.0 µs | |
+  | FindMatchesDirty | 29.0 µs | |
+  | CensorShortDirty | 13.2 µs | |
+  | CensorLongDirty | 372 µs | |
+  | VeryLongMessage | 30.7 ms | < 100 ms (spec edge case) ✅ |
+
+  The README's performance table shows these numbers.
+- **Root `README.md` (T061).** A diff of 50 insertions and 0 deletions: the npm install beside NuGet, a "Changes in 1.3.0 for .NET users" section (noncharacters and numeric headings), `js/` in the layout and a JavaScript command table, a "Releasing" section, and a Limitations bullet linking the npm README.
+- **Release notes draft (T062).** `release-notes-1.3.0.md`: English notes and a Persian summary. They cover the new npm package, the noncharacter fix, the heading change, and no other .NET change.
+- **Final checks (T063).**
+  - `npm run lint`: clean.
+  - `npm run test:all`: **665 passed** in 5 files (132 unit, 520 corpus, 13 README).
+  - `npm run api`: passes.
+  - `npm run api:compat`: first-release baseline.
