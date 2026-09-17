@@ -165,3 +165,22 @@ No file was rewritten. The regression proof for the recorded cases is T066.
   2. With `conformance/` renamed, the first run failed with "Could not find the repository root (a directory with VERSION and conformance/)". The root lookup was then changed to look for `VERSION` and `wordlists/`, and the run fails with `Error: Conformance corpus not found: 'D:\Git\PersianTextGuard\conformance' does not exist.` (Test Files 1 failed, no tests). After restoring the corpus: 520 passed.
 - **Bundled selections (T050).** The dump of `dist/index.mjs` versus feature 002's .NET dump (`artifacts/compare/current`, with names converted to lowerCamelCase and the resources section dropped): `git diff --no-index` exits 0, **0 differences**. `all` 1,250; `default` 1,025; `uncategorized` 0; `profanity` 93; `sexual` 353; `insult` 400; `slur` 146; `harassment` 33; `mild` 225.
 - **`npm run lint`** (ESLint, and `tsc` for `src` and for tests, benchmarks and scripts): clean.
+
+## US3: CI and lockstep publishing (T051–T055)
+
+- **`.github/workflows/ci.yml` (T051, T053).** The three existing job names are unchanged. Added:
+  - **`JavaScript (Node 22)` and `JavaScript (Node 24)`**: install, lint and type check, build, unit tests, corpus, README examples. On Node.js 24 also: pack, `check:package`, `api`, `api:compat` (checkout with `fetch-depth: 0`), consumer checks, and upload of the `npm-package` artifact.
+  - **`Publish to npm`**: `v*` tags only, `environment: npm`, `id-token: write`, tag check, Node.js 24 with `npm@^11.5.1`, skip if the version is already published, then `npm publish <tgz> --access public`.
+  - **Gating**: `Publish to NuGet` and `Publish to npm` both have `needs: [build, netfx, javascript]`.
+- **`scripts/check-package.mjs` (T052).** publint `--strict` on `.pack/` reports "All good!". attw `--profile node16` on the tarball is 🟢 for node16 (from CJS), node16 (from ESM) and bundler, with "No problems found".
+- **Release gate precheck (T054).** The "Check tag matches VERSION" command in Git Bash, with `VERSION` at 1.3.0:
+
+  | `GITHUB_REF_NAME` | Exit | Output |
+  | --- | --- | --- |
+  | `v1.3.0` | 0 | — |
+  | `v9.9.9` | 1 | `Tag v9.9.9 does not match VERSION 1.3.0` |
+
+  Reading `ci.yml` back confirms both publish jobs need `build`, `netfx` and `javascript` and run only on `refs/tags/v`. SC-008 itself is demonstrated by the real CI dry run (T067–T070).
+- **`VERSION` → 1.3.0 (T055).**
+  - `npm run pack` produces `persian-text-guard-1.3.0.tgz` (8 files, 228,393 bytes unpacked).
+  - `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts` creates `PersianTextGuard.1.3.0.nupkg` and `.snupkg` with no errors or warnings. Package validation ran against the 1.2.0 baseline (`PackageValidationBaselineVersion` is still `1.2.0`), so the noncharacter and heading fixes changed no public API.

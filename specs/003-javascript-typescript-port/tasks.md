@@ -462,7 +462,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
 - locally, the tag check refuses `v9.9.9`;
 - the packed tarball has version `1.3.0` and exactly eight files.
 
-- [ ] T051 [US3] Add the JavaScript job to `.github/workflows/ci.yml`. Leave the three existing jobs' names unchanged.
+- [X] T051 [US3] Add the JavaScript job to `.github/workflows/ci.yml`. Leave the three existing jobs' names unchanged.
   - **Job**: `javascript`, `name: JavaScript (Node ${{ matrix.node }})`, `runs-on: ubuntu-latest`, `strategy: { fail-fast: false, matrix: { node: [22, 24] } }`, `defaults: { run: { working-directory: js } }`.
   - **Steps**:
     1. `actions/checkout@v5` with `fetch-depth: 0`, since the API compatibility check reads earlier release tags.
@@ -480,8 +480,8 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
        - `npm run api:compat`;
        - `npm run check:consumers -- --no-pack`;
        - `actions/upload-artifact@v4` with `name: npm-package`, `path: js/artifacts/*.tgz`.
-- [ ] T052 [US3] Create `js/scripts/check-package.mjs`: find `js/artifacts/persian-text-guard-*.tgz` (exactly one, else fail); run `npx publint run .pack --strict`, then `npx attw <tarball> --profile node16`. The `node16` profile checks `node16`-CJS, `node16`-ESM and `bundler` resolutions. It exits non-zero if either reports a problem. Run it locally: both pass.
-- [ ] T053 [US3] Add the npm publish job and gate NuGet on every port in `.github/workflows/ci.yml`:
+- [X] T052 [US3] Create `js/scripts/check-package.mjs`: find `js/artifacts/persian-text-guard-*.tgz` (exactly one, else fail); run `npx publint run .pack --strict`, then `npx attw <tarball> --profile node16`. The `node16` profile checks `node16`-CJS, `node16`-ESM and `bundler` resolutions. It exits non-zero if either reports a problem. Run it locally: both pass.
+- [X] T053 [US3] Add the npm publish job and gate NuGet on every port in `.github/workflows/ci.yml`:
   - **`publish`** (`Publish to NuGet`): change `needs: [build, netfx]` to `needs: [build, netfx, javascript]`. Nothing else changes.
   - **New job `publish-npm`**, `name: Publish to npm`:
     - `needs: [build, netfx, javascript]`, `if: startsWith(github.ref, 'refs/tags/v')`, `runs-on: ubuntu-latest`, `environment: npm`;
@@ -501,12 +501,12 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
        ```
 
        with a comment that a re-run after a partial release is safe (research R10).
-- [ ] T054 [US3] Check the release gates locally before the real dry run (research R18), and record in `verification.md`:
+- [X] T054 [US3] Check the release gates locally before the real dry run (research R18), and record in `verification.md`:
   1. In Git Bash, run the tag-check command with `GITHUB_REF_NAME=v1.3.0` after T055 (exit `0`) and with `GITHUB_REF_NAME=v9.9.9` (exit `1`, printing "Tag v9.9.9 does not match VERSION 1.3.0").
   2. Read `.github/workflows/ci.yml` back and confirm that both publish jobs list `build`, `netfx` and `javascript` in `needs`, and that both run only on `refs/tags/v`.
 
   This is only a precheck. SC-008 is demonstrated by the real CI dry run in Phase 7, which also catches workflow syntax errors.
-- [ ] T055 [US3] Set `VERSION` to `1.3.0` (`printf '1.3.0\n' > VERSION`). Run:
+- [X] T055 [US3] Set `VERSION` to `1.3.0` (`printf '1.3.0\n' > VERSION`). Run:
   - `npm run pack` in `js/`: the tarball is `persian-text-guard-1.3.0.tgz`;
   - `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts`: this produces `PersianTextGuard.1.3.0.nupkg`, and package validation against **1.2.0** passes (`PackageValidationBaselineVersion` stays `1.2.0`, research R15).
 

@@ -64,9 +64,75 @@ jobs:
       - name: Conformance corpus
         run: dotnet test dotnet/tests/PersianTextGuard.Conformance -c Release -f net48
 
+  javascript:
+    name: JavaScript (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    defaults:
+      run:
+        working-directory: js
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # The API compatibility check reads the report from earlier release tags.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint and type check
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Conformance corpus
+        run: npm run corpus
+
+      - name: README examples
+        run: npm run test:readme
+
+      - name: Pack
+        if: matrix.node == 24
+        run: npm run pack
+
+      - name: Package checks (publint, attw)
+        if: matrix.node == 24
+        run: npm run check:package
+
+      - name: API report
+        if: matrix.node == 24
+        run: npm run api
+
+      - name: API compatibility with the previous release
+        if: matrix.node == 24
+        run: npm run api:compat
+
+      - name: Consumer checks (import, require, TypeScript, browser bundle)
+        if: matrix.node == 24
+        run: npm run check:consumers -- --no-pack
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.node == 24
+        with:
+          name: npm-package
+          path: js/artifacts/*.tgz
+
   publish:
     name: Publish to NuGet
-    needs: [build, netfx]
+    needs: [build, netfx, javascript]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: nuget
@@ -97,3 +163,41 @@ jobs:
 
       - name: Push
         run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+  publish-npm:
+    name: Publish to npm
+    # Lockstep: neither registry publishes unless every job for every port is green.
+    needs: [build, netfx, javascript]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write   # npm trusted publishing: no token stored in GitHub, and provenance is generated automatically
+    steps:
+      - uses: actions/checkout@v5
+
+      # A tag must name the version being released: v1.2.3 only when VERSION says 1.2.3.
+      - name: Check tag matches VERSION
+        run: test "${GITHUB_REF_NAME#v}" = "$(tr -d '[:space:]' < VERSION)" || { echo "Tag $GITHUB_REF_NAME does not match VERSION $(cat VERSION)"; exit 1; }
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or later.
+      - name: Update npm
+        run: npm install -g npm@^11.5.1
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: npm-package
+
+      # Re-running this job after a partial release is safe: a version already on npm is skipped.
+      - name: Publish (skip if already published)
+        run: |
+          V="$(tr -d '[:space:]' < VERSION)"
+          if npm view "persian-text-guard@$V" version >/dev/null 2>&1; then echo "persian-text-guard@$V already published"; exit 0; fi
+          npm publish "npm-package/persian-text-guard-$V.tgz" --access public
