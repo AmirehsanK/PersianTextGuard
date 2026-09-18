@@ -264,7 +264,8 @@ No file was rewritten. The regression proof for the recorded cases is T066.
 | 6 | npm README bilingual; root README updated | ✅ | T056, T061 |
 | 6 | Onboarding (SC-003) under 5 minutes | ✅ JS 4.0 s, TS 4.5 s (scripted) | below |
 | 7 | Tag gate dry run: failing port blocks both, green run publishes (dry), mismatched tag blocks both; nothing published | ✅ 3 runs | T067–T070 |
-| 7 | CI green on the pull request, release and registries | Pending: T071–T077 | |
+| 7 | CI green on the pull request (4 jobs pass, both publish jobs skipped) | ✅ PR #4 | T071 |
+| 7 | Merge, release and registries | Pending: T072–T077 | |
 
 **Onboarding (SC-003).** In two empty directories under the session scratchpad, a script followed only the npm README's installation and quick-start steps, installing `js/artifacts/persian-text-guard-1.3.0.tgz` in place of the registry name:
 1. `npm init -y`;

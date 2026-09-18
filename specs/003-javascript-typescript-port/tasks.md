@@ -664,7 +664,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   4. Confirm that `VERSION` on `003-javascript-typescript-port` is still `1.3.0`, and that its `ci.yml` has none of the dry-run edits (`git diff main -- .github/workflows/ci.yml` shows only the real JavaScript and npm jobs).
 
   Record the results in `verification.md` under "SC-008: release gates dry run".
-- [ ] T071 Commit `verification.md` on `003-javascript-typescript-port`, push, and open a pull request to `main` with `gh pr create`.
+- [X] T071 Commit `verification.md` on `003-javascript-typescript-port`, push, and open a pull request to `main` with `gh pr create`.
   - **Title**: "JavaScript/TypeScript port on npm, two .NET fixes, version 1.3.0".
   - **Body** summarises the parts and ends with the Claude Code attribution line:
     - the port;
