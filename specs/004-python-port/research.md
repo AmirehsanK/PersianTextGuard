@@ -114,7 +114,8 @@ has only 9 cases with characters outside the Basic Multilingual Plane, and none 
    changes the mask.
 4. **Pin it in the corpus.** The seven probes above, plus a supplementary letter inside a Persian word,
    become corpus cases (`robustness.json`, group "characters outside the Basic Multilingual Plane"),
-   recorded from .NET by the fill tool. Every port must pass them (spec FR-026, Edge Cases).
+   recorded from .NET by the fill tool. Two `ordinary` cases, one Persian and one English, put the same
+   kinds of characters inside ordinary messages, as constitution Principle I requires. Every port must pass them (spec FR-026, Edge Cases).
 
 **Alternatives considered.**
 - *A code-point-native port adapted by hand*: every per-unit test, and every index, would need its own
@@ -160,9 +161,11 @@ below use a factor of 1.25, rounded up:
 - it uses C-implemented `str` methods for whole-string passes, such as `str.translate` for digit and
   letter folding, and `isascii` fast paths;
 - it caches the category of each unit in a `dict`, which R17 shows is safe without the GIL;
-- the pyperf suite runs in CI on 3.14 and fails if the short-message mean exceeds 250 µs on the CI
-  runner, while the README table comes from the named machine. A miss is fixed before release, not
-  documented away (constitution Principle IV).
+- **SC-005's 250 µs** is checked on the machine the README names (T050), like every other number in the
+  table. A miss is fixed before release, not documented away (constitution Principle IV).
+- **CI** runs a regression gate on 3.14 at **500 µs**. Shared GitHub runners vary in speed, so a gate
+  at the SC-005 value would fail at random. The 2× headroom still catches a real regression, such as
+  an accidental quadratic loop or a per-message rebuild, without making the gate unreliable.
 
 **Alternatives considered.** *A C extension or Rust core*: the constitution requires the port to be
 pure Python (Principle III). *Measuring only after implementation*: the spec required a check during
@@ -175,8 +178,11 @@ planning, and the proxy is enough to show that the targets are reachable.
 **Decision.**
 - **Build backend**: `hatchling` 1.32 (a build-only dependency; the constitution allows those).
   `python/hatch_build.py` holds two small hooks:
-  - **metadata hook**: sets the version from `../VERSION` when building from the repository, or from
-    the generated `_version.py` when building a wheel from the sdist. The version is converted to
+  - **metadata hook** (`[tool.hatch.metadata.hooks.custom]`; hatchling has no custom *version source*,
+    only `code`, `env` and `regex`): sets the version from `../VERSION` when building from the repository,
+    or from the generated `_version.py` when building a wheel from the sdist. It also copies the root
+    `LICENSE` and `THIRD-PARTY-NOTICES.md` next to `pyproject.toml`, which works because hatchling
+    resolves `license-files` after metadata hooks. The version is converted to
     PEP 440 with `packaging.version.Version`, which `hatchling` already depends on (R9);
   - **build hook**: generates `src/persian_text_guard/_wordlists.py` from `../wordlists/*.txt` (R6)
     and `_version.py`, both git-ignored. When `../wordlists` is absent, as inside an unpacked sdist, it
@@ -350,8 +356,8 @@ passes, as in 1.3.0. Atomicity across registries remains impossible; `skip-exist
 - `uv run python bench/bench_filter.py -o results.json` writes the results, and
   `scripts/bench_table.py` turns them into the README's performance table. The table is measured on the
   README's named machine (the i7-9700K), on CPython 3.14.
-- CI runs `bench/bench_filter.py --fast` on 3.14 and fails if the short-message mean exceeds 250 µs
-  (R3).
+- CI runs `scripts/bench_gate.py` on 3.14, which fails if the short-message mean exceeds 500 µs, the
+  CI threshold from R3. SC-005's 250 µs is checked on the named machine.
 
 ---
 
@@ -363,8 +369,9 @@ passes, as in 1.3.0. Atomicity across registries remains impossible; `skip-exist
 - `scripts/check_package.py` checks that the wheel and sdist file lists equal the allowlist, that there
   are no runtime dependencies, that `Requires-Python` is `>=3.11`, and that the installed size is under
   1 MB (SC-004);
-- `scripts/check_consumers.py` makes two clean virtual environments, installs the wheel into one and the
-  sdist into the other with `pip --no-deps --no-index`, and runs `consumers/smoke.py` in each, which is
+- `scripts/check_consumers.py` makes two clean virtual environments. It installs the wheel into one
+  with `pip --no-deps --no-index`. For the other, it builds a wheel from the sdist alone with
+  `uv build --wheel <sdist>`, which needs the build backend from the index, and installs that offline, and runs `consumers/smoke.py` in each, which is
   the README quick start with asserts. It then runs `pyright --strict` and `mypy --strict` on
   `consumers/typed_usage.py`, and checks that `consumers/type_errors.py` fails with exactly the expected
   errors: an unknown option name and an unknown category (spec US1 scenario 7, SC-007).

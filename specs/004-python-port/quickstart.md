@@ -20,11 +20,13 @@ apart from the interpreter paths.
 cd python
 uv sync --locked
 uv run ruff check && uv run ruff format --check
-uv run mypy --strict src tests
+uv run python scripts/check_unicode_usage.py
+uv run mypy
 uv run pytest
 ```
 
-**Expected**: ruff and mypy are clean, and pytest passes every test:
+**Expected**: ruff, the Unicode-usage check and mypy (strict, over `src`, `tests`, `scripts`, `bench`
+and the typed consumer, as `pyproject.toml` configures) are clean, and pytest passes every test:
 - the unit tests;
 - `test_corpus.py`, which has one test per corpus case, 513 plus the new cases from research R2;
 - the corpus guards;
@@ -113,8 +115,9 @@ uv run python scripts/bench_table.py .bench/results.json
 ```
 
 **Expected**, on the i7-9700K with CPython 3.14: building takes under 500 ms, `CleanShortMessage` under
-250 µs, and `VeryLongMessage` under 3 s. The table goes into `python/README.md`. `scripts/bench_gate.py`
-applies the 250 µs check in CI.
+250 µs, and `VeryLongMessage` under 3 s. The table goes into `python/README.md`. In CI, `scripts/bench_gate.py`
+applies a 500 µs regression gate, because shared runners vary in speed (research R3). Run
+`uv run python scripts/bench_gate.py --limit-us 250` here to check SC-005's own value.
 
 ## 7. Release checks (SC-009, SC-011)
 

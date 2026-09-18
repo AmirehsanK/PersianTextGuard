@@ -10,6 +10,7 @@ New or changed paths only.
 /
 ├── VERSION                                  # 1.3.0 → 1.4.0
 ├── conformance/cases/robustness.json        # + characters outside the Basic Multilingual Plane (research R2)
+├── conformance/cases/matching-persian.json, matching-english.json   # + one ordinary case each
 ├── dotnet/src/PersianTextGuard/PersianTextGuard.csproj   # PackageValidationBaselineVersion 1.2.0 → 1.3.0
 ├── python/
 │   ├── pyproject.toml                       # [project] name, dynamic version, requires-python >=3.11; tool config
@@ -48,7 +49,7 @@ package in editable mode.
 | --- | --- | --- |
 | Set up | `uv sync --locked` | `.venv` with the dev tools and an editable package; generates `_wordlists.py` and `_version.py` |
 | Lint and format | `uv run ruff check && uv run ruff format --check` | Includes the `D` rules: a docstring on every public member |
-| Type check | `uv run mypy --strict src tests` | |
+| Type check | `uv run mypy` | Strict, over the `files` in `[tool.mypy]` |
 | Unit tests | `uv run pytest -m "not corpus"` | Everything except the corpus |
 | Corpus | `uv run pytest -m corpus` | Every case in `conformance/`; one test per case id |
 | All tests | `uv run pytest` | Unit tests, corpus, README examples and threads |
@@ -58,7 +59,7 @@ package in editable mode.
 | Consumer checks | `uv run python scripts/check_consumers.py` | Clean virtual environments from the wheel and the sdist; smoke test; `pyright` and `mypy` strict on the consumer files |
 | API check | `uv run python scripts/check_api.py` | griffe against the newest release tag that has `python/`; baseline when there is none |
 | Benchmarks | `uv run python bench/bench_filter.py -o .bench/results.json` | pyperf; `scripts/bench_table.py` prints the README table |
-| Benchmark gate | `uv run python scripts/bench_gate.py` | Fails if the short-message mean is over 250 µs (research R3) |
+| Benchmark gate | `uv run python scripts/bench_gate.py` | Fails if the short-message mean is over 500 µs, the CI regression gate; `--limit-us 250` applies SC-005 on the named machine (research R3) |
 
 ## Package contents
 
@@ -113,12 +114,14 @@ Steps marked 👤 are account actions only the maintainer can perform.
    - owner `AmirehsanK`, repository `PersianTextGuard`;
    - workflow `ci.yml`, environment `pypi`.
 2. 👤 On GitHub: **Settings → Environments → New environment** `pypi`, with deployment branches and tags
-   limited to tag `v*`, as for `npm`. No secrets.
+   limited to tag `v*`, as for `npm`. No secrets. Do this **before step 3**: a workflow that references a
+   missing environment makes GitHub create it with no protection rules.
 3. Before merge, a real CI dry run on `v1.4.0-dev.*` tags from a scratch branch proves the gates, with
    every publish step stubbed (research R19). The tags and branch are deleted afterwards.
 4. The pull request merges with the maintainer's go-ahead, `VERSION` = `1.4.0`, and CI green.
 5. Add the five Python job names to `main`'s required status checks.
-6. Push tag `v1.4.0` on the merge commit after checking: `main` is green, `VERSION` is `1.4.0`, and no
+6. If CPython 3.15 has been released, add it to the CI matrix and classifiers first (constitution Principle III).
+   Then push tag `v1.4.0` on the merge commit after checking: `main` is green, `VERSION` is `1.4.0`, and no
    registry has 1.4.0. This is **irreversible**.
 7. CI publishes `PersianTextGuard 1.4.0` to NuGet, and `persian-text-guard 1.4.0` to npm and to PyPI.
 8. Verify from the public registries in fresh projects (SC-011, quickstart §7).

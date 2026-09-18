@@ -21,11 +21,12 @@ Add a pure-Python port of PersianTextGuard in `python/`, published to PyPI as `p
 - **A UTF-16 view inside Python.** .NET reads text in UTF-16 units; Python strings are code points. The
   matcher runs on a view in which each supplementary character is split into its two surrogates, so the
   JavaScript code ports line by line. Positions are converted to code points at the boundary, and
-  `censor` splices the caller's own string. Eight new corpus cases pin the behaviour this exposed (for
-  example `kir𠀀`) for every port (R2).
+  `censor` splices the caller's own string. Ten new corpus cases pin the behaviour this exposed for every
+  port: eight robustness cases (for example `kir𠀀`), and two ordinary messages with supplementary
+  characters that must stay unflagged (R2).
 - **Speed checked before building.** A proxy, the JavaScript port without its JIT calibrated against
-  CPython, estimates 145 µs for a short message against the 250 µs target. CI enforces that target
-  (R3).
+  CPython, estimates 145 µs for a short message against the 250 µs target. The target is checked on the
+  named machine, and CI adds a 500 µs regression gate that suits shared runners (R3).
 - **One universal wheel and a self-contained sdist.** hatchling hooks generate the word lists from
   `wordlists/` and read the version from `VERSION`, converted to PEP 440 (R4, R6, R9).
 - **A Pythonic API with the same capabilities.** It uses `StrEnum` enumerations whose values are the
@@ -81,7 +82,7 @@ message under 250 µs mean, and the 132,000-character message under 3 s. R3 esti
 - **Python source**: about 2,700 lines.
 - **Tests and runner**: about 1,000 lines.
 - **Other files**: 3 consumer files, 1 benchmark, 5 scripts.
-- **Elsewhere**: about 8 corpus cases, a one-line `.csproj` change, and CI adding 6 jobs.
+- **Elsewhere**: 10 corpus cases, a one-line `.csproj` change, and CI adding 6 jobs.
 - **Docs**: 2 READMEs.
 
 ## Constitution Check
@@ -92,7 +93,7 @@ Evaluated against [constitution v2.0.0](../../.specify/memory/constitution.md).
 
 | Principle / section | Gate | Before research | After design |
 | --- | --- | --- | --- |
-| **I. Ordinary Messages Must Pass** | Ordinary corpus cases pass in every port | ✅ FR-017 | ✅ The runner enforces kind rules (R8). The new corpus cases include an ordinary message beside a supplementary letter (`kir 𠀀` is flagged only for `kir`). |
+| **I. Ordinary Messages Must Pass** | Ordinary corpus cases pass in every port | ✅ FR-017 | ✅ The runner enforces kind rules (R8). Two new `ordinary` cases put emoji, a CJK Extension B letter and mathematical bold letters inside ordinary Persian and English messages, which must stay unflagged in every port (T009). |
 | **II. User Input Never Throws** | Every text function returns for any text the language can represent | ⚠️ Non-`str` → `TypeError` (spec Assumptions) | ⚠️ **Justified** below. `None` and every `str` never raise, including lone and caller-split surrogates, noncharacters and 132,000 characters (P1). The UTF-16 view keeps .NET's surrogate semantics (R2). |
 | **III. Native and Dependency-Free** | Pure Python with type hints; no runtime dependencies; tested on every CPython in upstream support | ⚠️ 3.10 is in upstream support until 2026-10-31, and the user chose 3.11 as the minimum | ⚠️ **Justified** below. Pure Python, 0 dependencies, `py.typed`; CI on 3.11, 3.12, 3.13, 3.14 and 3.14t; build and development tools only (R4, R13). |
 | **IV. Build Once, Match Fast, Share Safely** | Immutable, shareable across threads including free-threaded; construction-time work; token lookup; pyperf | ✅ | ✅ Slotted, frozen state; no mutable module state except an idempotent category cache and a locked lazy parse (R17); `dict` token lookup ported from .NET (R7); a pyperf suite, README table and CI gate (R3, R11); tests on 3.14t with the GIL off. |
@@ -129,6 +130,7 @@ specs/004-python-port/
 VERSION                                          # 1.3.0 → 1.4.0
 
 conformance/cases/robustness.json                # + 8 cases: characters outside the BMP (R2)
+conformance/cases/matching-persian.json, matching-english.json  # + 1 ordinary case each (R2)
 
 dotnet/src/PersianTextGuard/PersianTextGuard.csproj  # PackageValidationBaselineVersion 1.2.0 → 1.3.0
 
