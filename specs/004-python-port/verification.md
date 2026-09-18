@@ -291,3 +291,57 @@ Ten pending cases added: eight in `robustness.json`, and one `ordinary` case eac
   assertion is now part of the thread test, so standard CPython has nothing to skip); `uv build` gives
   the 1.4.0 wheel and sdist; `check_package.py` passes (unpacked wheel 153,642 bytes);
   `check_consumers.py` 4 of 4; `check_api.py` "baseline: no previous release".
+
+## Full matrix (T057)
+
+From a clean state: `git clean -xdn python js/dist` listed only build outputs (`js/dist/`, and in
+`python/` the caches, `.venv/`, `.bench/`, `dist/`, `consumers/.envs/`, the copied licence files and
+the two generated modules); then `git clean -xdf python js/dist`. `graphify-out/` was not touched.
+
+| Suite | Result |
+| --- | --- |
+| `dotnet test dotnet/tests/PersianTextGuard.Tests` | 1,029 passed on each of `net8.0`, `net10.0` and `net48` |
+| `dotnet test dotnet/tests/PersianTextGuard.Conformance` | 532 passed on each of `net10.0`, `net8.0` and `net48` |
+| `js/`: `npm ci && npm run test:all` | 675 passed, 5 files (665 at baseline plus the 10 new corpus cases) |
+| `python/`: `uv sync --locked --group package` | generates `_wordlists.py` and `_version.py` |
+| CPython 3.11.16 (Unicode 14.0.0) | 727 passed |
+| CPython 3.12.14 (Unicode 15.0.0) | 727 passed |
+| CPython 3.13.15 (Unicode 15.1.0) | 727 passed |
+| CPython 3.14.6 (`3.14+gil`, Unicode 16.0.0) | 727 passed |
+| CPython 3.14.7t, `PYTHON_GIL=0` (GIL off) | 727 passed |
+| `uv build`; `check_package.py`; `check_consumers.py` | 1.4.0 wheel and sdist; all package checks passed (153,642 bytes unpacked); 4 of 4 consumer checks |
+
+**Found and fixed here.** The first clean run failed collection on every interpreter ("5 errors"): after
+`git clean` removed the generated modules, `uv sync` reused uv's cached editable build and did not
+rerun the build hook, so `_wordlists.py` was missing until the next `uv build`. Deleting the two files
+and running `uv sync` reproduced it. `pyproject.toml` now sets `[tool.uv] cache-keys` to the hook's
+inputs (`pyproject.toml`, `hatch_build.py`, `../VERSION`, `../wordlists/*.txt`) and its two outputs,
+so a changed `VERSION` or word list, or a missing generated module, rebuilds the editable install. The
+same deletion then regenerated the files, and the table above is the run after the fix, from a clean
+state again.
+
+## Quickstart walkthrough (T058)
+
+- **§1, set up and run everything once**: `uv sync --locked`, ruff, the Unicode-usage check, mypy and
+  `uv run pytest` are clean, with 727 passed and nothing skipped: unit tests, 523 corpus cases plus
+  9 guards, README examples and thread tests (T056, T057). ✓
+- **§2, every supported Python, free-threaded included**: 727 passed on 3.11, 3.12, 3.13, 3.14 and 3.14t
+  with `PYTHON_GIL=0`; `sys._is_gil_enabled()` is `False` there (T038, T039, T057). ✓
+- **§3, same entries as the other ports**: identical JSON lines and 0 differences over 1,250 entries
+  (T041). ✓
+- **§4, the package as users install it**: both files in `dist/`, `check_package.py` and
+  `check_consumers.py` pass (T032, T056, T057). **SC-003 by hand**: in an empty scratch folder,
+  `py -3.14 -m venv t`, `t/Scripts/pip install python/dist/persian_text_guard-1.4.0-py3-none-any.whl`
+  and the quick start printed `False True True`, 8 seconds from the empty folder. ✓
+- **§5, API compatibility detects a break**: "baseline: no previous release", and the throwaway rename
+  of `censor(mask)` failed with "Parameter was removed" (T052). ✓
+- **§6, performance**: 13.3 ms, 91.4 µs and 210 ms against 500 ms, 250 µs and 3 s; the gate at 250 µs
+  passes (T050). ✓
+- **§7, release checks**: not done here; T059–T066 need the `pypi` environment and the PyPI pending
+  publisher (T047), and the maintainer's go-ahead.
+- **§8, re-running the Unicode measurement**: `dotnet run specs/004-python-port/tools/dump.cs` (.NET
+  10.0.11), `dump.py` on 3.11.16, 3.12.14, 3.13.15, 3.14.6 and 3.14.7t, then `compare.py`: every count
+  equals research R1 (category per unit 24, 22, 17, 0 and 0; per code point 10,302, 5,813, 5,186, 0
+  and 0; .NET whitespace 0 everywhere; lower-casing 0, 0, 0, 5 and 5; NFKC 62 on 3.11 (U+1E030–U+1E06D)
+  and 36 on 3.14 (U+1CCD6–U+1CCF9); NFD 20 on 3.14). `str.isspace` differs from .NET on
+  U+001C–U+001F on every version. ✓

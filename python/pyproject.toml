@@ -66,6 +66,18 @@ package = [
     "readme-renderer[md]>=46",
 ]
 
+# The editable install is rebuilt, which reruns the build hook, whenever an input of the generated
+# modules changes or one of them is missing; uv would otherwise reuse its cached build.
+[tool.uv]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "hatch_build.py" },
+    { file = "../VERSION" },
+    { file = "../wordlists/*.txt" },
+    { file = "src/persian_text_guard/_wordlists.py" },
+    { file = "src/persian_text_guard/_version.py" },
+]
+
 # hatchling has no custom version source, so the metadata hook sets the version (research R4).
 [tool.hatch.metadata.hooks.custom]
 path = "hatch_build.py"
