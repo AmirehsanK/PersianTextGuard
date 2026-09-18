@@ -153,7 +153,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 ### Corpus: characters outside the Basic Multilingual Plane (research R2)
 
-- [ ] T009 Add pending cases (no `expected`) to `conformance/cases/robustness.json`, each `"kind": "robustness"` and `"configuration": "default"`. The first case gets `"note": "Characters outside the Basic Multilingual Plane are read as UTF-16 units, as .NET reads them (spec 004 research R2)."`. Write visible characters literally (they are not invisible under writing rule 1). Ids and inputs:
+- [X] T009 Add pending cases (no `expected`) to `conformance/cases/robustness.json`, each `"kind": "robustness"` and `"configuration": "default"`. The first case gets `"note": "Characters outside the Basic Multilingual Plane are read as UTF-16 units, as .NET reads them (spec 004 research R2)."`. Write visible characters literally (they are not invisible under writing rule 1). Ids and inputs:
 
   | Id | Input |
   | --- | --- |
@@ -175,7 +175,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
   If .NET flags either one when filling (T010), stop and report it: that would be a false positive for Principle I, and it needs the user's decision.
 
-- [ ] T010 Fill and verify:
+- [X] T010 Fill and verify:
   1. `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill` prints "Filled 10 case(s); 0 disagreement(s)".
   2. **Review the diff.** The first seven must equal research R2's table, with positions in code points: for example, `kir𠀀` records `start` 0 and `length` 4, and censors to `****`. The eighth is new, so record what .NET does. The two ordinary cases record no match, and censoring leaves them unchanged. If any of the first seven differs from R2, stop and report it: it would mean the JavaScript port and .NET disagree outside the corpus.
   3. Run `dotnet test dotnet/tests/PersianTextGuard.Conformance` (532 × 3, which is 523 cases plus 9 guards), and in `js/` run `npm run corpus` (530, which is 523 cases plus 7 guards). If the JavaScript port fails a new case, stop and report the case id and difference to the user. Fixing JavaScript is in scope, but only after their decision.
@@ -185,7 +185,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 ### Python: shared layers
 
-- [ ] T011 [P] Create `python/src/persian_text_guard/_types.py` with the enumerations, `BannedWord`, `ProfanityFilterOptions`, `ProfanityMatch`, `WordListFormatError` and the `Literal` name aliases, exactly as in [contracts/public-api.md](contracts/public-api.md) and [data-model.md](data-model.md):
+- [X] T011 [P] Create `python/src/persian_text_guard/_types.py` with the enumerations, `BannedWord`, `ProfanityFilterOptions`, `ProfanityMatch`, `WordListFormatError` and the `Literal` name aliases, exactly as in [contracts/public-api.md](contracts/public-api.md) and [data-model.md](data-model.md):
   - `StrEnum` members and values as in data-model.md → "Enumerations".
   - `BannedWord`: `@dataclass(frozen=True, slots=True, init=False)`, with a hand-written `__init__(text, mode=WordMatchMode.WHOLE_WORD, category=WordCategory.UNCATEGORIZED)` that:
     - raises `TypeError` if `text` is not a `str`, and stores `str(text)`;
@@ -196,7 +196,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   - `WordListFormatError(ValueError)`, with `__init__(self, message: str, line: int)` and a `line` attribute.
   - Internal helpers: `to_mode(value)`, `to_category(value)` and `to_step(value)`. Each accepts the member or its value string, and raises `ValueError("unknown word category 'x'; expected one of: ...")` otherwise, or `TypeError` for a non-`str`. Also `require_text(value, name) -> str | None`, which returns `None` for `None`, `str(value)` for a `str`, and otherwise raises `TypeError(f"{name} must be a str or None, not {type(value).__name__}")` (research R18).
   - Google-style docstrings on every public class and member, explaining behaviour and edge cases (FR-023).
-- [ ] T012 [P] Create `python/src/persian_text_guard/_unicode.py`, implementing research R1 exactly, as a port of `js/src/unicode.ts` using the names in the porting table.
+- [X] T012 [P] Create `python/src/persian_text_guard/_unicode.py`, implementing research R1 exactly, as a port of `js/src/unicode.ts` using the names in the porting table.
   - `category_of_unit(c)`: `unicodedata.category(c)` with a module-level `dict` cache written with `setdefault` (research R17). A surrogate unit is `"Cs"`.
   - `category_at(text, i)`: when `text[i]` is a high surrogate followed by a low surrogate, combine them (`chr(0x10000 + ((hi - 0xD800) << 10) + (lo - 0xDC00))`) and categorize that code point.
   - `is_white_space(c)`: exactly `c in "\t\n\v\f\r \x85\xa0"`, or a category in `("Zs", "Zl", "Zp")`. **Never** `str.isspace`, which also counts U+001C–U+001F.
@@ -204,25 +204,25 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   - `is_noncharacter(cp)` and `noncharacter_length_at(text, i)`, which treats a surrogate pair in the view as one code point.
   - `nfkc(s)`: the input is a view; recombine valid surrogate pairs into code points, normalize the runs between noncharacters with `unicodedata.normalize("NFKC", …)`, copy noncharacters unchanged, then split every result code point above U+FFFF back into surrogates. Lone surrogates are copied unchanged (the caller replaces them first, as in JavaScript). Also `is_nfkc(s)` and `nfd(s)`, which uses the same recombine and split.
   - `replace_lone_surrogates(s)` if `normalizer.ts` has it; otherwise follow wherever the TypeScript does the U+FFFD replacement.
-- [ ] T013 [P] Create `python/src/persian_text_guard/_utf16.py` (research R2):
+- [X] T013 [P] Create `python/src/persian_text_guard/_utf16.py` (research R2):
   - `SUPPLEMENTARY = re.compile("[\U00010000-\U0010FFFF]")`;
   - `to_view(text) -> str`: return `text` unchanged when `text.isascii()` or `SUPPLEMENTARY.search(text) is None`; otherwise build the string with each code point above U+FFFF replaced by its two surrogates;
   - `class PositionMap`: built from the caller's text only when the view differs. `to_code_points(unit_index, unit_length) -> tuple[int, int]` uses a prefix table from each unit index to its code-point index; a unit that is the second half of a pair maps to its pair's start. It is the identity when the view equals the text;
   - `from_view(view) -> str`, which recombines valid surrogate pairs, for normalizer and tokenizer outputs. Document why the caller's own split surrogates stay split in `censor` (it splices the original) but become one code point in normalizer output, which is what .NET does when it round-trips through UTF-16;
   - docstrings with R2's `kir𠀀` example.
-- [ ] T014 [P] Create `python/tests/test_unicode.py` with the research R1 findings and the R2 view as tests:
+- [X] T014 [P] Create `python/tests/test_unicode.py` with the research R1 findings and the R2 view as tests:
   - U+0085 is whitespace and U+001C, U+FEFF and U+200B are not;
   - `to_lower_invariant("İ") == "İ"`, and `to_lower_invariant("Σ") == "σ"`;
   - `category_of_unit("\ud800") == "Cs"`, and `category_at("\ud840\udc00", 0) == "Lo"` for U+20000;
   - `nfkc` of a view containing U+1D424 (𝐤) is `"k"`, and `nfkc("a\ufffeb")` keeps U+FFFE;
   - `to_view("kir𠀀") == "kir\ud840\udc00"`, and `to_view("abc") is "abc"`;
   - `PositionMap` maps unit `(0, 5)` to code points `(0, 4)` for `kir𠀀`, and is the identity for a string with the caller's own split surrogates `"k\ud840\udc00"`, whose view has the same length.
-- [ ] T015 Port `js/src/normalizer.ts` to `python/src/persian_text_guard/_normalizer.py`, following the porting conventions.
+- [X] T015 Port `js/src/normalizer.ts` to `python/src/persian_text_guard/_normalizer.py`, following the porting conventions.
   - **Internals**: the step implementations, presets, source-mapped segment path and `tokenize` core take a view.
   - **Public functions**: `normalize(text, steps="comparison")`, `tokenize(text)`, `to_persian_digits(text)` and `to_ascii_digits(text)`. Each calls `require_text` first; `None` gives `""` (or `[]` for `tokenize`); then it converts to the view, runs, and converts results back with `from_view`.
   - **Steps**: `"comparison"`, `"standard"` or `"none"`, or any iterable of steps as members or names. An unknown preset or step raises `ValueError`. A plain `str` that is not a preset is **not** iterated character by character: raise `ValueError`.
   - **Speed** (research R3): digit and letter unification that maps one unit to one unit uses a module-level `str.maketrans` table and `str.translate`, where the TypeScript loops unit by unit and the mapping is context-free.
-- [ ] T016 Port `js/src/word-list.ts` to `python/src/persian_text_guard/_word_list.py`: `class WordList` with static methods only, whose `__init__` raises `TypeError("WordList is not instantiable")`.
+- [X] T016 Port `js/src/word-list.ts` to `python/src/persian_text_guard/_word_list.py`: `class WordList` with static methods only, whose `__init__` raises `TypeError("WordList is not instantiable")`.
   - **`parse(text)`**: `require_text`; `None` raises `TypeError` (data-model.md: "there is no missing word list"). Keep the .NET trimming semantics via the TypeScript's `trimDotNet`, ported as `_trim_dot_net`, which uses `is_white_space`. Headings are category names only, in any case, with spaces allowed; `[3]` raises `WordListFormatError(f"Line {n}: unknown word category '{name}'.", n)`.
   - **Bundled lists**: `all()`, `persian_default()` and `bundled(*categories)` parse `_wordlists.BUNDLED_WORD_LISTS` once, under a module-level `threading.Lock` with double-checked initialization (research R17), and cache tuples. `persian_default()` excludes `MILD`. `bundled` returns a new tuple in list order, and raises `ValueError` for an unknown category.
   - **`load(source)`** (spec Clarifications):
@@ -231,10 +231,10 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
     - one whose `read()` returns `str` has a leading `"\ufeff"` removed;
     - the file is never closed by `load`, and `OSError` and `UnicodeDecodeError` propagate unchanged;
     - then `parse`.
-- [ ] T017 [P] Port `js/src/fold.ts` to `python/src/persian_text_guard/_fold.py`, the fold, squeeze and character-class helpers. Tables become module-level `dict`s or `frozenset`s built at import.
-- [ ] T018 Port `js/src/source-map.ts` to `python/src/persian_text_guard/_source_map.py`: `MappedText` as a slotted dataclass (`text`, `start_map`, `end_map`) and `ReadingKind` as an `IntEnum`. Positions are view units.
-- [ ] T019 Port `js/test/internals.test.ts` to `python/tests/test_internals.py`, test for test, importing from the underscore modules. Every test passes.
-- [ ] T020 Run the lint command from T008 and `uv run pytest tests/test_unicode.py tests/test_internals.py`. Commit T011–T020 as "Port the types, Unicode layer, UTF-16 view, normalizer, word lists, fold helpers and source maps to Python".
+- [X] T017 [P] Port `js/src/fold.ts` to `python/src/persian_text_guard/_fold.py`, the fold, squeeze and character-class helpers. Tables become module-level `dict`s or `frozenset`s built at import.
+- [X] T018 Port `js/src/source-map.ts` to `python/src/persian_text_guard/_source_map.py`: `MappedText` as a slotted dataclass (`text`, `start_map`, `end_map`) and `ReadingKind` as an `IntEnum`. Positions are view units.
+- [X] T019 Port `js/test/internals.test.ts` to `python/tests/test_internals.py`, test for test, importing from the underscore modules. Every test passes.
+- [X] T020 Run the lint command from T008 and `uv run pytest tests/test_unicode.py tests/test_internals.py`. Commit T011–T020 as "Port the types, Unicode layer, UTF-16 view, normalizer, word lists, fold helpers and source maps to Python".
 
 **Checkpoint**: The shared layers pass their tests, and every port has the new corpus cases.
 
@@ -248,7 +248,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 ### Tests for User Story 1 (write first; they fail until T024–T027)
 
-- [ ] T021 [P] [US1] Create `python/tests/test_api.py`. It imports only from `persian_text_guard` and covers spec US1 scenarios 1–7 and guarantees P1, P2 and P4–P9 and P12 from [contracts/public-api.md](contracts/public-api.md):
+- [X] T021 [P] [US1] Create `python/tests/test_api.py`. It imports only from `persian_text_guard` and covers spec US1 scenarios 1–7 and guarantees P1, P2 and P4–P9 and P12 from [contracts/public-api.md](contracts/public-api.md):
   - **Scenarios**:
     - scenario 3 exactly: `shit`, index 0, length 4, `(EvasionKind.LOOKALIKE_CHARACTERS,)`; and `fuck`, index 9, length 7, `(EvasionKind.SPLIT_WORD,)`;
     - scenario 4: `"😀 کیر"` gives index 2, length 3, and the slice equals `"کیر"`;
@@ -264,7 +264,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   - **P12, names**: `WordList.bundled("slur") == WordList.bundled(WordCategory.SLUR)`, `BannedWord("x", category="nope")` raises `ValueError`, and `ProfanityFilterOptions(squeeze_repeated_letters="no")` raises `TypeError`.
   - **Constructors**: `ProfanityFilter(None)` and `ProfanityFilter(["kir"])` raise `TypeError`, the second naming position 0.
   - **P4**: over a handful of inputs, `contains_profanity`, `find_match` and `find_matches` agree, and `censor` changes the text exactly when there is a match. T037 extends this to every corpus input.
-- [ ] T022 [P] [US1] Create `python/tests/test_word_list_load.py` (P9, spec Clarifications), using `tmp_path`:
+- [X] T022 [P] [US1] Create `python/tests/test_word_list_load.py` (P9, spec Clarifications), using `tmp_path`:
   - a UTF-8 file with a BOM and `\r\n`, loaded by `str` path, by `Path`, by an open binary file and by an open text file with `encoding="utf-8"`: all four equal `WordList.parse` of the same text without the BOM;
   - the open file is still open afterwards (`not f.closed`);
   - a missing path raises `FileNotFoundError` naming the path;
@@ -273,10 +273,10 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 ### Implementation for User Story 1
 
-- [ ] T023 [US1] Port the token-level reading machinery of `js/src/scan.ts` to `python/src/persian_text_guard/_scan.py`: everything that does not need the filter's state (readings, candidate tokens, joining spaced letters). Follow the porting conventions; positions are view units.
-- [ ] T024 [US1] Complete `_scan.py` with the filter-dependent scan functions, as in `js/src/scan.ts`, taking the filter's internal state as an argument or as methods on an internal class.
-- [ ] T025 [US1] Port `js/src/regions.ts` to `python/src/persian_text_guard/_regions.py`: candidates, merging, and censoring over the view. The mask length is 4 (`MaskLength = 4` in .NET). Censoring returns **regions**; `_filter.py` splices them.
-- [ ] T026 [US1] Port `js/src/filter.ts` to `python/src/persian_text_guard/_filter.py`: `class ProfanityFilter` with `__slots__` and no setters (data-model.md → `ProfanityFilter`).
+- [X] T023 [US1] Port the token-level reading machinery of `js/src/scan.ts` to `python/src/persian_text_guard/_scan.py`: everything that does not need the filter's state (readings, candidate tokens, joining spaced letters). Follow the porting conventions; positions are view units.
+- [X] T024 [US1] Complete `_scan.py` with the filter-dependent scan functions, as in `js/src/scan.ts`, taking the filter's internal state as an argument or as methods on an internal class.
+- [X] T025 [US1] Port `js/src/regions.ts` to `python/src/persian_text_guard/_regions.py`: candidates, merging, and censoring over the view. The mask length is 4 (`MaskLength = 4` in .NET). Censoring returns **regions**; `_filter.py` splices them.
+- [X] T026 [US1] Port `js/src/filter.ts` to `python/src/persian_text_guard/_filter.py`: `class ProfanityFilter` with `__slots__` and no setters (data-model.md → `ProfanityFilter`).
   - **`__init__(words, options=None)`**:
     - `None` or a non-iterable raises `TypeError`, and a non-`BannedWord` element raises `TypeError` naming its position; `options` must be `None` or a `ProfanityFilterOptions`;
     - build every table as the TypeScript does, then store `frozenset`, `tuple` or `dict` values that are never mutated afterwards.
@@ -287,13 +287,13 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
     3. builds the view and runs the ported logic;
     4. converts positions with `PositionMap` into `ProfanityMatch(word, evasion, index, length)`, where `word` is the caller's own `BannedWord` object and `evasion` is a tuple in declaration order.
   - **`censor`**: splices the caller's **original** string, replacing each region, converted to code points, with `mask * 4` (research R2).
-- [ ] T027 [US1] Replace `python/src/persian_text_guard/__init__.py` with the public surface: a module docstring, and imports of exactly the names in [contracts/public-api.md](contracts/public-api.md) → "Declarations", plus `__version__`. `__all__` lists them, sorted. Run `uv run pytest tests/test_api.py tests/test_word_list_load.py` until every test passes.
-- [ ] T028 [P] [US1] Create a placeholder `python/README.md` with the title and one English quick-start example, because the build needs a README. T049 writes the full one.
-- [ ] T029 [P] [US1] Create the consumer files (research R12):
+- [X] T027 [US1] Replace `python/src/persian_text_guard/__init__.py` with the public surface: a module docstring, and imports of exactly the names in [contracts/public-api.md](contracts/public-api.md) → "Declarations", plus `__version__`. `__all__` lists them, sorted. Run `uv run pytest tests/test_api.py tests/test_word_list_load.py` until every test passes.
+- [X] T028 [P] [US1] Create a placeholder `python/README.md` with the title and one English quick-start example, because the build needs a README. T049 writes the full one.
+- [X] T029 [P] [US1] Create the consumer files (research R12):
   - `python/consumers/smoke.py`: the README quick start with `assert`s, printing `ok`;
   - `python/consumers/typed_usage.py`: a strictly typed use of every public name;
   - `python/consumers/type_errors.py`, with exactly two errors, each marked with a trailing comment `# expect-error: <code>`: `ProfanityFilterOptions(squeeze_repeated=False)` (an unknown option name) and `WordList.bundled("rude")` (an unknown category name).
-- [ ] T030 [US1] Create `python/scripts/check_package.py` (research R12, contracts → "Package contents"):
+- [X] T030 [US1] Create `python/scripts/check_package.py` (research R12, contracts → "Package contents"):
   1. finds exactly one wheel and one sdist in `dist/`;
   2. runs `twine check --strict` on both, and `check-wheel-contents` on the wheel;
   3. compares the wheel's and the sdist's file lists with the allowlists exactly;
@@ -301,7 +301,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   5. checks that the unpacked wheel is under 1 MB (SC-004).
 
   It prints each check and exits non-zero on the first failure.
-- [ ] T031 [US1] Create `python/scripts/check_consumers.py`:
+- [X] T031 [US1] Create `python/scripts/check_consumers.py`:
   1. makes `consumers/.envs/wheel` and `consumers/.envs/sdist` with `python -m venv`;
   2. installs `dist/*.whl` into the first with `pip install --no-deps --no-index`. For the second, first builds a wheel **from the sdist alone** with `uv build --wheel dist/<sdist> -o consumers/.envs/from-sdist`, which unpacks the sdist in isolation and fetches hatchling for the build, proving that the sdist needs nothing from the repository. It then installs that wheel with `pip install --no-deps --no-index`. A plain `pip install --no-index dist/*.tar.gz` would fail, because build isolation must download hatchling;
   3. runs `smoke.py` in each and expects `ok`;
@@ -309,7 +309,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   5. runs both checkers on `type_errors.py` and expects exactly the two marked errors, on the marked lines.
 
   It prints 4 of 4 checks: wheel smoke, sdist smoke, typed usage and type errors. The first two are SC-007's "2 of 2" installs; the last two are its strict type check.
-- [ ] T032 [US1] Run `uv build`, `uv run python scripts/check_package.py` and `uv run python scripts/check_consumers.py`. Record in `verification.md` under "US1": the test results, both file names, both file lists, the unpacked size and the 4 consumer results. Commit T021–T032 as "Add the Python filter, package checks and consumer checks".
+- [X] T032 [US1] Run `uv build`, `uv run python scripts/check_package.py` and `uv run python scripts/check_consumers.py`. Record in `verification.md` under "US1": the test results, both file names, both file lists, the unpacked size and the 4 consumer results. Commit T021–T032 as "Add the Python filter, package checks and consumer checks".
 
 **Checkpoint**: The package installs from a wheel and an sdist, and works and type-checks for users (MVP). Spec US1 scenario 8 (many threads, one filter) needs the corpus inputs, so it is verified in T039 (US2).
 
@@ -321,22 +321,22 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 **Independent Test**: spec US2: `uv run pytest -m corpus` passes on 3.11–3.14 and 3.14t; a corrupted case reports its id, file, visible input and differences.
 
-- [ ] T033 [P] [US2] Create `python/tests/corpus/load.py`, a port of `js/test/corpus/load.ts`:
+- [X] T033 [P] [US2] Create `python/tests/corpus/load.py`, a port of `js/test/corpus/load.ts`:
   - `find_repository_root()` walks up from `__file__` to a directory with `VERSION` and `wordlists/`, the same rule as JavaScript;
   - `load_corpus(directory)` reads `corpus.json`, `configurations.json` and `cases/*.json` in ordinal file-name order, with `json.load(encoding="utf-8")`. It raises `CorpusError` naming the file for every condition the TypeScript throws on. A missing directory gives the message "Conformance corpus not found: <path>".
 
   Add `python/tests/corpus/__init__.py`.
-- [ ] T034 [P] [US2] Create `python/tests/corpus/values.py`, a port of `js/test/corpus/values.ts`:
+- [X] T034 [P] [US2] Create `python/tests/corpus/values.py`, a port of `js/test/corpus/values.ts`:
   - `build_input(node)`: `str`, `None`, or `{"build": [...]}` with `text`, `repeat` × `times` and `utf16` parts. The `utf16` parts decode into the corresponding code points; a lone surrogate stays a lone surrogate code point;
   - `is_text` and `display`;
   - `show_invisible(text)`: escapes Cf, Cc, Zl, Zp, whitespace other than U+0020, lone surrogates and noncharacters as `\uXXXX`, or `\U000XXXXX` above U+FFFF, using `_unicode`;
   - `compare(expected, actual)`, which returns a list of `(path, expected, actual)`. Positions need **no** conversion, since both are code points (P3).
-- [ ] T035 [US2] Create `python/tests/corpus/evaluate.py`, a port of `js/test/corpus/evaluate.ts`, against the public `persian_text_guard` API:
+- [X] T035 [US2] Create `python/tests/corpus/evaluate.py`, a port of `js/test/corpus/evaluate.ts`, against the public `persian_text_guard` API:
   - one filter per configuration, cached;
   - the same result shapes, with positions used as returned;
   - mask validation: `accepted` is `False` exactly when `censor("kir", mask)` raises `ValueError`. A `build` mask becomes a `str`;
   - `check_kind_rules(case)`, with .NET's violation wording.
-- [ ] T036 [US2] Create `python/tests/test_corpus.py` (marked `corpus`):
+- [X] T036 [US2] Create `python/tests/test_corpus.py` (marked `corpus`):
   - **Loading**: the corpus loads once, at module level.
   - **Cases**: `pytest.mark.parametrize` over every case, with `ids=[case.id …]`. Each test checks pending, then the kind rules ("breaks its kind rule"), then `compare`. It fails with `pytest.fail` and the message format of 003 T046: `Case '<id>' in <file>: <problem>`, then `  input "<show_invisible(input)>"`, then one `  <path>: expected <e> actual <a>` line per difference (FR-016, spec US2 scenario 2).
   - **Guards**, in `python/tests/test_corpus_guards.py`, one test each:
@@ -347,29 +347,29 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
     - no pending case, with a message naming the ids and the fill command;
     - every configuration exists;
     - 0 not-applicable cases.
-- [ ] T037 [US2] Run `uv run pytest -m corpus`: every case passes (523 cases plus the guards).
+- [X] T037 [US2] Run `uv run pytest -m corpus`: every case passes (523 cases plus the guards).
   - **Failures**: for each failing case, find the root cause by comparing the Python module with the TypeScript and C# it ports, and fix the port. **Never** edit the corpus to match the port.
   - **Unicode differences**: if a failure is a genuine Unicode-data difference (research R1), stop and report it with the case id, the code points and the Python version.
 
   Also extend `test_api.py` with P4 over every corpus input (the consistency of `contains_profanity`, `find_match`, `find_matches` and `censor`). Record the pass count, Python version and run time in `verification.md`.
-- [ ] T038 [US2] Run the full suite on every supported Python (research R20, quickstart §2):
+- [X] T038 [US2] Run the full suite on every supported Python (research R20, quickstart §2):
   - `uv run --python 3.11 pytest`, and likewise for 3.12, 3.13 and 3.14;
   - `PYTHON_GIL=0 uv run --python 3.14t pytest`.
 
   Every run passes. A failure on only some versions is a Unicode-data difference: stop and report it with the case id, code points and versions. Record `sys.version`, `unicodedata.unidata_version` and the pass counts per version in `verification.md`.
-- [ ] T039 [US2] Create `python/tests/test_threads.py` (marked `threads`; FR-015, SC-008, P8, P11):
+- [X] T039 [US2] Create `python/tests/test_threads.py` (marked `threads`; FR-015, SC-008, P8, P11):
   - build one filter per corpus configuration, then run a single-threaded pass over every corpus matching input, recording `contains_profanity`, `find_matches` and `censor`;
   - start 8 threads with a `threading.Barrier(8)`; each checks every input twice and compares with the single-threaded results;
   - separately, 8 threads call `WordList.all()` at the same moment, on a fresh interpreter state (a subprocess importing the package), and all receive the same object (`id` equal);
   - on 3.14t, assert `sys._is_gil_enabled() is False` when `PYTHON_GIL=0` is set.
 
   Run it on 3.14 and with `PYTHON_GIL=0` on 3.14t. Also run `PYTHON_GIL=0 uv run --python 3.14t pytest -p pytest_run_parallel --parallel-threads=8 -m "not corpus and not threads"`: every test passes. Mark tests that use `tmp_path` or monkeypatching `thread_unsafe` where the plugin requires it.
-- [ ] T040 [US2] Check failure reporting on scratch edits, reverted afterwards with `git checkout -- conformance`:
+- [X] T040 [US2] Check failure reporting on scratch edits, reverted afterwards with `git checkout -- conformance`:
   1. Change `fa-emoji-before-word`'s `expected.censored` to `"😀 ####"`, and set `matching-persian-ordinary-messages-pass-001`'s `containsProfanity` to `true`. `uv run pytest -m corpus` fails exactly those 2 tests in one run, with the T036 messages; the second says "breaks its kind rule".
   2. Rename `conformance/` to `conformance.off`. The run fails with "Conformance corpus not found". Rename it back.
 
   Record both outputs in `verification.md`.
-- [ ] T041 [US2] Cross-check the bundled selections with JavaScript (FR-018, SC-002, quickstart §3). Run both one-liners and diff their output: the lines must be identical. Also dump every entry, as `text\tmode\tcategory` per line, from both ports into `artifacts/compare/python.txt` and `artifacts/compare/js.txt`. `git diff --no-index` shows no differences. Record the counts and "0 differences" in `verification.md`. Commit T033–T041 as "Run the conformance corpus against the Python port".
+- [X] T041 [US2] Cross-check the bundled selections with JavaScript (FR-018, SC-002, quickstart §3). Run both one-liners and diff their output: the lines must be identical. Also dump every entry, as `text\tmode\tcategory` per line, from both ports into `artifacts/compare/python.txt` and `artifacts/compare/js.txt`. `git diff --no-index` shows no differences. Record the counts and "0 differences" in `verification.md`. Commit T033–T041 as "Run the conformance corpus against the Python port".
 
 **Checkpoint**: Three ports pass one corpus. The Python port is behaviourally complete and thread-safe.
 
@@ -381,7 +381,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 **Independent Test**: spec US3. Local checks first (T045); the real proof is the CI dry run (T058–T061).
 
-- [ ] T042 [US3] **Do this after T048 and T052**, whose scripts the job runs. Execution order is T048 and T052 (US4) before T042 and T043, although the phases are listed by story priority. Add the Python jobs to `.github/workflows/ci.yml`, leaving every existing job name unchanged (research R13, contracts → "CI"):
+- [X] T042 [US3] **Do this after T048 and T052**, whose scripts the job runs. Execution order is T048 and T052 (US4) before T042 and T043, although the phases are listed by story priority. Add the Python jobs to `.github/workflows/ci.yml`, leaving every existing job name unchanged (research R13, contracts → "CI"):
   - **Job `python`**, `name: Python (${{ matrix.python }})`, `runs-on: ubuntu-latest`:
     - `strategy.fail-fast: false`, `matrix.python: ["3.11", "3.12", "3.13", "3.14", "3.14t"]`, `defaults.run.working-directory: python`;
     - steps: `actions/checkout@v5` with `fetch-depth: 0`; `astral-sh/setup-uv` (the current major, pinned) with `python-version: ${{ matrix.python }}`, `enable-cache: true` and `cache-dependency-glob: python/uv.lock`; `uv sync --locked`.
@@ -398,7 +398,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
     - then `actions/upload-artifact@v4` with `name: python-package` and `path: python/dist/*`.
 
   Validate the file locally with the `yaml` package check from 003's dry run: the scratchpad `yamlcheck/check.mjs`, or `npx yaml valid`.
-- [ ] T043 [US3] Add the PyPI publish job, and gate the others (research R10):
+- [X] T043 [US3] Add the PyPI publish job, and gate the others (research R10):
   - **`publish` (NuGet) and `publish-npm`**: `needs: [build, netfx, javascript, python]`.
   - **New `publish-pypi`**, `name: Publish to PyPI`:
     - `needs: [build, netfx, javascript, python]`, `if: startsWith(github.ref, 'refs/tags/v')`, `runs-on: ubuntu-latest`, `environment: pypi`, `permissions: { contents: read, id-token: write }`;
@@ -409,18 +409,18 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
       4. "Check file versions": `ls dist`, then a Python one-liner that converts `VERSION` with `packaging` (`pip install packaging` first) and checks that both file names carry it;
       5. `pypa/gh-action-pypi-publish@release/v1` with `skip-existing: true`, and no `password`.
   - Validate the YAML as in T042.
-- [ ] T044 [US3] Move .NET's compatibility baseline to the previous release (research R15). In `dotnet/src/PersianTextGuard/PersianTextGuard.csproj`, set `PackageValidationBaselineVersion` to `1.3.0`. Run `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts`: package validation passes against 1.3.0. Confirm that `js/scripts/check-api-compat.mjs` now picks `v1.3.0` as the previous release: `npm run api:compat` passes and names it.
-- [ ] T045 [US3] Check the release gates locally (research R19), and record in `verification.md`:
+- [X] T044 [US3] Move .NET's compatibility baseline to the previous release (research R15). In `dotnet/src/PersianTextGuard/PersianTextGuard.csproj`, set `PackageValidationBaselineVersion` to `1.3.0`. Run `dotnet pack dotnet/src/PersianTextGuard -c Release -o artifacts`: package validation passes against 1.3.0. Confirm that `js/scripts/check-api-compat.mjs` now picks `v1.3.0` as the previous release: `npm run api:compat` passes and names it.
+- [X] T045 [US3] Check the release gates locally (research R19), and record in `verification.md`:
   - reading `ci.yml` back, every publish job needs all four build and test job ids, and runs only on `refs/tags/v`;
   - the tag check passes for `GITHUB_REF_NAME=v$(cat VERSION)` and fails for `v9.9.9`, run in Git Bash;
   - `python -c "from packaging.version import Version; print(Version('1.4.0-dev.2'))"` prints `1.4.0.dev2`.
-- [ ] T046 [US3] Set `VERSION` to `1.4.0` (`printf '1.4.0\n' > VERSION`). Then rebuild everything and confirm that all three packages carry the version:
+- [X] T046 [US3] Set `VERSION` to `1.4.0` (`printf '1.4.0\n' > VERSION`). Then rebuild everything and confirm that all three packages carry the version:
   - `uv build` gives `persian_text_guard-1.4.0-*`;
   - `npm run pack` in `js/` gives `persian-text-guard-1.4.0.tgz`;
   - `dotnet pack` gives `PersianTextGuard.1.4.0.nupkg`, with package validation passing against 1.3.0.
 
   Commit T042–T046 as "Publish to PyPI in lockstep; version 1.4.0".
-- [ ] T047 [US3] 👤 Tell the user the two account steps from [contracts/package-and-release.md](contracts/package-and-release.md) → "Release 1.4.0", steps 1 and 2 (the PyPI pending publisher and the GitHub `pypi` environment), with the exact values. Both must be done **before the dry run (T059)**. A workflow that references `environment: pypi` before it exists makes GitHub create it automatically, **without** the `v*` tag rule, which would leave the publish environment unprotected. Ask the user to do both steps now. Continue with Phase 6 meanwhile, but do not start T059 until `gh api repos/AmirehsanK/PersianTextGuard/environments/pypi` shows a deployment branch policy with the custom tag rule `v*`.
+- [X] T047 [US3] 👤 Tell the user the two account steps from [contracts/package-and-release.md](contracts/package-and-release.md) → "Release 1.4.0", steps 1 and 2 (the PyPI pending publisher and the GitHub `pypi` environment), with the exact values. Both must be done **before the dry run (T059)**. A workflow that references `environment: pypi` before it exists makes GitHub create it automatically, **without** the `v*` tag rule, which would leave the publish environment unprotected. Ask the user to do both steps now. Continue with Phase 6 meanwhile, but do not start T059 until `gh api repos/AmirehsanK/PersianTextGuard/environments/pypi` shows a deployment branch policy with the custom tag rule `v*`.
 
 **Checkpoint**: CI gates and publishes all three registries; only the dry run and the release remain.
 
@@ -432,15 +432,15 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 **Independent Test**: spec US4: `help()` shows docstrings; the benchmarks match the README table; griffe catches a changed signature.
 
-- [ ] T048 [P] [US4] Create `python/bench/bench_filter.py` with pyperf (research R11): a `pyperf.Runner` with the ten benchmarks and the message constants copied verbatim from `js/bench/filter.bench.ts`, with the same names. Also create `python/scripts/bench_table.py`, which reads a pyperf JSON file and prints the README's Markdown table (Operation, Mean, Operations/s), with the Python version and CPU model. And create `python/scripts/bench_gate.py`, which runs `CleanShortMessage` with `--fast` and exits non-zero when its mean exceeds a threshold: 500 µs by default, the CI regression gate on shared runners (research R3). `--limit-us 250` applies SC-005's own value, which T050 checks on the named machine.
-- [ ] T049 [US4] Write the full `python/README.md` (FR-024, research R16):
+- [X] T048 [P] [US4] Create `python/bench/bench_filter.py` with pyperf (research R11): a `pyperf.Runner` with the ten benchmarks and the message constants copied verbatim from `js/bench/filter.bench.ts`, with the same names. Also create `python/scripts/bench_table.py`, which reads a pyperf JSON file and prints the README's Markdown table (Operation, Mean, Operations/s), with the Python version and CPU model. And create `python/scripts/bench_gate.py`, which runs `CleanShortMessage` with `--fast` and exits non-zero when its mean exceeds a threshold: 500 µs by default, the CI regression gate on shared runners (research R3). `--limit-us 250` applies SC-005's own value, which T050 checks on the named machine.
+- [X] T049 [US4] Write the full `python/README.md` (FR-024, research R16):
   - the first line is `# persian-text-guard`, then a one-line English description;
   - **English**: installation (`pip install persian-text-guard`, and `uv add persian-text-guard`); the quick start; checking, finding matches, censoring and masks; your own entries; categories; `WordList.load` and `parse`; normalization and tokenizing; positions in code points; thread safety; the error table; the name table from [contracts/public-api.md](contracts/public-api.md); the performance table from T050; limitations (research R1's Unicode note, including Python 3.11's Cyrillic modifier letters; "Values that are not text"); links to the project README and the other packages;
   - **Persian**: installation and quick start, each paragraph in its own `<div dir="rtl">` block written to read correctly left to right too (research R16): no Latin word at a line's start or end, and code in separate blocks with comments in both languages;
   - every code block is fenced `python`, and is a complete, runnable snippet with `assert`s.
-- [ ] T050 [US4] Run the benchmarks on this machine (confirm the i7-9700K with `Get-CimInstance Win32_Processor`, and stop if it differs) with CPython 3.14: `uv run --python 3.14 python bench/bench_filter.py -o .bench/results.json --rigorous`, then `bench_table.py`. Check the SC-005 targets: build under 500 ms, `CleanShortMessage` under 250 µs, `VeryLongMessage` under 3 s. If one is missed, profile with `cProfile` and optimise the hot path before continuing; do not weaken the target without the user's decision. Put the table in `python/README.md` and `verification.md`.
-- [ ] T051 [US4] Create `python/tests/test_readme.py`. It reads **both** `python/README.md` and the root `README.md` (constitution Principle VI: every code example in any README has a test in its language's port). It extracts every fenced `python` block and runs each in a fresh namespace with `exec`, as one parametrized test per block, with ids `<file>-block-<n>-line-<line>`. A block that raises fails its test with the file and line number. It also asserts at least 8 blocks in `python/README.md` and at least 1 in the root `README.md` (the example T054 adds), so an extraction bug cannot pass vacuously. The test runs again after T054.
-- [ ] T052 [US4] Create `python/scripts/check_api.py` (research R14):
+- [X] T050 [US4] Run the benchmarks on this machine (confirm the i7-9700K with `Get-CimInstance Win32_Processor`, and stop if it differs) with CPython 3.14: `uv run --python 3.14 python bench/bench_filter.py -o .bench/results.json --rigorous`, then `bench_table.py`. Check the SC-005 targets: build under 500 ms, `CleanShortMessage` under 250 µs, `VeryLongMessage` under 3 s. If one is missed, profile with `cProfile` and optimise the hot path before continuing; do not weaken the target without the user's decision. Put the table in `python/README.md` and `verification.md`.
+- [X] T051 [US4] Create `python/tests/test_readme.py`. It reads **both** `python/README.md` and the root `README.md` (constitution Principle VI: every code example in any README has a test in its language's port). It extracts every fenced `python` block and runs each in a fresh namespace with `exec`, as one parametrized test per block, with ids `<file>-block-<n>-line-<line>`. A block that raises fails its test with the file and line number. It also asserts at least 8 blocks in `python/README.md` and at least 1 in the root `README.md` (the example T054 adds), so an extraction bug cannot pass vacuously. The test runs again after T054.
+- [X] T052 [US4] Create `python/scripts/check_api.py` (research R14):
   - finds the newest `v*` tag whose tree contains `python/src/persian_text_guard/__init__.py` (`git tag --list 'v*' --sort=-v:refname`, then `git cat-file -e <tag>:python/src/persian_text_guard/__init__.py`);
   - with none, prints "baseline: no previous release" and exits 0;
   - otherwise runs `griffe check persian_text_guard --search src --against <tag> --verbose`;
@@ -448,22 +448,22 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   - `--against <ref>` overrides the tag.
 
   **Prove it** (quickstart §5): on a throwaway commit, rename `censor`'s `mask` parameter to `character`; `check_api.py --against HEAD~1` fails and names it. Then `git reset --hard HEAD~1`. Record the output in `verification.md`.
-- [ ] T053 [US4] Check the documentation (FR-023, SC-006):
+- [X] T053 [US4] Check the documentation (FR-023, SC-006):
   - `uv run ruff check` passes with the `D` rules, so every public module, class, method and function has a docstring;
   - `uv run python -c "import persian_text_guard as p, inspect; missing=[n for n in p.__all__ if not inspect.getdoc(getattr(p,n))]; assert not missing, missing"` passes;
   - read `help(persian_text_guard.ProfanityFilter.censor)` and `help(persian_text_guard.WordList.load)`, and confirm they explain the edge cases, not only the signature.
-- [ ] T054 [US4] Update the root `README.md` (FR-025):
+- [X] T054 [US4] Update the root `README.md` (FR-025):
   - the packages section lists PyPI next to NuGet and npm, with `pip install persian-text-guard` and a short Python example in a fenced `python` block that ends with an `assert`, so it is a test (T051 runs the root README's `python` blocks). Re-run `uv run pytest tests/test_readme.py` afterwards;
   - the "Changes" section says that 1.4.0 adds Python, and that .NET and JavaScript behaviour is unchanged;
   - "Development" shows `python/` and the commands from contracts → "Commands";
   - "Releasing" adds PyPI trusted publishing and the `pypi` environment;
   - "Limitations" gains the Python Unicode note (research R1).
-- [ ] T055 [US4] Draft `specs/004-python-port/release-notes-1.4.0.md` (research R15), in English with a Persian summary in a `<div dir="rtl">` block:
+- [X] T055 [US4] Draft `specs/004-python-port/release-notes-1.4.0.md` (research R15), in English with a Persian summary in a `<div dir="rtl">` block:
   - the Python package, with install and quick start;
   - the new corpus cases (characters outside the Basic Multilingual Plane), which pin existing behaviour in every port and change none;
   - .NET and npm 1.4.0 are identical to 1.3.0 apart from the version;
   - .NET is now validated against 1.3.0.
-- [ ] T056 [US4] Run the lint command, `uv run pytest` (everything, README examples included), `uv build`, and the package, consumer and API checks. Everything passes. Commit T048–T056 as "Document, benchmark and API-check the Python port".
+- [X] T056 [US4] Run the lint command, `uv run pytest` (everything, README examples included), `uv build`, and the package, consumer and API checks. Everything passes. Commit T048–T056 as "Document, benchmark and API-check the Python port".
 
 **Checkpoint**: All four user stories are complete.
 
@@ -473,7 +473,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 **Purpose**: Prove everything from a clean state, prove the release gates on GitHub, then release with the user's go-ahead.
 
-- [ ] T057 Run the full matrix from a clean state:
+- [X] T057 Run the full matrix from a clean state:
   1. `git clean -xdf python js/dist` (never `graphify-out/`; check with `git clean -xdn` first);
   2. .NET tests and conformance on three targets;
   3. `npm ci && npm run test:all` in `js/`;
@@ -481,7 +481,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   5. `uv build`, and the package and consumer checks.
 
   Record every count in `verification.md` under "Full matrix".
-- [ ] T058 Walk through [quickstart.md](quickstart.md) §1–§6 and §8, ticking each expected outcome in `verification.md` with the task that produced it. §7 is completed by T059–T066.
+- [X] T058 Walk through [quickstart.md](quickstart.md) §1–§6 and §8, ticking each expected outcome in `verification.md` with the task that produced it. §7 is completed by T059–T066.
 - [ ] T059 Prepare the real CI dry run (research R19, SC-009), following 003's T067 with these changes:
   1. **Precondition** (M2): `gh api repos/AmirehsanK/PersianTextGuard/environments/pypi` shows the `v*` tag rule (T047); `gh api repos/AmirehsanK/PersianTextGuard/environments/pypi/deployment-branch-policies` lists `v*` with `type: tag`. Stop and ask the user if it does not.
   2. Commit and push `004-python-port`, with no pull request yet.
