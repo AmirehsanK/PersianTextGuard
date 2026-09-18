@@ -89,6 +89,15 @@ class CustomBuildHook(BuildHookInterface):  # type: ignore[type-arg]
 
     def initialize(self, version: str, build_data: dict[str, Any]) -> None:
         """Write the generated modules before the files are collected."""
+        # hatchling always adds the nearest .gitignore to an sdist; here that is the repository's own,
+        # which describes the repository, not this package. The allowlist (check_package.py) has no
+        # place for it.
+        if self.target_name == "sdist":
+            force_include: dict[str, str] = build_data.get("force_include", {})
+            for source, target in list(force_include.items()):
+                if target == ".gitignore":
+                    del force_include[source]
+
         root = _repo_root()
         if root is None:
             for path in (WORDLISTS_MODULE, VERSION_MODULE):

@@ -97,3 +97,33 @@ Ten pending cases added: eight in `robustness.json`, and one `ordinary` case eac
 - `uv run pytest tests/test_unicode.py tests/test_internals.py`: 96 passed.
 - Lint command: ruff clean, 16 files formatted, the Unicode check clean over 7 package files, mypy
   "no issues found in 16 source files".
+
+## US1: the filter and the package (T021–T032)
+
+- `_scan.py`, `_regions.py` and `_filter.py` ported from `js/src/`; `__init__.py` exports exactly the
+  names in contracts/public-api.md, plus `__version__`.
+- `uv run pytest tests/test_api.py tests/test_word_list_load.py`: 79 passed. The whole suite at this
+  point: 175 passed.
+- **Build** (`uv build`, `VERSION` 1.3.0): `persian_text_guard-1.3.0-py3-none-any.whl` and
+  `persian_text_guard-1.3.0.tar.gz`.
+  - **Wheel**: `persian_text_guard/` with `__init__.py`, `_filter.py`, `_fold.py`, `_normalizer.py`,
+    `_regions.py`, `_scan.py`, `_source_map.py`, `_types.py`, `_unicode.py`, `_utf16.py`,
+    `_version.py`, `_word_list.py`, `_wordlists.py` and `py.typed`; and
+    `persian_text_guard-1.3.0.dist-info/` with `METADATA`, `WHEEL`, `RECORD`, `licenses/LICENSE` and
+    `licenses/THIRD-PARTY-NOTICES.md`.
+  - **Sdist**: the same package files under `src/persian_text_guard/`, plus `pyproject.toml`,
+    `hatch_build.py`, `README.md`, `LICENSE`, `THIRD-PARTY-NOTICES.md` and `PKG-INFO`.
+  - hatchling adds the nearest `.gitignore` (here the repository's own) to every sdist, whatever
+    `only-include` says. The build hook removes it from the sdist's `force_include`, so the sdist equals
+    the allowlist.
+- `scripts/check_package.py`: every check passed (`twine check --strict` on both files,
+  `check-wheel-contents`, both allowlists exact, metadata, no `Requires-Dist`); unpacked wheel
+  135,321 bytes (SC-004: under 1 MB).
+- `scripts/check_consumers.py`: 4 of 4 checks passed:
+  - wheel smoke: `ok`;
+  - sdist smoke (a wheel built from the sdist alone with `uv build --wheel`): `ok`;
+  - typed usage: 0 errors from `mypy --strict` and from `pyright` (strict via `# pyright: strict`,
+    because the pyright CLI has no `--strict` flag);
+  - type errors: both checkers report exactly lines 7 and 8, the two marked lines.
+- ruff also ignores `PLR0913` and `PLR0917` (too many arguments), because the port keeps the other
+  ports' function signatures.
