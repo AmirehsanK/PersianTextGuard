@@ -178,3 +178,66 @@ Ten pending cases added: eight in `robustness.json`, and one `ordinary` case eac
   "insult": 400, "slur": 146, "harassment": 33, "mild": 225}}` (identical). Every entry dumped as
   `text\tmode\tcategory` to `artifacts/compare/python.txt` and `js.txt`: 1,250 lines each, and
   `git diff --no-index` shows **0 differences**.
+
+## Benchmarks and API check (T048, T052)
+
+- `bench/bench_filter.py` (pyperf, the ten JavaScript benchmarks with the same names and messages;
+  `--only NAME` runs one), `scripts/bench_table.py` and `scripts/bench_gate.py`. pyperf ships no type
+  information, so mypy ignores its missing imports.
+- `uv run python scripts/bench_gate.py` on this machine: `ok CleanShortMessage: mean 91.8 µs, limit 500 µs`.
+- `scripts/check_api.py` runs griffe from the repository root with `--search python/src`: griffe
+  checks the old reference out in a worktree of the repository and resolves the search path there too,
+  so `--search src` from `python/` finds nothing in the old tree.
+  - `uv run python scripts/check_api.py`: "baseline: no previous release has python/, so there is
+    nothing to compare with" (exit 0).
+  - **Proof** (quickstart §5): a throwaway commit renamed `censor`'s `mask` parameter to `character`,
+    then `check_api.py --against HEAD~1` exited 1:
+
+    ```text
+    python\src\persian_text_guard\_filter.py:283: ProfanityFilter.censor(mask):
+    Parameter was removed
+
+    griffe check persian_text_guard against HEAD~1
+    FAIL: griffe reported breaking changes against HEAD~1, or could not run,
+    and VERSION has the same major version
+    ```
+
+    The throwaway commit was then removed with `git reset HEAD~1` and
+    `git checkout -- python/src/persian_text_guard/_filter.py` rather than `git reset --hard HEAD~1`,
+    which would also have discarded the uncommitted work in the tree.
+
+## US3: CI and publishing (T042–T046)
+
+- **`.github/workflows/ci.yml`**: job `python`, `Python (${{ matrix.python }})` for 3.11, 3.12, 3.13,
+  3.14 and 3.14t, with `astral-sh/setup-uv@v10` (the current major, v10.1.0), and job
+  `publish-pypi`, `Publish to PyPI`. Existing job names are unchanged. Deviations from T042/T043:
+  - the 3.14 entry asks uv for `3.14+gil`, so it can never resolve to the free-threaded build, as it did
+    on this machine;
+  - `PYTHON_GIL: "0"` is set on the two 3.14t test steps only, not job-wide, so the standard builds
+    never see the variable;
+  - the 3.14 job syncs `--group package` (see "Scaffold");
+  - "Check file versions" gets `packaging` through `uv run --no-project --with packaging`, because the
+    runner's system pip refuses to install into the system Python (PEP 668).
+- **YAML**: parsed with the `yaml` package (strict, unique keys) in the scratchpad's
+  `yamlcheck/check.mjs`. The first parse caught `": "` inside a plain `run:` scalar (003's lesson), fixed
+  with a block scalar.
+- **T045 gates**, read back from the parsed workflow:
+
+  | Job | Name | needs | if |
+  | --- | --- | --- | --- |
+  | `publish` | Publish to NuGet | build, netfx, javascript, python | `startsWith(github.ref, 'refs/tags/v')` |
+  | `publish-npm` | Publish to npm | build, netfx, javascript, python | `startsWith(github.ref, 'refs/tags/v')` |
+  | `publish-pypi` | Publish to PyPI | build, netfx, javascript, python | `startsWith(github.ref, 'refs/tags/v')` |
+
+  - the tag check, extracted from `ci.yml` and run in Git Bash: `v1.3.0` (then `VERSION`) passes;
+    `v9.9.9` fails with "Tag v9.9.9 does not match VERSION 1.3.0";
+  - "Check file versions", extracted and run against the local build: passes for `VERSION` 1.3.0, and
+    fails with the expected names when `VERSION` says 9.9.9;
+  - `Version('1.4.0-dev.2')` prints `1.4.0.dev2`.
+- **T044**: `PackageValidationBaselineVersion` 1.2.0 → 1.3.0; `dotnet pack` succeeds, so package
+  validation passes against 1.3.0. `npm run api:compat`: "API compatible with v1.3.0: 45 declarations
+  kept, 0 added".
+- **T046**: `VERSION` 1.4.0. `uv build` gives `persian_text_guard-1.4.0-py3-none-any.whl` and
+  `persian_text_guard-1.4.0.tar.gz` (`__version__` 1.4.0); `npm run pack` gives
+  `persian-text-guard-1.4.0.tgz`; `dotnet pack` gives `PersianTextGuard.1.4.0.nupkg` with package
+  validation passing against 1.3.0.

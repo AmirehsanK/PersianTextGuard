@@ -130,9 +130,101 @@ jobs:
           name: npm-package
           path: js/artifacts/*.tgz
 
+  python:
+    name: Python (${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14", "3.14t"]
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # The API compatibility check compares with the newest release tag that has python/.
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v10
+        with:
+          # "3.14+gil" asks for the standard build, so "3.14" never resolves to the free-threaded one.
+          python-version: ${{ matrix.python == '3.14' && '3.14+gil' || matrix.python }}
+          enable-cache: true
+          cache-dependency-glob: python/uv.lock
+
+      - name: Install
+        if: matrix.python != '3.14'
+        run: uv sync --locked
+
+      # The package checks need the "package" group, whose README renderer has wheels for every
+      # interpreter on Linux but is only needed here.
+      - name: Install (with the package-check tools)
+        if: matrix.python == '3.14'
+        run: uv sync --locked --group package
+
+      - name: Interpreter
+        run: |
+          uv run python -c "import sys, unicodedata; print(sys.version, unicodedata.unidata_version, getattr(sys, '_is_gil_enabled', lambda: True)())"
+
+      - name: Lint and type check
+        if: matrix.python != '3.14t'
+        run: |
+          uv run ruff check
+          uv run ruff format --check
+          uv run python scripts/check_unicode_usage.py
+          uv run mypy
+
+      - name: Unit tests
+        if: matrix.python != '3.14t'
+        run: uv run pytest -m "not corpus"
+
+      - name: Conformance corpus
+        if: matrix.python != '3.14t'
+        run: uv run pytest -m corpus
+
+      # Free-threaded CPython with the GIL off, so the thread tests really run in parallel.
+      - name: All tests, with the GIL off
+        if: matrix.python == '3.14t'
+        env:
+          PYTHON_GIL: "0"
+        run: uv run pytest
+
+      - name: Unit tests on 8 threads at once, with the GIL off
+        if: matrix.python == '3.14t'
+        env:
+          PYTHON_GIL: "0"
+        run: uv run pytest -p pytest_run_parallel --parallel-threads=8 -m "not corpus and not threads"
+
+      - name: Build
+        if: matrix.python == '3.14'
+        run: uv build
+
+      - name: Package checks (twine, check-wheel-contents, contents, metadata, size)
+        if: matrix.python == '3.14'
+        run: uv run python scripts/check_package.py
+
+      - name: Consumer checks (wheel, sdist, pyright and mypy strict)
+        if: matrix.python == '3.14'
+        run: uv run python scripts/check_consumers.py
+
+      - name: API compatibility with the previous release
+        if: matrix.python == '3.14'
+        run: uv run python scripts/check_api.py
+
+      - name: Benchmark regression gate
+        if: matrix.python == '3.14'
+        run: uv run python scripts/bench_gate.py
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.python == '3.14'
+        with:
+          name: python-package
+          path: python/dist/*
+
   publish:
     name: Publish to NuGet
-    needs: [build, netfx, javascript]
+    needs: [build, netfx, javascript, python]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: nuget
@@ -166,8 +258,8 @@ jobs:
 
   publish-npm:
     name: Publish to npm
-    # Lockstep: neither registry publishes unless every job for every port is green.
-    needs: [build, netfx, javascript]
+    # Lockstep: no registry publishes unless every job for every port is green.
+    needs: [build, netfx, javascript, python]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: npm
@@ -204,3 +296,39 @@ jobs:
           # npm requires a dist-tag for a prerelease version; only a plain x.y.z becomes "latest".
           case "$V" in *-*) TAG=next ;; *) TAG=latest ;; esac
           npm publish "./npm-package/persian-text-guard-$V.tgz" --access public --tag "$TAG"
+
+  publish-pypi:
+    name: Publish to PyPI
+    # Lockstep: no registry publishes unless every job for every port is green.
+    needs: [build, netfx, javascript, python]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write   # PyPI trusted publishing: no token stored in GitHub, and attestations are generated
+    steps:
+      - uses: actions/checkout@v5
+
+      # A tag must name the version being released: v1.2.3 only when VERSION says 1.2.3.
+      - name: Check tag matches VERSION
+        run: test "${GITHUB_REF_NAME#v}" = "$(tr -d '[:space:]' < VERSION)" || { echo "Tag $GITHUB_REF_NAME does not match VERSION $(cat VERSION)"; exit 1; }
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-package
+          path: dist
+
+      - uses: astral-sh/setup-uv@v10
+
+      # PyPI versions are PEP 440: VERSION 1.4.0-dev.2 is 1.4.0.dev2 in the file names. packaging comes
+      # through uv, because the runner's system pip refuses to install into it (PEP 668).
+      - name: Check file versions
+        run: |
+          ls dist
+          uv run --no-project --with packaging python -c "import pathlib, sys; from packaging.version import Version; v = str(Version(pathlib.Path('VERSION').read_text().strip())); names = sorted(p.name for p in pathlib.Path('dist').iterdir()); expected = sorted([f'persian_text_guard-{v}-py3-none-any.whl', f'persian_text_guard-{v}.tar.gz']); print(names); sys.exit(0 if names == expected else f'expected {expected}')"
+
+      # Re-running this job after a partial release is safe: files already on PyPI are skipped.
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
