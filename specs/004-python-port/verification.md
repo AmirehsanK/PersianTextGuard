@@ -78,3 +78,22 @@ Ten pending cases added: eight in `robustness.json`, and one `ordinary` case eac
 - `js/`: `npm run corpus`: 530 passed (523 cases plus 7 guards). The JavaScript port passes every new
   case unchanged.
 - `CorpusFill -- --check`: "Filled 0 case(s); 0 disagreement(s)".
+
+## Shared layers (T011–T020)
+
+- `_types.py`, `_unicode.py`, `_utf16.py`, `_normalizer.py`, `_word_list.py`, `_fold.py` and
+  `_source_map.py`, ported from `js/src/`.
+- `WHITE_SPACE` is written out (25 characters) rather than computed at import; the Zs, Zl and Zp sets
+  are identical on CPython 3.11, 3.12, 3.13, 3.14 and 3.14t (checked on each), and
+  `test_white_space_set_matches_the_categories_on_this_python` re-checks it on every run.
+- Without a source map, the normalizer uses whole-string passes (research R3): the per-unit steps are
+  one `str.translate` through a table filled in lazily per unit, and the collapsing steps are regular
+  expressions. With a map it runs the ported per-unit loop. The source-map tests compare the two.
+- `WordList.load` re-raises a `UnicodeDecodeError` with the file name added to its `reason`, so the
+  error names the file (spec FR-013) and is still a `UnicodeDecodeError`.
+- **ruff**: `PLR2004` (magic values) and `RUF001`–`RUF003` (ambiguous characters) are ignored for the
+  whole project, with a comment in `pyproject.toml`: a line-by-line port compares against code points
+  that are the specification, and its docstrings are Persian.
+- `uv run pytest tests/test_unicode.py tests/test_internals.py`: 96 passed.
+- Lint command: ruff clean, 16 files formatted, the Unicode check clean over 7 package files, mypy
+  "no issues found in 16 source files".

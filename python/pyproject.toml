@@ -103,6 +103,9 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "D", "ANN", "PL", "PT", "TID"]
+# A line-by-line port compares against code points and lengths that are the specification (PLR2004),
+# and its text and docs are Persian, whose letters look like Latin ones (RUF001-RUF003).
+ignore = ["PLR2004", "RUF001", "RUF002", "RUF003"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
