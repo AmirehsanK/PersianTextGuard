@@ -200,4 +200,7 @@ jobs:
         run: |
           V="$(tr -d '[:space:]' < VERSION)"
           if npm view "persian-text-guard@$V" version >/dev/null 2>&1; then echo "persian-text-guard@$V already published"; exit 0; fi
-          npm publish "npm-package/persian-text-guard-$V.tgz" --access public
+          # The leading ./ matters: without it npm reads "npm-package/..." as a GitHub repository.
+          # npm requires a dist-tag for a prerelease version; only a plain x.y.z becomes "latest".
+          case "$V" in *-*) TAG=next ;; *) TAG=latest ;; esac
+          npm publish "./npm-package/persian-text-guard-$V.tgz" --access public --tag "$TAG"
