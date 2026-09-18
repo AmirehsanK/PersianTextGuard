@@ -632,7 +632,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
 
      The spaced and upper-case heading case passes on 1.2.0 too, as it should.
   4. Record the output, then `git worktree remove ../ptg-1.2.0 --force`.
-- [ ] T067 Prepare the real CI dry run (research R18, SC-008).
+- [X] T067 Prepare the real CI dry run (research R18, SC-008).
   1. Commit remaining changes, `verification.md` included, on `003-javascript-typescript-port`, and push the branch; no pull request yet.
   2. Create the scratch branch with `git switch -c dryrun/release-gates`.
   3. Edit its `.github/workflows/ci.yml` only:
@@ -642,13 +642,13 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   4. Set `VERSION` to `0.0.0-dryrun.1`.
   5. **Safety check, before committing.** Run `grep -nE "dotnet nuget push|NuGet/login" .github/workflows/ci.yml` (must print nothing) and `grep -n "npm publish" .github/workflows/ci.yml | grep -v -- "--dry-run"` (must print nothing). Stop if either prints anything.
   6. Commit as "DRY RUN ONLY: release gate test (do not merge)" and push the branch.
-- [ ] T068 Dry run 1, a failing port blocks both registries:
+- [X] T068 Dry run 1, a failing port blocks both registries:
   1. `git tag v0.0.0-dryrun.1` and `git push origin v0.0.0-dryrun.1`.
   2. Find the run with `gh run list --workflow ci.yml --branch v0.0.0-dryrun.1 --limit 1`, and wait with `gh run watch <id>`.
   3. With `gh run view <id> --json jobs --jq '.jobs[] | "\(.name): \(.conclusion)"'`, confirm that `JavaScript (Node 22)` and `JavaScript (Node 24)` are `failure`, and that `Publish to NuGet` and `Publish to npm` are `skipped`.
 
   Record the job list in `verification.md`. If either publish job ran, stop, delete the tag, and report to the user: the gating is wrong.
-- [ ] T069 Dry runs 2 and 3, green publishing and tag mismatch:
+- [X] T069 Dry runs 2 and 3, green publishing and tag mismatch:
   1. On `dryrun/release-gates`, remove the "DRY RUN: simulated failure" step and set `VERSION` to `0.0.0-dryrun.2`. Repeat the T067 safety check, commit, push, then tag and push `v0.0.0-dryrun.2`.
   2. Watch the run. Every job must succeed:
      - the `Publish to NuGet` log lists `PersianTextGuard.0.0.0-dryrun.2.nupkg` and prints "DRY RUN";
@@ -657,7 +657,7 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   3. Tag the **same** commit `v0.0.0-dryrun.3` and push it. Both publish jobs must fail at "Check tag matches VERSION", printing "Tag v0.0.0-dryrun.3 does not match VERSION 0.0.0-dryrun.2".
 
   Record the job conclusions and log excerpts for both runs in `verification.md`.
-- [ ] T070 Clean up the dry run and confirm nothing was published:
+- [X] T070 Clean up the dry run and confirm nothing was published:
   1. `git push origin --delete v0.0.0-dryrun.1 v0.0.0-dryrun.2 v0.0.0-dryrun.3`, then `git tag -d` for the same three.
   2. `git switch 003-javascript-typescript-port`, `git push origin --delete dryrun/release-gates`, and `git branch -D dryrun/release-gates`.
   3. Confirm that `npm view persian-text-guard versions` prints only `0.0.1`, and that `curl -s https://api.nuget.org/v3-flatcontainer/persiantextguard/index.json` contains no `0.0.0-dryrun`.

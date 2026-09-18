@@ -263,7 +263,8 @@ No file was rewritten. The regression proof for the recorded cases is T066.
 | 6 | Benchmarks under limits, README table filled | ✅ 2.4 ms, 11.0 µs, 30.7 ms | T060 |
 | 6 | npm README bilingual; root README updated | ✅ | T056, T061 |
 | 6 | Onboarding (SC-003) under 5 minutes | ✅ JS 4.0 s, TS 4.5 s (scripted) | below |
-| 7 | CI green, tag gate dry run, registries | Pending: T067–T077 | |
+| 7 | Tag gate dry run: failing port blocks both, green run publishes (dry), mismatched tag blocks both; nothing published | ✅ 3 runs | T067–T070 |
+| 7 | CI green on the pull request, release and registries | Pending: T071–T077 | |
 
 **Onboarding (SC-003).** In two empty directories under the session scratchpad, a script followed only the npm README's installation and quick-start steps, installing `js/artifacts/persian-text-guard-1.3.0.tgz` in place of the registry name:
 1. `npm init -y`;
@@ -284,3 +285,35 @@ Both printed `false true true`: the JavaScript project in **3,963 ms**, the Type
 | `net48` | Failed 15, Passed 507 | all 12 noncharacter cases and the 3 numeric headings |
 
 `word-list-parsing-heading-name-spaced-and-upper-case` passes on 1.2.0 too, as it should. The worktree was removed.
+
+## SC-008: release gates dry run (T067–T070)
+
+The scratch branch `dryrun/release-gates` had `ci.yml` edited so that nothing could publish: the NuGet login and push steps were replaced by `ls -l artifacts/*.nupkg` plus an echo, and `npm publish` carried `--dry-run`. Before each commit, a grep confirmed that no `dotnet nuget push`, no `NuGet/login` and no `npm publish` without `--dry-run` remained.
+
+**Deviations from tasks.md, and what they found.**
+
+1. **Invalid YAML in the edit, not in the real workflow.** The first push (`v0.0.0-dryrun.1`) gave a run with no jobs: "You have an error in your yaml syntax on line 162". The replacement push line, `run: ls ... && echo "DRY RUN: would push to NuGet"`, is a plain scalar containing `": "`. It was rewritten as a `run: |` block. From then on, each version of the file was also checked with the `yaml` package, which reproduces GitHub's error on the bad line and passes the feature branch's `ci.yml`.
+2. **Versions 1.3.0-dryrun.N instead of 0.0.0-dryrun.N.** With `v0.0.0-dryrun.1`, `Build, test, pack` failed at Pack: .NET package validation reported `CP0003: assembly version '0.0.0.0' should be equal to or higher than [Baseline] ... '1.2.0.0'`. That is a real gate working correctly, since a release can't go backwards, but it would hide the gate being tested. The runs below therefore use `1.3.0-dryrun.N`, a prerelease that sorts below 1.3.0; the stubbed steps still could not publish it.
+3. **A real bug in the npm publish step, now fixed on this branch.** The first green-path run failed in `Publish to npm`: `npm publish "npm-package/persian-text-guard-….tgz"` was read as the GitHub repository `npm-package/persian-text-guard-….tgz` (`git ls-remote ssh://git@github.com/npm-package/...`, "Permission denied (publickey)"). The real 1.3.0 release would have failed the same way, after NuGet had published. The step now publishes `./npm-package/...`. It also passes `--tag latest`, or `--tag next` for a prerelease version, because npm refuses a prerelease without a dist-tag. The corrected command was also run locally with `--dry-run` on the 1.3.0 tarball: "Publishing to https://registry.npmjs.org/ with tag latest and public access (dry-run)", 8 files. The fix was cherry-picked onto the scratch branch, and run 2 was repeated.
+
+**Run 1: a failing port blocks both registries.** Tag `v1.3.0-dryrun.1`, `VERSION` 1.3.0-dryrun.1, with a `run: exit 1` step in the `javascript` job (run 35371454545):
+
+| Job | Conclusion |
+| --- | --- |
+| Build, test, pack | success |
+| Test on .NET Framework 4.8 (netstandard2.0 build) | success |
+| JavaScript (Node 22) | failure |
+| JavaScript (Node 24) | failure |
+| Publish to NuGet | skipped |
+| Publish to npm | skipped |
+
+**Run 2: every gate green.** The failure step was removed. Tag `v1.3.0-dryrun.2`, `VERSION` 1.3.0-dryrun.2 (run 35372104389): all six jobs succeeded, and both publish jobs ran in their environments, so the `npm` environment's `v*` rule admits release tags.
+- Publish to NuGet: `artifacts/PersianTextGuard.1.3.0-dryrun.2.nupkg` (146,444 bytes), "DRY RUN - would push to NuGet".
+- Publish to npm: the tag check passed and the "already published" check did not trigger. Output: `total files: 8`, "Publishing to https://registry.npmjs.org/ with tag next and public access (dry-run)", `+ persian-text-guard@1.3.0-dryrun.2`.
+
+**Run 3: tag and VERSION disagree.** Tag `v1.3.0-dryrun.3` on the same commit (run 35372358918). The four build and test jobs succeeded. `Publish to NuGet` and `Publish to npm` both failed at "Check tag matches VERSION", each printing "Tag v1.3.0-dryrun.3 does not match VERSION 1.3.0-dryrun.2".
+
+**Cleanup.**
+- All dry-run tags (`v0.0.0-dryrun.1` and `v1.3.0-dryrun.1` to `.3`) and the `dryrun/release-gates` branch were deleted locally and on GitHub. `git ls-remote` shows no dry-run refs.
+- `npm view persian-text-guard versions` prints `["0.0.1"]`. NuGet lists 1.0.0, 1.0.1, 1.1.0 and 1.2.0 only.
+- `VERSION` on `003-javascript-typescript-port` is `1.3.0`, and its `ci.yml` contains no `DRY RUN` or `--dry-run`. Its only change from the reviewed workflow is the publish-path fix above.
