@@ -682,28 +682,28 @@ The runner modules (T043–T045) can be written in parallel with Phase 3; the fu
   - skipped: `Publish to NuGet` and `Publish to npm`.
 
   Confirm in the logs that the JavaScript corpus ran on Node.js 22 and 24 and the .NET corpus on three targets. If a job fails, fix it on the branch and repeat. **Do not merge** without the user's go-ahead: ask once CI is green.
-- [ ] T072 After the user approves, merge with a merge commit (`gh pr merge <n> --merge`, as for PR #3), fast-forward local `main`, and confirm `main`'s CI run is green on the merge commit (`gh run list --branch main --limit 1`, then `gh run watch`). Record the merge commit in `verification.md`.
-- [ ] T073 (delegated) Add the new required checks to `main`, keeping the two existing ones, `strict: false`, `enforce_admins: false`, and the GitHub Actions `app_id` 15368:
+- [X] T072 After the user approves, merge with a merge commit (`gh pr merge <n> --merge`, as for PR #3), fast-forward local `main`, and confirm `main`'s CI run is green on the merge commit (`gh run list --branch main --limit 1`, then `gh run watch`). Record the merge commit in `verification.md`.
+- [X] T073 (delegated) Add the new required checks to `main`, keeping the two existing ones, `strict: false`, `enforce_admins: false`, and the GitHub Actions `app_id` 15368:
 
   ```bash
   gh api -X PATCH repos/AmirehsanK/PersianTextGuard/branches/main/protection/required_status_checks --input -
   ```
 
   with a body whose `checks` lists `Build, test, pack`, `Test on .NET Framework 4.8 (netstandard2.0 build)`, `JavaScript (Node 22)` and `JavaScript (Node 24)`. Confirm with `gh api repos/AmirehsanK/PersianTextGuard/branches/main --jq .protection.required_status_checks`.
-- [ ] T074 (delegated; **irreversible**) Push the release tag, only if all of these hold:
+- [X] T074 (delegated; **irreversible**) Push the release tag, only if all of these hold:
   - `main`'s latest CI run is green;
   - `VERSION` on `main` is `1.3.0`;
   - `npm view persian-text-guard versions` does not contain `1.3.0`;
   - NuGet does not already list `PersianTextGuard 1.3.0`.
 
   Then `git tag -a v1.3.0 -m "PersianTextGuard 1.3.0"` on the merge commit, and `git push origin v1.3.0`. Watch the tag's workflow run with `gh run watch`: both publish jobs must succeed. If one fails, read its log, fix the cause without deleting the tag, and re-run that job (research R10). If the cause needs a code change, stop and report to the user.
-- [ ] T075 (delegated) Verify both registries (SC-010, quickstart §7):
+- [X] T075 (delegated) Verify both registries (SC-010, quickstart §7):
   - **npm**: `npm view persian-text-guard@1.3.0 version dist.attestations` shows a provenance attestation. Install it into a fresh temporary project and run the `containsProfanity('ک.ی.ر')` check through `require`; it prints `true`.
   - **NuGet**: after it indexes (retry for up to 30 minutes), `dotnet add package PersianTextGuard --version 1.3.0` into a fresh console app succeeds, and the same check prints `True`.
 
   Record both in `verification.md`.
-- [ ] T076 Create the GitHub release with `gh release create v1.3.0 --title "PersianTextGuard 1.3.0" --notes-file specs/003-javascript-typescript-port/release-notes-1.3.0.md`. Confirm with `gh release view v1.3.0` that it contains the Persian summary.
-- [ ] T077 (delegated; the user approves 2FA in the browser) Run `npm deprecate persian-text-guard@0.0.1 "Placeholder; use 1.3.0 or later" --auth-type=web` as `darkerys`: tell the user a browser approval is waiting. Confirm with `npm view persian-text-guard@0.0.1 deprecated`. Also confirm `npm view persian-text-guard dist-tags.latest` is `1.3.0`. Record the results in `verification.md`, then commit and push it to `main` as "Record 1.3.0 release verification".
+- [X] T076 Create the GitHub release with `gh release create v1.3.0 --title "PersianTextGuard 1.3.0" --notes-file specs/003-javascript-typescript-port/release-notes-1.3.0.md`. Confirm with `gh release view v1.3.0` that it contains the Persian summary.
+- [X] T077 (delegated; the user approves 2FA in the browser) Run `npm deprecate persian-text-guard@0.0.1 "Placeholder; use 1.3.0 or later" --auth-type=web` as `darkerys`: tell the user a browser approval is waiting. Confirm with `npm view persian-text-guard@0.0.1 deprecated`. Also confirm `npm view persian-text-guard dist-tags.latest` is `1.3.0`. Record the results in `verification.md`, then commit and push it to `main` as "Record 1.3.0 release verification".
 
 ---
 

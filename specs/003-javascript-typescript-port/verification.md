@@ -265,7 +265,7 @@ No file was rewritten. The regression proof for the recorded cases is T066.
 | 6 | Onboarding (SC-003) under 5 minutes | ✅ JS 4.0 s, TS 4.5 s (scripted) | below |
 | 7 | Tag gate dry run: failing port blocks both, green run publishes (dry), mismatched tag blocks both; nothing published | ✅ 3 runs | T067–T070 |
 | 7 | CI green on the pull request (4 jobs pass, both publish jobs skipped) | ✅ PR #4 | T071 |
-| 7 | Merge, release and registries | Pending: T072–T077 | |
+| 7 | Merge, release and registries | ✅ 1.3.0 on npm and NuGet | T072–T077 |
 
 **Onboarding (SC-003).** In two empty directories under the session scratchpad, a script followed only the npm README's installation and quick-start steps, installing `js/artifacts/persian-text-guard-1.3.0.tgz` in place of the registry name:
 1. `npm init -y`;
@@ -318,3 +318,16 @@ The scratch branch `dryrun/release-gates` had `ci.yml` edited so that nothing co
 - All dry-run tags (`v0.0.0-dryrun.1` and `v1.3.0-dryrun.1` to `.3`) and the `dryrun/release-gates` branch were deleted locally and on GitHub. `git ls-remote` shows no dry-run refs.
 - `npm view persian-text-guard versions` prints `["0.0.1"]`. NuGet lists 1.0.0, 1.0.1, 1.1.0 and 1.2.0 only.
 - `VERSION` on `003-javascript-typescript-port` is `1.3.0`, and its `ci.yml` contains no `DRY RUN` or `--dry-run`. Its only change from the reviewed workflow is the publish-path fix above.
+
+## Release 1.3.0 (T072–T077)
+
+- **T072.** PR #4 was merged (merge commit `d24bf06`). CI on main (run 35373299911): the four build and test jobs succeeded, and both publish jobs were skipped.
+- **T073.** Main's required checks are now "Build, test, pack", "Test on .NET Framework 4.8 (netstandard2.0 build)", "JavaScript (Node 22)" and "JavaScript (Node 24)".
+- **T074.** Before tagging, main was green, `VERSION` was `1.3.0`, npm listed only `0.0.1`, and NuGet listed up to `1.2.0`. The release run for tag `v1.3.0` (run 35373550302) succeeded on all six jobs:
+  - NuGet: "Your package was pushed".
+  - npm: "Publishing to https://registry.npmjs.org/ with tag latest and public access", "Signed provenance statement with source and build information from GitHub Actions", and `+ persian-text-guard@1.3.0`.
+- **T075.** NuGet lists 1.0.0, 1.0.1, 1.1.0, 1.2.0 and 1.3.0. npm's `latest` is `1.3.0`, and its provenance predicate is `https://slsa.dev/provenance/v1`. In a fresh project:
+  - `npm install persian-text-guard@1.3.0` with `require` printed `true **** and ****`;
+  - `npm audit signatures` reported "1 package has a verified attestation".
+- **T076.** GitHub release created: https://github.com/AmirehsanK/PersianTextGuard/releases/tag/v1.3.0
+- **T077.** The CLI session token had expired, and `npm login --auth-type=web` can't finish without an interactive terminal. The user deprecated 0.0.1 themselves. `npm view persian-text-guard@0.0.1 deprecated` prints "Placeholder; use 1.3.0 or later", and `npm view persian-text-guard dist-tags.latest` prints `1.3.0`.
