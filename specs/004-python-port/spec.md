@@ -15,6 +15,9 @@
 - Q: CPython 3.10 reaches end of life on 2026-10-31, around the time this feature ships. Should the
   package support 3.10, or start at 3.11? → A: Start at 3.11. The package requires 3.11 or later and is
   tested on every supported version from 3.11 (FR-003).
+- Q: Should the package read a word-list file for the caller, as .NET's `WordList.Load` does, or only
+  parse text the caller has already read, as the JavaScript package does? → A: Read it. `load` takes a file
+  path or an open file, reads it as UTF-8 and parses it (FR-011, FR-013).
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -289,7 +292,11 @@ It protects users from the second release onward.
   - tokenize text;
   - convert digits to Persian and to ASCII.
 - **FR-011**: Users MUST be able to parse word-list text in the shared format, and to select the bundled
-  lists as all entries, as the default selection (everything except mild), or by chosen categories.
+  lists as all entries, as the default selection (everything except mild), or by chosen categories. Users
+  MUST also be able to load a word-list file by giving its path or an open file (clarified 2026-09-18):
+  - the file is read as UTF-8, and a UTF-8 byte order mark at the start is ignored;
+  - the text is then parsed exactly as the text-parsing function parses it;
+  - an open file is read but not closed, because the caller owns it.
 - **FR-012**: Public names MUST follow Python conventions: snake_case functions and methods
   (`contains_profanity`, `find_matches`, `normalize`), PascalCase classes (`ProfanityFilter`, `WordList`)
   and upper-case enum members. The port's README MUST include a table that maps each .NET and JavaScript
@@ -301,6 +308,8 @@ It protects users from the second release onward.
   - a missing or non-iterable entry collection, or an entry without string text, a known mode and a known
     category;
   - word-list text naming an unknown category, reported with its line number;
+  - a word-list file that cannot be opened, or that is not valid UTF-8, when loading one. The error is
+    the one Python raises for that file problem, with the file named;
   - an unknown category passed to a bundled-list selection, or an unknown normalization preset or step;
   - a message or word-list text that is neither a string nor `None`. This raises `TypeError` from
     checking, finding matches, censoring, normalizing, tokenizing and parsing.
@@ -335,7 +344,7 @@ It protects users from the second release onward.
   built package as users install it. That behaviour is:
   - `None` as a missing value;
   - `TypeError` for values that are not strings;
-  - the mask and word-list errors;
+  - the mask and word-list errors, including loading a word-list file from a path and from an open file;
   - immutability after building;
   - concurrent use from many threads;
   - the type information seen by a type checker.
@@ -448,6 +457,10 @@ It protects users from the second release onward.
 - **Non-string input**: `None` is the missing message. Any other non-string raises `TypeError`, as in the
   JavaScript port. The plan's Constitution Check records this against Principle II, which permits
   failures only for programmer errors.
+- **Loading word-list files**: .NET already reads files (`WordList.Load`), and the JavaScript package
+  leaves reading to the caller, because browsers have no file system. So reading a file is a convenience
+  each port offers the way its language does, not a matching capability under Principle V; the corpus
+  covers the parsing, which every port shares. The plan's Constitution Check records this.
 - **Behaviour source**: the corpus is the specification. The .NET package remains the source that the
   corpus fill-in tool records from; the Python port does not add a second fill-in tool.
 - **Versioning**: a newly supported language is a MINOR change, so the first release that includes PyPI
