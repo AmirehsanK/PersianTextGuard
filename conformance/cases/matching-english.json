@@ -2973,5 +2973,17 @@
       "matches": [],
       "censored": "s h i t a k e"
     }
+  },
+  {
+    "id": "en-ordinary-with-supplementary-characters",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "hello 𠀀 world 𝐡𝐞𝐥𝐥𝐨",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "hello 𠀀 world 𝐡𝐞𝐥𝐥𝐨"
+    }
   }
 ]

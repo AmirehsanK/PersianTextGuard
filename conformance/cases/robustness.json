@@ -439,5 +439,198 @@
       ],
       "censored": "****"
     }
+  },
+  {
+    "id": "robustness-supplementary-letter-after-word",
+    "kind": "robustness",
+    "configuration": "default",
+    "note": "Characters outside the Basic Multilingual Plane are read as UTF-16 units, as .NET reads them (spec 004 research R2).",
+    "input": "kir𠀀",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "robustness-supplementary-letter-before-word",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "𠀀kir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "robustness-supplementary-letter-separate-word",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "kir 𠀀",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "**** 𠀀"
+    }
+  },
+  {
+    "id": "robustness-supplementary-letter-inside-word",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "k𠀀ir",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "robustness-emoji-after-persian-word",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "کیر😀",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****😀"
+    }
+  },
+  {
+    "id": "robustness-mathematical-bold-letters",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "𝐤𝐢𝐫",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+        "evasion": [],
+        "start": 0,
+        "length": 3
+      },
+      "matches": [
+        {
+          "entry": { "text": "kir", "mode": "wholeWord", "category": "sexual" },
+          "evasion": [],
+          "start": 0,
+          "length": 3
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "robustness-deseret-letter-inside-word",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "fu𐐀ck",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 5
+      },
+      "matches": [
+        {
+          "entry": { "text": "fuck", "mode": "anywhere", "category": "profanity" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 5
+        }
+      ],
+      "censored": "****"
+    }
+  },
+  {
+    "id": "robustness-supplementary-letter-inside-persian-word",
+    "kind": "robustness",
+    "configuration": "default",
+    "input": "ک𠀀یر",
+    "expected": {
+      "containsProfanity": true,
+      "firstMatch": {
+        "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+        "evasion": ["lookalikeCharacters"],
+        "start": 0,
+        "length": 4
+      },
+      "matches": [
+        {
+          "entry": { "text": "کیر", "mode": "wholeWord", "category": "sexual" },
+          "evasion": ["lookalikeCharacters"],
+          "start": 0,
+          "length": 4
+        }
+      ],
+      "censored": "****"
+    }
   }
 ]

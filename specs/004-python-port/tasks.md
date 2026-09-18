@@ -77,18 +77,18 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
 **Purpose**: Scaffold `python/` with pinned tools, and record the starting point.
 
-- [ ] T001 Confirm the branch is `004-python-port` and that `git status --short` shows nothing except the untracked `graphify-out/`, which must never be committed. Record the baseline in a new `specs/004-python-port/verification.md` under the heading "Baseline":
+- [X] T001 Confirm the branch is `004-python-port` and that `git status --short` shows nothing except the untracked `graphify-out/`, which must never be committed. Record the baseline in a new `specs/004-python-port/verification.md` under the heading "Baseline":
   - the commit hash;
   - `dotnet test dotnet/tests/PersianTextGuard.Tests` (expect 1,029 on each of `net8.0`, `net10.0` and `net48`);
   - `dotnet test dotnet/tests/PersianTextGuard.Conformance` (expect 522 × 3);
   - in `js/`: `npm ci`, then `npm run test:all` (expect 665);
   - `uv --version`, and `uv python list --only-installed` (expect 3.11, 3.12, 3.13, 3.14 and 3.14t).
-- [ ] T002 Append the Python build outputs to the root `.gitignore`:
+- [X] T002 Append the Python build outputs to the root `.gitignore`:
   - `python/.venv/`, `python/dist/`, `python/build/` and `python/.bench/`;
   - `python/src/persian_text_guard/_wordlists.py` and `python/src/persian_text_guard/_version.py`;
   - `__pycache__/`, `.pytest_cache/`, `.mypy_cache/` and `.ruff_cache/`;
   - `python/consumers/.envs/`.
-- [ ] T003 Create `python/pyproject.toml`:
+- [X] T003 Create `python/pyproject.toml`:
   - **`[build-system]`**: `requires = ["hatchling>=1.32,<2"]`, `build-backend = "hatchling.build"`.
   - **`[project]`**:
     - `name = "persian-text-guard"`, `dynamic = ["version"]`, `requires-python = ">=3.11"`, `dependencies = []`;
@@ -112,7 +112,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
     - `testpaths = ["tests"]` and `addopts = "-ra --strict-markers --import-mode=importlib"`;
     - `markers = ["corpus: a conformance corpus case or guard", "threads: multi-threaded tests"]`;
     - `xfail_strict = true`.
-- [ ] T004 Create `python/hatch_build.py` (research R4, R6, R9), with a module docstring stating why it exists.
+- [X] T004 Create `python/hatch_build.py` (research R4, R6, R9), with a module docstring stating why it exists.
   - **`_repo_root()`**: `Path(__file__).resolve().parent.parent` if it has `VERSION` and `wordlists/`, else `None` (building from an unpacked sdist).
   - **`CustomMetadataHook(MetadataHookInterface)`**, `update(metadata)`:
     - with a repository root, read `VERSION`, strip it, and set `metadata["version"] = str(packaging.version.Version(raw))`, so `1.4.0-dev.2` becomes `1.4.0.dev2`. Raise `ValueError` naming the file if PEP 440 rejects it;
@@ -125,23 +125,23 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
     - each file is written only when its content changes, so editable installs don't churn.
 
   Add `python/LICENSE` and `python/THIRD-PARTY-NOTICES.md` to `.gitignore` too.
-- [ ] T005 [P] Create the package skeleton:
+- [X] T005 [P] Create the package skeleton:
   - `python/src/persian_text_guard/py.typed`, which is empty;
   - a temporary `python/src/persian_text_guard/__init__.py` with only a module docstring and `from ._version import __version__`.
-- [ ] T006 Pin the tools. In `python/`, run `uv lock`, then `uv sync --locked`. Confirm:
+- [X] T006 Pin the tools. In `python/`, run `uv lock`, then `uv sync --locked`. Confirm:
   - `.venv` exists;
   - `_wordlists.py` and `_version.py` were generated, and `git status` does not list them;
   - `uv run python -c "import persian_text_guard as p; print(p.__version__)"` prints `1.3.0`, the current `VERSION`.
 
   Commit `python/uv.lock`.
-- [ ] T007 [P] Create `python/scripts/check_unicode_usage.py`, an `ast` walker over `src/persian_text_guard/*.py` except `_unicode.py` and the generated files. It fails listing `file:line` for:
+- [X] T007 [P] Create `python/scripts/check_unicode_usage.py`, an `ast` walker over `src/persian_text_guard/*.py` except `_unicode.py` and the generated files. It fails listing `file:line` for:
   - any attribute call named `lower`, `upper`, `casefold`, `title`, `swapcase`, `isspace`, `isalpha`, `isalnum`, `isdigit`, `isdecimal`, `isnumeric`, `isprintable`, `isidentifier`, `islower`, `isupper` or `istitle`;
   - `strip`, `lstrip`, `rstrip`, `split`, `rsplit` or `splitlines` called with **no** arguments;
   - `import unicodedata` (also banned by ruff; checked twice on purpose);
   - `re` patterns containing `\s`, `\S`, `\w`, `\W`, `\d` or `\D` in a string literal passed to `re.compile`, `re.search`, `re.match`, `re.sub`, `re.split`, `re.findall` or `re.fullmatch`.
 
   **Self-check**: a throwaway `src/persian_text_guard/_x.py` containing `"A".lower()`, `" a ".strip()` and `re.compile(r"\s")` makes it report all three. Then delete the file.
-- [ ] T008 Add the lint command to `verification.md` and confirm it runs clean on the skeleton: `uv run ruff check && uv run ruff format --check && uv run python scripts/check_unicode_usage.py && uv run mypy`. Commit T002–T008 as "Scaffold the Python port (spec 004)".
+- [X] T008 Add the lint command to `verification.md` and confirm it runs clean on the skeleton: `uv run ruff check && uv run ruff format --check && uv run python scripts/check_unicode_usage.py && uv run mypy`. Commit T002–T008 as "Scaffold the Python port (spec 004)".
 
 ---
 

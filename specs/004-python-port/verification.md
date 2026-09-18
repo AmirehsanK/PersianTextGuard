@@ -50,3 +50,31 @@ uv run ruff check && uv run ruff format --check && uv run python scripts/check_u
 
 On the skeleton: ruff "All checks passed", 7 files formatted, the Unicode check clean, mypy "no
 issues found in 7 source files".
+
+## Corpus: characters outside the Basic Multilingual Plane (T009–T010)
+
+Ten pending cases added: eight in `robustness.json`, and one `ordinary` case each in
+`matching-persian.json` and `matching-english.json`.
+
+- `dotnet run --project dotnet/tools/PersianTextGuard.CorpusFill`: "Filled 10 case(s); 0 disagreement(s)".
+- Recorded results (positions in code points), against research R2's UTF-16 table:
+
+  | Id | Match (entry, start, length, evasion) | Censored | R2 (UTF-16) |
+  | --- | --- | --- | --- |
+  | `robustness-supplementary-letter-after-word` | `kir`, 0, 4, lookalikeCharacters | `****` | 0, 5 ✓ |
+  | `robustness-supplementary-letter-before-word` | `kir`, 0, 4, lookalikeCharacters | `****` | 0, 5 ✓ |
+  | `robustness-supplementary-letter-separate-word` | `kir`, 0, 3, none | `**** 𠀀` | 0, 3 ✓ |
+  | `robustness-supplementary-letter-inside-word` | `kir`, 0, 4, lookalikeCharacters | `****` | 0, 5 ✓ |
+  | `robustness-emoji-after-persian-word` | `کیر`, 0, 3, none | `****😀` | 0, 3 ✓ |
+  | `robustness-mathematical-bold-letters` | `kir`, 0, 3, none | `****` | 0, 6 ✓ |
+  | `robustness-deseret-letter-inside-word` | `fuck`, 0, 5, lookalikeCharacters | `****` | 0, 6 ✓ |
+  | `robustness-supplementary-letter-inside-persian-word` (new) | `کیر`, 0, 4, lookalikeCharacters | `****` | — |
+  | `fa-ordinary-with-supplementary-characters` | no match | unchanged | — |
+  | `en-ordinary-with-supplementary-characters` | no match | unchanged | — |
+
+  Every one of the first seven equals R2; both ordinary cases stay unflagged (Principle I).
+- `dotnet test dotnet/tests/PersianTextGuard.Conformance`: 532 passed on each of `net10.0`, `net8.0`
+  and `net48` (523 cases plus 9 guards).
+- `js/`: `npm run corpus`: 530 passed (523 cases plus 7 guards). The JavaScript port passes every new
+  case unchanged.
+- `CorpusFill -- --check`: "Filled 0 case(s); 0 disagreement(s)".
