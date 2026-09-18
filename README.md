@@ -28,6 +28,21 @@ for every message ([JavaScript README](js/README.md)):
 npm install persian-text-guard
 ```
 
+For Python 3.11 and later, including free-threaded 3.14, the same filter is on PyPI, typed, with no
+dependencies and the same answers for every message ([Python README](python/README.md)):
+
+```bash
+pip install persian-text-guard
+```
+
+```python
+from persian_text_guard import ProfanityFilter, WordList
+
+filter = ProfanityFilter(WordList.persian_default())
+assert filter.contains_profanity("ک.ی.ر")
+assert filter.censor("kir and motherfucker") == "**** and ****"
+```
+
 ## Profanity filtering
 
 ```csharp
@@ -230,6 +245,14 @@ form submission.
 dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0
 ```
 
+## Changes in 1.4.0
+
+- **Python.** `persian-text-guard` is now on PyPI, for CPython 3.11 and later, released together with
+  the .NET and JavaScript packages at the same version.
+- The conformance corpus gained cases for characters outside the Basic Multilingual Plane, such as
+  emoji and CJK Extension B letters next to or inside a word. They record what every port already did.
+- .NET and JavaScript behaviour is unchanged: 1.4.0 of both is 1.3.0 with a new version number.
+
 ## Changes in 1.3.0 for .NET users
 
 - A message containing a Unicode noncharacter (such as U+FFFE) no longer throws. 1.2.0 threw
@@ -248,7 +271,7 @@ the same word lists, version and behaviour:
 
 ```text
 /
-├── VERSION                         # the only version value, e.g. "1.2.0"
+├── VERSION                         # the only version value, e.g. "1.4.0"
 ├── wordlists/
 │   ├── persian.txt
 │   ├── finglish.txt
@@ -265,6 +288,9 @@ the same word lists, version and behaviour:
 ├── js/                             # the npm package persian-text-guard
 │   ├── src/  test/  bench/  consumers/  scripts/
 │   └── etc/persian-text-guard.api.md
+├── python/                         # the PyPI package persian-text-guard
+│   ├── pyproject.toml  hatch_build.py  uv.lock
+│   └── src/persian_text_guard/  tests/  bench/  consumers/  scripts/
 ├── README.md  LICENSE  THIRD-PARTY-NOTICES.md  icon.png
 ├── .github/workflows/ci.yml
 └── .specify/  .claude/  specs/
@@ -299,17 +325,34 @@ For the JavaScript port, run these in `js/` (Node.js 22 or later):
 | Pack | `npm run pack` |
 | API report and compatibility | `npm run api`, `npm run api:compat` |
 
+For the Python port, run these in `python/` with [uv](https://docs.astral.sh/uv/):
+
+| Purpose | Command |
+| --- | --- |
+| Install the development tools | `uv sync --locked` (add `--group package` for the package checks) |
+| Lint and type check | `uv run ruff check && uv run ruff format --check && uv run python scripts/check_unicode_usage.py && uv run mypy` |
+| Unit tests | `uv run pytest -m "not corpus"` |
+| Conformance corpus | `uv run pytest -m corpus` |
+| All tests, README examples included | `uv run pytest` |
+| Another Python | `uv run --python 3.11 pytest` (also 3.12, 3.13, `3.14+gil` and, with `PYTHON_GIL=0`, 3.14t) |
+| Build | `uv build` |
+| Package and consumer checks | `uv run python scripts/check_package.py`, `uv run python scripts/check_consumers.py` |
+| API compatibility | `uv run python scripts/check_api.py` |
+| Benchmarks | `uv run python bench/bench_filter.py -o .bench/results.json`, then `uv run python scripts/bench_table.py .bench/results.json` |
+
 ### Releasing
 
 Every package is released together, at the version in `VERSION`:
 
 1. Set `VERSION` in the pull request, and merge it once CI is green for every port.
 2. Tag the merge commit `vX.Y.Z`, matching `VERSION`, and push the tag.
-3. CI publishes `PersianTextGuard` to NuGet and `persian-text-guard` to npm, only when every build and
-   test job for every port is green and the tag matches `VERSION`. The npm package is published with
-   provenance from this workflow.
-4. If one registry's publish job fails after the other succeeded, fix the cause and re-run the failed
-   job: NuGet skips a version it already has, and so does the npm job.
+3. CI publishes `PersianTextGuard` to NuGet and `persian-text-guard` to npm and PyPI, only when every
+   build and test job for every port is green and the tag matches `VERSION`. The npm package is
+   published with provenance, and the PyPI files with attestations, from this workflow. PyPI uses
+   trusted publishing through the `pypi` GitHub environment, which only `v*` tags may deploy to; no
+   token is stored.
+4. If one registry's publish job fails after another succeeded, fix the cause and re-run the failed
+   job: NuGet skips a version it already has, and so do the npm and PyPI jobs.
 
 ## Limitations
 
@@ -328,6 +371,10 @@ Every package is released together, at the version in `VERSION`:
 - The JavaScript package uses the JavaScript engine's Unicode data, so characters added in Unicode 16
   or later, and results in Firefox and Safari, can differ; see its
   [limitations](js/README.md#limitations).
+- The Python package uses the running Python's Unicode data. CPython 3.14 agrees with .NET 10 on
+  every character's category; older versions differ only on characters added in Unicode 15 or later,
+  and Python 3.11 does not fold the Cyrillic modifier letters of Unicode 15. See its
+  [limitations](python/README.md#limitations).
 
 ## Background
 

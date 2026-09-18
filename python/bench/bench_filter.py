@@ -12,6 +12,7 @@ the same ten operations, with the same names, and the messages copied verbatim.
 from __future__ import annotations
 
 import argparse
+import sys
 from collections.abc import Callable
 
 import pyperf
@@ -49,8 +50,26 @@ def _pass_only(command: list[str], args: argparse.Namespace) -> None:
         command.extend(["--only", name])
 
 
+def _cpu_model() -> str | None:
+    # pyperf reads the CPU model on Linux; on Windows it is in the registry.
+    if sys.platform != "win32":
+        return None
+    import winreg  # noqa: PLC0415
+
+    try:
+        with winreg.OpenKey(
+            winreg.HKEY_LOCAL_MACHINE, r"HARDWARE\DESCRIPTION\System\CentralProcessor\0"
+        ) as key:
+            return str(winreg.QueryValueEx(key, "ProcessorNameString")[0]).strip()
+    except OSError:
+        return None
+
+
 def main() -> None:
     runner = pyperf.Runner(add_cmdline_args=_pass_only)
+    cpu = _cpu_model()
+    if cpu:
+        runner.metadata["cpu_model_name"] = cpu
     runner.argparser.add_argument(
         "--only", action="append", choices=list(BENCHMARKS), help="run only this one"
     )

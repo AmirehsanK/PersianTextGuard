@@ -33,13 +33,13 @@ def check(filter_: ProfanityFilter, text: str | None) -> Result:
     return filter_.contains_profanity(text), filter_.find_matches(text), filter_.censor(text)
 
 
-def test_the_gil_is_off_when_asked() -> None:
-    if os.environ.get("PYTHON_GIL") != "0" or not hasattr(sys, "_is_gil_enabled"):
-        pytest.skip("only meaningful on free-threaded CPython with PYTHON_GIL=0")
-    assert sys._is_gil_enabled() is False
-
-
 def test_eight_threads_share_one_filter_per_configuration() -> None:
+    # On free-threaded CPython with PYTHON_GIL=0 the threads below really run in parallel.
+    if os.environ.get("PYTHON_GIL") == "0":
+        is_gil_enabled = getattr(sys, "_is_gil_enabled", None)  # 3.13 and later
+        assert is_gil_enabled is not None
+        assert is_gil_enabled() is False
+
     filters = {name: filter_for(CORPUS, name) for name, _ in INPUTS}
     expected = [check(filters[name], text) for name, text in INPUTS]
     assert len(expected) > 300

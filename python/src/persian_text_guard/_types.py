@@ -117,10 +117,8 @@ class NormalizationStep(StrEnum):
 
 
 WordMatchModeName = Literal["wholeWord", "anywhere"]
-"""The value of a :class:`WordMatchMode` member, accepted wherever a mode is."""
 
 WordCategoryName = Literal["uncategorized", "profanity", "sexual", "insult", "slur", "harassment", "mild"]
-"""The value of a :class:`WordCategory` member, accepted wherever a category is."""
 
 NormalizationStepName = Literal[
     "compatibilityForms",
@@ -134,10 +132,24 @@ NormalizationStepName = Literal[
     "collapseWhitespace",
     "collapseRepeats",
 ]
-"""The value of a :class:`NormalizationStep` member, accepted wherever a step is."""
 
 NormalizationPreset = Literal["comparison", "standard", "none"]
-"""A named set of normalization steps: ``"comparison"`` (every step), ``"standard"`` or ``"none"``."""
+
+
+def _describe(alias: object, doc: str) -> None:
+    # help() and inspect.getdoc() read the object, and a string after an assignment is not attached to
+    # it, so each alias carries its description itself. typing's alias objects keep dunder attributes
+    # on the alias, which is what this sets.
+    object.__setattr__(alias, "__doc__", doc)
+
+
+_describe(WordMatchModeName, "The value of a WordMatchMode member, accepted wherever a mode is.")
+_describe(WordCategoryName, "The value of a WordCategory member, accepted wherever a category is.")
+_describe(NormalizationStepName, "The value of a NormalizationStep member, accepted wherever a step is.")
+_describe(
+    NormalizationPreset,
+    'A named set of normalization steps: "comparison" (every step, the default), "standard" or "none".',
+)
 
 
 _E = TypeVar("_E", bound=StrEnum)

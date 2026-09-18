@@ -241,3 +241,53 @@ Ten pending cases added: eight in `robustness.json`, and one `ordinary` case eac
   `persian_text_guard-1.4.0.tar.gz` (`__version__` 1.4.0); `npm run pack` gives
   `persian-text-guard-1.4.0.tgz`; `dotnet pack` gives `PersianTextGuard.1.4.0.nupkg` with package
   validation passing against 1.3.0.
+
+## US4: documentation, benchmarks and API compatibility (T049–T056)
+
+- **T049**, `python/README.md`: English sections (installation with pip and uv, quick start, matches and
+  evasions, positions in code points, censoring and masks, categories, your own words, word-list
+  files with `load` and `parse`, options, normalization and tokenizing, thread safety, validating input
+  with the error table, the .NET/JavaScript/Python name table, performance, limitations with the Unicode
+  note and Python 3.11's Cyrillic modifier letters, links), and a Persian part (introduction,
+  installation, quick start, censoring, input). Each Persian paragraph is its own `<div dir="rtl">`
+  block, starts and ends with a Persian word, and keeps code in separate blocks with comments in both
+  languages (research R16). `twine check --strict` passes on it. Every `python` block is complete and
+  asserts its results.
+- **T050**, benchmarks on the named machine: `Get-CimInstance Win32_Processor` reports
+  "Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz". `uv run --python 3.14+gil python bench/bench_filter.py -o .bench/results.json --rigorous`,
+  then `scripts/bench_table.py` (CPython 3.14.6):
+
+  | Operation | Mean | Operations/s |
+  | --- | ---: | ---: |
+  | Short clean message (5 words) | 91.4 µs | 10,937 |
+  | Long clean message (60 words) | 909 µs | 1,100 |
+  | Message with evasions | 50.4 µs | 19,850 |
+  | Normalize a long message | 35.1 µs | 28,454 |
+  | Build a filter from the bundled list | 13.3 ms | 75 |
+  | `find_matches`, clean short message | 90.4 µs | 11,059 |
+  | `find_matches`, message with three banned words | 240 µs | 4,169 |
+  | `censor`, short message with one banned word | 118 µs | 8,461 |
+  | `censor`, 60-word message with three banned words | 3.2 ms | 311 |
+  | A 132,000-character message | 210 ms | 5 |
+
+  **SC-005**: build 13.3 ms (target under 500 ms), `CleanShortMessage` 91.4 µs (under 250 µs), and
+  `VeryLongMessage` 210 ms (under 3 s): all met, without profiling or optimising.
+  `scripts/bench_gate.py --limit-us 250`: "ok CleanShortMessage: mean 90.3 µs, limit 250 µs". pyperf
+  records no CPU model on Windows, so `bench_filter.py` now adds it from the registry (the rigorous run
+  above predates that change; the CPU was confirmed with `Get-CimInstance`).
+- **T051**, `tests/test_readme.py`: 13 blocks from `python/README.md` and 1 from the root `README.md`,
+  one test each (ids `<file>-block-<n>-line-<line>`), plus the minimum-count guards (at least 8 and 1):
+  17 passed after T054.
+- **T053**: ruff's `D` rules pass; `inspect.getdoc` finds a docstring for all 19 names in `__all__`. The
+  four `Literal` name aliases carry theirs at run time (a string after an assignment is not attached to
+  the object), on 3.11 as well. `help(ProfanityFilter.censor)` and `help(WordList.load)` explain the
+  mask rules, `None`, the file and BOM handling and every error, not only the signatures.
+- **T054**, root `README.md`: PyPI next to NuGet and npm, with `pip install persian-text-guard` and a
+  tested Python example; "Changes in 1.4.0"; `python/` and its commands under Development; PyPI trusted
+  publishing and the `pypi` environment under Releasing; the Python Unicode note under Limitations.
+- **T055**: `release-notes-1.4.0.md`, English with a Persian summary.
+- **T056**, in `python/` with `uv sync --locked --group package`: lint command clean (36 files formatted,
+  mypy "no issues found in 34 source files"); `uv run pytest`: **727 passed**, none skipped (the GIL
+  assertion is now part of the thread test, so standard CPython has nothing to skip); `uv build` gives
+  the 1.4.0 wheel and sdist; `check_package.py` passes (unpacked wheel 153,642 bytes);
+  `check_consumers.py` 4 of 4; `check_api.py` "baseline: no previous release".
