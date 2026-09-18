@@ -162,12 +162,17 @@ is compared by the text it builds.
   of the digit helpers `"toPersianDigits"` and `"toAsciiDigits"`.
 - `category-selection` records the exact count, the first and last five entries, and rules that hold
   for every entry: `categoriesInSelection`, `bundledOrder`, and `noMild` for `"default"`.
+- **Word-list format** (`word-list-parsing`): a `[heading]` names a category by its **name**, in any
+  letter case and with surrounding spaces allowed (`[insult]`, `[ Insult ]`, `[SLUR]`). Numbers are not
+  categories: `[3]` is an unknown category, reported with its line number. PersianTextGuard 1.2.0 also
+  accepted .NET's internal category numbers; 1.3.0 does not.
 
 ## Writing rules
 
-1. A character in Unicode category Cf, Cc (other than JSON's mandatory escapes), Zl or Zp, and any
-   whitespace other than U+0020, MUST be written as a `\uXXXX` escape. Every other character SHOULD be
-   written literally.
+1. A character in Unicode category Cf, Cc (other than JSON's mandatory escapes), Zl or Zp, any
+   whitespace other than U+0020, and every Unicode noncharacter (U+FDD0–U+FDEF and every code point
+   ending in FFFE or FFFF), MUST be written as a `\uXXXX` escape; a supplementary noncharacter is written
+   as its two surrogate escapes. Every other character SHOULD be written literally.
 2. A lone surrogate MUST NOT appear as a JSON string escape; use an Input `build` object with a
    `utf16` part. This applies to every text-valued field, a `mask-validation` case's `mask` included.
 3. Enum-like strings use lowerCamelCase: `wholeWord`, `repeatedLetters`, `sexual`.

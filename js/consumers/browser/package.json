@@ -1,0 +1,8 @@
+{
+  "name": "persian-text-guard-consumer-browser",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

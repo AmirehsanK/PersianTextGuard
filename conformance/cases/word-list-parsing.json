@@ -40,5 +40,41 @@
         { "text": "y", "mode": "wholeWord", "category": "insult" }
       ]
     }
+  },
+  {
+    "id": "word-list-parsing-heading-number",
+    "kind": "word-list-parsing",
+    "note": "Headings are category names only; PersianTextGuard 1.2.0 also accepted category numbers.",
+    "text": "[3]\nword\n",
+    "expected": {
+      "error": { "kind": "unknown-category", "line": 1 }
+    }
+  },
+  {
+    "id": "word-list-parsing-heading-signed-number",
+    "kind": "word-list-parsing",
+    "text": "[+4]\nword\n",
+    "expected": {
+      "error": { "kind": "unknown-category", "line": 1 }
+    }
+  },
+  {
+    "id": "word-list-parsing-heading-spaced-number",
+    "kind": "word-list-parsing",
+    "text": "[ 03 ]\nword\n",
+    "expected": {
+      "error": { "kind": "unknown-category", "line": 1 }
+    }
+  },
+  {
+    "id": "word-list-parsing-heading-name-spaced-and-upper-case",
+    "kind": "word-list-parsing",
+    "text": "# list\n[ Insult ]\nword\n[SLUR]\n~other\n",
+    "expected": {
+      "entries": [
+        { "text": "word", "mode": "wholeWord", "category": "insult" },
+        { "text": "other", "mode": "anywhere", "category": "slur" }
+      ]
+    }
   }
 ]

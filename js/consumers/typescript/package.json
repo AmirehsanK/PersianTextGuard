@@ -1,0 +1,8 @@
+{
+  "name": "persian-text-guard-consumer-typescript",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
+}

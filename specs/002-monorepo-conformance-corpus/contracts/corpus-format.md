@@ -158,9 +158,11 @@ tool.)
 
 ## Writing rules
 
-1. A character in Unicode category Cf, Cc (other than JSON's mandatory escapes), Zl or Zp, and any
-   whitespace other than U+0020, MUST be written as a `\uXXXX` escape. Every other character SHOULD be
-   written literally.
+1. A character in Unicode category Cf, Cc (other than JSON's mandatory escapes), Zl or Zp, any
+   whitespace other than U+0020, and every Unicode noncharacter (U+FDD0–U+FDEF and every code point
+   ending in FFFE or FFFF), MUST be written as a `\uXXXX` escape; a supplementary noncharacter is written
+   as its two surrogate escapes. Every other character SHOULD be written literally. (Noncharacters were
+   added by spec 003, research R3.)
 2. A lone surrogate MUST NOT appear as a JSON string escape; use an Input `build` object with a
    `utf16` part. This applies to every text-valued field, a `mask-validation` case's `mask` included.
 3. Enum-like strings use lowerCamelCase: `wholeWord`, `repeatedLetters`, `sexual`.

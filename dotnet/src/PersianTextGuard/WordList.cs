@@ -9,8 +9,9 @@ namespace PersianTextGuard;
 /// </para>
 /// <para>
 /// A line like <c>[insult]</c> starts a section: every entry after it, until the next section,
-/// gets that <see cref="WordCategory"/>. Entries before the first section are
-/// <see cref="WordCategory.Uncategorized"/>.
+/// gets that <see cref="WordCategory"/>. The heading is a category name, in any letter case and with
+/// surrounding spaces allowed; a number such as <c>[3]</c> is not a category name. Entries before the
+/// first section are <see cref="WordCategory.Uncategorized"/>.
 /// </para>
 /// </remarks>
 public static class WordList
@@ -63,7 +64,7 @@ public static class WordList
     }
 
     /// <summary>Parses a word list from its text.</summary>
-    /// <exception cref="FormatException">A section names a category that does not exist.</exception>
+    /// <exception cref="FormatException">A section names a category that does not exist, or is not a category name (a number such as <c>[3]</c>).</exception>
     public static IReadOnlyList<BannedWord> Parse(string text)
     {
         if (text is null)
@@ -87,7 +88,11 @@ public static class WordList
             if (line.Length > 2 && line[0] == '[' && line[line.Length - 1] == ']')
             {
                 var name = line.Substring(1, line.Length - 2).Trim();
-                if (!Enum.TryParse(name, ignoreCase: true, out category) || !Enum.IsDefined(typeof(WordCategory), category))
+
+                // A heading is a category name. Enum.TryParse also accepts numbers ("3" is Insult),
+                // which the file format never meant to allow and other ports would not read.
+                if (name.Length == 0 || !name.All(char.IsLetter)
+                    || !Enum.TryParse(name, ignoreCase: true, out category) || !Enum.IsDefined(typeof(WordCategory), category))
                 {
                     throw new FormatException($"Line {lineNumber}: unknown word category '{name}'.");
                 }
