@@ -104,9 +104,9 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "D", "ANN", "PL", "PT", "TID"]
 # A line-by-line port compares against code points and lengths that are the specification (PLR2004),
-# keeps the other ports' signatures (PLR0913, PLR0917), and its text and docs are Persian, whose
-# letters look like Latin ones (RUF001-RUF003).
-ignore = ["PLR2004", "PLR0913", "PLR0917", "RUF001", "RUF002", "RUF003"]
+# keeps the other ports' signatures and control flow (PLR0911-PLR0917), and its text and docs are
+# Persian, whose letters look like Latin ones (RUF001-RUF003).
+ignore = ["PLR2004", "PLR0911", "PLR0912", "PLR0913", "PLR0915", "PLR0917", "RUF001", "RUF002", "RUF003"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -128,6 +128,8 @@ files = ["src", "tests", "scripts", "bench", "consumers/typed_usage.py"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# The corpus runner is the package tests/corpus, imported as corpus.
+pythonpath = ["tests"]
 addopts = "-ra --strict-markers --import-mode=importlib"
 markers = [
     "corpus: a conformance corpus case or guard",

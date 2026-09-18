@@ -127,3 +127,54 @@ Ten pending cases added: eight in `robustness.json`, and one `ordinary` case eac
   - type errors: both checkers report exactly lines 7 and 8, the two marked lines.
 - ruff also ignores `PLR0913` and `PLR0917` (too many arguments), because the port keeps the other
   ports' function signatures.
+
+## US2: the corpus, every Python, threads (T033–T041)
+
+- `tests/corpus/` (`load.py`, `values.py`, `evaluate.py`), `tests/test_corpus.py` and
+  `tests/test_corpus_guards.py`, ported from `js/test/`. pytest's `pythonpath = ["tests"]` makes the
+  runner importable as `corpus`. `build_input` joins `utf16` parts as UTF-16 does: a high surrogate
+  followed by a low one is one code point, any other surrogate stays a lone one.
+- **T037**: `uv run pytest -m corpus` on CPython 3.14.6 (Unicode 16.0.0): **532 passed** (523 cases
+  plus 9 guards) in 5.0 s, on the first run, with no fix to the port needed. `test_api.py` gained the
+  P4 check over all 470+ matching corpus inputs.
+- **T038**, the whole suite on every supported Python (each in its own environment through
+  `UV_PROJECT_ENVIRONMENT`):
+
+  | Interpreter | `sys.version` | `unidata_version` | GIL | Result |
+  | --- | --- | --- | --- | --- |
+  | `--python 3.11` | 3.11.16 | 14.0.0 | on | 708 passed |
+  | `--python 3.12` | 3.12.14 | 15.0.0 | on | 708 passed |
+  | `--python 3.13` | 3.13.15 | 15.1.0 | on | 708 passed |
+  | `--python 3.14+gil` | 3.14.6 | 16.0.0 | on | 708 passed |
+  | `PYTHON_GIL=0 --python 3.14t` | 3.14.7 free-threaded | 16.0.0 | off | 708 passed |
+
+  On this machine `uv run --python 3.14` picks the free-threaded 3.14.7, because it is newer than
+  3.14.6; `3.14+gil` asks for the standard build. No Unicode-data difference showed up on any version.
+- **T039**, `tests/test_threads.py` (8 threads behind a `threading.Barrier`, every matching corpus input
+  twice each, compared with a single-threaded run; and 8 threads calling `WordList.all()` and
+  `persian_default()` first in a fresh interpreter):
+  - 3.14.6: 2 passed, 1 skipped (the GIL assertion, which only applies to 3.14t with `PYTHON_GIL=0`);
+  - 3.14.7t with `PYTHON_GIL=0`: 3 passed, and `sys._is_gil_enabled()` is `False`;
+  - `PYTHON_GIL=0 uv run --python 3.14t pytest -p pytest_run_parallel --parallel-threads=8 -m "not corpus and not threads"`:
+    176 passed, each test run on 8 threads at once; no test needed a `thread_unsafe` mark.
+- **T040**, failure reporting on scratch edits, reverted with `git checkout -- conformance`:
+  1. `fa-emoji-before-word`'s `censored` set to `"😀 ####"`, and
+     `matching-persian-ordinary-messages-pass-001`'s `containsProfanity` set to `true`: exactly those 2
+     failed in one run (2 failed, 530 passed):
+
+     ```text
+     Case 'fa-emoji-before-word' in matching-persian.json: 1 field(s) differ
+       input "😀 کیر"
+       expected.censored: expected "😀 ####" actual "😀 ****"
+     Case 'matching-persian-ordinary-messages-pass-001' in matching-persian.json: breaks its kind rule
+       input "هر کس پلات بالاست پیام بده"
+       ordinary requires containsProfanity to be false
+     ```
+  2. `conformance/` renamed to `conformance.off`: collection failed with
+     `CorpusError: Conformance corpus not found: D:\Git\PersianTextGuard\conformance`. Renamed back;
+     `git status` clean for `conformance/`.
+- **T041**, bundled selections against the built JavaScript package (quickstart §3): both one-liners print
+  `{"all": 1250, "default": 1025, "by": {"uncategorized": 0, "profanity": 93, "sexual": 353,
+  "insult": 400, "slur": 146, "harassment": 33, "mild": 225}}` (identical). Every entry dumped as
+  `text\tmode\tcategory` to `artifacts/compare/python.txt` and `js.txt`: 1,250 lines each, and
+  `git diff --no-index` shows **0 differences**.

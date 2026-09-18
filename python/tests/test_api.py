@@ -443,3 +443,31 @@ def assert_consistent(filter_: ProfanityFilter, text: str | None) -> None:
         censored = filter_.censor(text)
         assert (censored != text) == contains
         assert not filter_.contains_profanity(censored)
+
+
+# ------------------------------------------------------------------ P4 over every corpus input
+
+
+def _corpus_matching_inputs() -> list[tuple[str, str, str | None]]:
+    from corpus.load import MATCHING_KINDS, find_repository_root, load_corpus  # noqa: PLC0415
+    from corpus.values import build_input  # noqa: PLC0415
+
+    corpus = load_corpus(find_repository_root() / "conformance")
+    return [
+        (case.id, case.json["configuration"], build_input(case.json.get("input")))
+        for case in corpus.cases
+        if case.kind in MATCHING_KINDS
+    ]
+
+
+CORPUS_INPUTS = _corpus_matching_inputs()
+
+
+def test_the_four_capabilities_agree_on_every_corpus_input() -> None:
+    from corpus.evaluate import filter_for  # noqa: PLC0415
+    from corpus.load import find_repository_root, load_corpus  # noqa: PLC0415
+
+    corpus = load_corpus(find_repository_root() / "conformance")
+    assert len(CORPUS_INPUTS) > 300
+    for _, configuration, text in CORPUS_INPUTS:
+        assert_consistent(filter_for(corpus, configuration), text)
