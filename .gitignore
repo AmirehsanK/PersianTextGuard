@@ -36,3 +36,12 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+
+# Rust port (rust/)
+rust/target/
+rust/bench/target/
+rust/consumer/target/
+specs/005-rust-port/tools/rust-dump/target/
+rust/wordlists/
+rust/LICENSE
+rust/THIRD-PARTY-NOTICES.md

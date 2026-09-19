@@ -1,0 +1,49 @@
+[package]
+name = "persian-text-guard"
+version = "1.4.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+authors = ["Amirehsan Kohannasab"]
+description = "Persian text normalization and evasion-resistant profanity filtering: folds look-alike letters, invisible characters and digits, and catches spaced, dotted and leetspeak spellings. Finds matches with byte positions and censors text. Bundles a curated Persian, Finglish and English word list."
+repository = "https://github.com/AmirehsanK/PersianTextGuard"
+homepage = "https://github.com/AmirehsanK/PersianTextGuard/tree/main/rust#readme"
+documentation = "https://docs.rs/persian-text-guard"
+readme = "README.md"
+keywords = ["persian", "farsi", "profanity", "moderation", "normalization"]
+categories = ["text-processing"]
+include = [
+    "/Cargo.toml",
+    "/Cargo.lock",
+    "/build.rs",
+    "/README.md",
+    "/LICENSE",
+    "/THIRD-PARTY-NOTICES.md",
+    "/wordlists/persian.txt",
+    "/wordlists/finglish.txt",
+    "/wordlists/english.txt",
+    "/src/*.rs",
+]
+
+[dependencies]
+unicode-normalization = "0.1.25"
+
+[dev-dependencies]
+serde_json = "1"
+libtest-mimic = "0.8"
+proptest = "1.11"
+
+[[test]]
+name = "corpus"
+harness = false
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
+
+[package.metadata.docs.rs]
+all-features = true

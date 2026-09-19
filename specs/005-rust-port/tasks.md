@@ -80,7 +80,7 @@ description: "Task list for the Rust port published to crates.io (release 1.5.0)
 
 **Purpose**: Scaffold `rust/` with pinned tools, and record the starting point.
 
-- [ ] T001 Confirm the branch is `005-rust-port` and `git status --short` shows nothing except the untracked
+- [X] T001 Confirm the branch is `005-rust-port` and `git status --short` shows nothing except the untracked
   `graphify-out/`, which must never be committed. Record the baseline in a new
   `specs/005-rust-port/verification.md` under "Baseline":
   - the commit hash;
@@ -89,10 +89,10 @@ description: "Task list for the Rust port published to crates.io (release 1.5.0)
   - in `js/`: `npm ci`, then `npm run test:all` (expect 675);
   - in `python/`: `uv sync --locked --group package`, then `uv run pytest -q` (expect 727);
   - `rustc +stable --version`, `rustc +1.85 --version`, `cargo --version`, `rustup show active-toolchain`.
-- [ ] T002 Append the Rust build outputs to the root `.gitignore`: `rust/target/`, `rust/bench/target/`,
+- [X] T002 Append the Rust build outputs to the root `.gitignore`: `rust/target/`, `rust/bench/target/`,
   `rust/consumer/target/`, `specs/005-rust-port/tools/rust-dump/target/`, and the packaging copies
   `rust/wordlists/`, `rust/LICENSE`, `rust/THIRD-PARTY-NOTICES.md`.
-- [ ] T003 Create `rust/Cargo.toml`, `rust/rustfmt.toml` and `rust/clippy.toml`:
+- [X] T003 Create `rust/Cargo.toml`, `rust/rustfmt.toml` and `rust/clippy.toml`:
   - **`[package]`**: `name = "persian-text-guard"`, `version = "1.4.0"` (the current `VERSION`; T046 moves it),
     `edition = "2024"`, `rust-version = "1.85"`, `license = "MIT"`, `authors = ["Amirehsan Kohannasab"]`,
     `description` (the npm description adapted for Rust, under 300 characters), `repository =
@@ -110,7 +110,7 @@ description: "Task list for the Rust port published to crates.io (release 1.5.0)
   - **`[package.metadata.docs.rs]`**: `all-features = true`.
   - `rustfmt.toml`: `max_width = 110`. `clippy.toml`: `disallowed-methods` listing the `char` and `str`
     methods of the porting conventions, each with a reason naming `unicode.rs` and research R1.
-- [ ] T004 Create `rust/build.rs` (research R5), with a comment stating why it exists:
+- [X] T004 Create `rust/build.rs` (research R5), with a comment stating why it exists:
   - locate the word lists: `../wordlists/` if `../VERSION` and `../wordlists/persian.txt` exist, else
     `wordlists/` (the packaged copy); panic with a clear message naming both paths if neither exists;
   - when `../VERSION` exists, read and trim it, and panic ("VERSION says X but Cargo.toml says Y; run
@@ -119,14 +119,14 @@ description: "Task list for the Rust port published to crates.io (release 1.5.0)
     `OUT_DIR` with `\r\n` normalized to `\n`, and write `OUT_DIR/wordlists.rs` defining
     `pub(crate) const BUNDLED_WORD_LISTS: [&str; 3]` with `include_str!` of the three copies;
   - emit `cargo:rerun-if-changed` for `build.rs`, `../VERSION` and each list file used.
-- [ ] T005 [P] Create the skeleton `rust/src/lib.rs`: crate docs `#![doc = include_str!("../README.md")]`,
+- [X] T005 [P] Create the skeleton `rust/src/lib.rs`: crate docs `#![doc = include_str!("../README.md")]`,
   `#![forbid(unsafe_code)]`, and a private `mod wordlists { include!(concat!(env!("OUT_DIR"), "/wordlists.rs")); }`;
   and a placeholder `rust/README.md` with the title, a one-line description and one quick-start `rust`
   block that only asserts `true` (T029 replaces it).
-- [ ] T006 In `rust/`, run `cargo +1.85 generate-lockfile` (edition 2024's resolver picks dependency versions
+- [X] T006 In `rust/`, run `cargo +1.85 generate-lockfile` (edition 2024's resolver picks dependency versions
   that support `rust-version` 1.85), then `cargo +1.85 build --locked` and `cargo +stable build --locked`.
   Confirm `Cargo.lock` resolves `unicode-normalization` 0.1.25 and dev-dependencies that build on 1.85.
-- [ ] T007 [P] Create `rust/scripts/set-version.sh` (bash, `set -euo pipefail`): read `../VERSION` (trimmed),
+- [X] T007 [P] Create `rust/scripts/set-version.sh` (bash, `set -euo pipefail`): read `../VERSION` (trimmed),
   rewrite the first `version = "…"` line of `Cargo.toml`, then run `cargo update -p persian-text-guard
   --offline` in `rust/` and, when they exist, in `rust/bench/` and `rust/consumer/`, so **every** lock file
   that records the crate's version follows (their path dependency on the crate is recorded with its
@@ -134,7 +134,7 @@ description: "Task list for the Rust port published to crates.io (release 1.5.0)
   or "no change". **Self-check**: with `VERSION` unchanged it reports "no change"; a hand-edited `version =
   "0.0.1"` in `Cargo.toml` makes `cargo build` fail with the message from T004; running the script restores
   the version and the build. T030 and T048 re-run this self-check once their packages exist.
-- [ ] T008 Add the lint command to `verification.md` and confirm it runs clean on the skeleton:
+- [X] T008 Add the lint command to `verification.md` and confirm it runs clean on the skeleton:
   `cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings && RUSTDOCFLAGS="-D warnings"
   cargo doc --locked --no-deps && cargo test --locked` (and `cargo +1.85 test --locked`). Commit T002–T008 as
   "Scaffold the Rust port (spec 005)".
