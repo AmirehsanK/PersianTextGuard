@@ -215,7 +215,9 @@ It protects users from the second release onward.
 
 - **Empty and blank input**: `""` is never flagged and censors to `""`; whitespace-only text is never
   flagged and censors to itself unchanged, as the corpus records. Rust has no null string, so there is no
-  separate missing value; an absent message is the caller's `Option` to handle.
+  separate missing value; an absent message is the caller's `Option` to handle. The four corpus cases
+  whose input is `null` (the language's missing value) run with the empty string, whose recorded results
+  are the same (found during planning).
 - **Text Rust strings cannot hold**: a Rust string is always valid UTF-8, so it cannot contain a lone
   surrogate. Five corpus cases do: four robustness inputs, such as a message cut in the middle of an
   emoji, and one mask that is half of a surrogate pair. The Rust port runs all five (clarified
@@ -369,9 +371,10 @@ It protects users from the second release onward.
     failures.
 - **FR-017**: The port MUST pass 100% of corpus cases on every tested Rust version and platform, with 0
   cases reported as not applicable. The five cases with lone surrogates run with U+FFFD in place of each
-  lone surrogate, and the mask case is satisfied by the mask's type (see Edge Cases). The corpus format
-  contract (spec 002) MUST be amended in this feature to allow that replacement, and only that one, for
-  ports whose strings cannot hold lone surrogates.
+  lone surrogate, the mask case is satisfied by the mask's type, and the four cases with a `null` input
+  run with the empty string (see Edge Cases). The corpus format contract (spec 002) MUST be amended in
+  this feature to allow these two readings, and only these, for ports whose strings cannot hold lone
+  surrogates or have no missing string value.
 - **FR-018**: The port's bundled default, full and per-category selections MUST contain the same entries,
   in the same order, as the .NET, JavaScript and Python packages built from the same `wordlists/`.
 - **FR-019**: The port's own tests MUST cover the behaviour specific to Rust:
