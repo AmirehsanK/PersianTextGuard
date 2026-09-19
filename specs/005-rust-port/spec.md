@@ -17,6 +17,19 @@
   them with U+FFFD in place of each lone surrogate, which is what a Rust service receives after lossy
   decoding and what .NET does before matching; the mask case passes by construction, since a Rust mask
   is a character. The corpus format contract is amended to allow this one replacement (FR-017).
+- Q: Where should the Rust port get its Unicode character categories, which Rust's standard library does
+  not provide? → A: From compact tables generated at development time from the Unicode data .NET uses,
+  embedded in the crate, with CI checking that the committed tables match the generator (FR-004).
+- Q: How should the very first crates.io release be published, given that trusted publishing may need
+  the crate to exist first? → A: CI publishes 1.5.0 with a short-lived crates.io token limited to
+  publishing new crates, stored only in a protected `crates-io` GitHub environment; the maintainer deletes
+  it right after and sets up trusted publishing for every later release (FR-020).
+- Q: Should the crate also accept raw bytes that may not be valid UTF-8, or only Rust strings? → A:
+  Strings, plus byte-slice versions of checking, finding matches and censoring, which decode lossily
+  inside and report positions in the caller's bytes (FR-008a).
+- Q: Which minimum Rust version should the crate promise to support, and when may later releases raise
+  it? → A: Rust 1.85 (February 2025, the 2024 edition), raised only in a MINOR release, announced in the
+  release notes, and never to a version less than a year old (FR-002).
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -218,9 +231,11 @@ It protects users from the second release onward.
   amended to allow it for ports whose strings cannot hold lone surrogates. If the .NET results for any
   of these inputs with U+FFFD differ from the recorded ones other than in the replaced character, the
   difference is reported to the maintainer before anything else changes.
-- **Invalid UTF-8 from outside**: bytes that are not valid UTF-8 never reach the filter as a string.
-  Callers decode them first; the README shows the lossy decoding that turns invalid sequences into
-  U+FFFD, which the filter handles like any other character.
+- **Invalid UTF-8 from outside**: a caller holding raw bytes, such as an undecoded request body, can pass
+  them straight to the byte versions of checking, finding matches and censoring (FR-008a). Each invalid
+  sequence is read as U+FFFD, exactly as Rust's standard lossy decoding reads it, and the answer is the
+  same as for that decoded string; positions and censored output refer to the caller's own bytes, with
+  every byte outside a masked region, invalid ones included, returned unchanged.
 - **Noncharacters and characters outside the Basic Multilingual Plane**: a message containing U+FFFE,
   U+FDD0, emoji, CJK Extension B letters or mathematical letters is handled without error, and matches
   and positions equal the corpus's.
@@ -256,13 +271,18 @@ It protects users from the second release onward.
 
 - **FR-001**: The port MUST be a single crate named `persian-text-guard` on crates.io, used in code as
   `persian_text_guard`, living in `rust/` at the repository root.
-- **FR-002**: The crate MUST build on stable Rust. It MUST declare a minimum supported Rust version in
-  its manifest, and CI MUST test both that version and the current stable release.
+- **FR-002**: The crate MUST build on stable Rust, with a minimum supported Rust version of 1.85 (the
+  2024 edition) declared in its manifest and stated in the README (clarified 2026-09-19). CI MUST test
+  both 1.85 and the current stable release. A later release MAY raise the minimum only in a MINOR
+  version, announced in the release notes in English and Persian, and never to a Rust release less than
+  a year old at that time.
 - **FR-003**: CI MUST build and test the crate on Linux, Windows and macOS.
 - **FR-004**: The crate MUST have no runtime dependencies beyond the standard library and those the
-  constitution's allowlist names for Rust. If the port needs Unicode data the standard library and the
-  allowlist do not provide, it MUST generate or embed that data itself, or the constitution MUST be
-  amended first.
+  constitution's allowlist names for Rust. The Unicode general categories the matcher tests, which the
+  standard library does not provide, MUST come from compact tables generated at development time from
+  the Unicode data .NET uses, and embedded in the crate (clarified 2026-09-19). The generator MUST live
+  in the repository, CI MUST fail when the committed tables differ from what it produces, and the tables
+  MUST agree with .NET's category for every code point that .NET's Unicode version assigns.
 - **FR-005**: The bundled word lists MUST be taken from `wordlists/` when the crate is built or packaged,
   and the crate's version MUST come from `VERSION`. The port MUST NOT keep its own hand-edited copy of
   the list files, and the published crate MUST build without the rest of the repository.
@@ -282,6 +302,17 @@ It protects users from the second release onward.
   - censor a message, with the default mask `*` or a chosen one.
 
   It MUST also report how many distinct entries it holds.
+- **FR-008a**: A filter MUST also offer byte versions of checking, finding the first match, finding every
+  match and censoring, which take a byte slice that may not be valid UTF-8 (clarified 2026-09-19):
+  - the bytes are read as Rust's standard lossy decoding reads them, each invalid sequence as one U+FFFD,
+    and the decision and matches equal those for the decoded string;
+  - match positions are start and length in the caller's bytes: a region that covers a U+FFFD covers the
+    whole invalid sequence it came from, and never splits a valid character;
+  - censoring returns bytes: each region becomes four copies of the mask's UTF-8 encoding, and every other
+    byte, valid or not, is copied unchanged.
+
+  These are a Rust convenience over the same capabilities, like Python's file loading, not a new
+  capability under Principle V; they never fail and never panic, for any bytes.
 - **FR-009**: Each match MUST report:
   - the entry exactly as the caller gave it;
   - the evasions that had to be undone: held keys, look-alike characters, a split word, or none;
@@ -346,6 +377,8 @@ It protects users from the second release onward.
 - **FR-019**: The port's own tests MUST cover the behaviour specific to Rust:
   - byte positions that slice the message exactly, including around multi-byte and supplementary
     characters;
+  - the byte versions (FR-008a): results equal to the lossily decoded string, positions that slice the
+    caller's bytes, invalid bytes outside masked regions copied unchanged;
   - the mask and word-list errors, including loading from a path and from a reader;
   - immutability, and `Send + Sync`, checked at compile time;
   - concurrent use from many threads;
@@ -355,8 +388,16 @@ It protects users from the second release onward.
 
 - **FR-020**: The crate version MUST come from `VERSION`. A release tag MUST publish the crates.io, PyPI,
   npm and NuGet packages at the same version. It publishes only when the tag matches `VERSION` and every
-  job for every port is green; otherwise none of them is published. The crate MUST be published from CI,
-  without a long-lived stored token once the registry allows it (see Assumptions).
+  job for every port is green; otherwise none of them is published. The crate MUST be published from CI
+  (clarified 2026-09-19):
+  - `1.5.0`, the first version, with a short-lived crates.io token limited to publishing new crates,
+    stored only as a secret of a `crates-io` GitHub environment that only `v*` tags may deploy to. The
+    maintainer deletes the token, and the secret, right after the release;
+  - every later version through crates.io trusted publishing from this repository's CI, with no stored
+    token, configured by the maintainer once `1.5.0` exists.
+
+  Re-running the publish job after a partial release MUST be safe: a version already on crates.io is
+  skipped.
 - **FR-021**: On every pull request, CI MUST run for the Rust port:
   - the tests, doc tests and the full corpus, on the minimum supported and the current stable Rust, on
     Linux, Windows and macOS;
@@ -403,7 +444,8 @@ It protects users from the second release onward.
 - **Entry**: a word or phrase to look for, with its match mode (whole word or anywhere) and its category:
   uncategorized, profanity, sexual, insult, slur, harassment or mild.
 - **Options**: the three evasions a filter reads through, each on by default.
-- **Match**: the entry found, the evasions undone, and the region's start and length in bytes.
+- **Match**: the entry found, the evasions undone, and the region's start and length in bytes of the
+  message: the caller's string, or the caller's byte slice for the byte versions.
 - **Normalization steps**: the individual steps, and the standard and comparison presets.
 - **Bundled selection**: all entries, the default selection, or the entries in chosen categories.
 - **Errors**: an invalid mask, an unknown category heading with its line, an unreadable or non-UTF-8
@@ -430,8 +472,10 @@ It protects users from the second release onward.
   - checking the 132,000-character corpus message takes under 50 ms.
 - **SC-006**: 100% of public items are documented (the documentation build fails otherwise), and 100% of
   the code examples in the README and the API documentation compile and pass.
-- **SC-007**: Zero panics across the corpus inputs and at least 100,000 randomly generated strings,
-  including multi-byte, supplementary, noncharacter and very long ones.
+- **SC-007**: Zero panics across the corpus inputs, at least 100,000 randomly generated strings
+  (including multi-byte, supplementary, noncharacter and very long ones) and at least 100,000 random byte
+  sequences, most of them invalid UTF-8; and for every byte sequence, the byte versions agree with the
+  string versions on the lossily decoded text.
 - **SC-008**: Two runs from many threads give results identical to a single-threaded run: 8 threads, each
   checking every corpus message, in a CI job.
 - **SC-009**: A release tag publishes all four packages at the same version, and either of these publishes
@@ -456,19 +500,22 @@ It protects users from the second release onward.
   positions to bytes before comparing.
 - **Missing message**: Rust has no null string. The crate takes string slices; an empty string is the
   empty message, and an absent message is the caller's `Option`, outside the crate.
-- **Minimum supported Rust version**: the plan chooses it, recent enough for the standard library features
-  the port needs and old enough for common users, and states it in the README; CI tests it.
+- **Minimum supported Rust version**: 1.85 (FR-002). It was released in February 2025, about 18 months
+  before this feature, and provides every standard-library feature the port needs, including lazy
+  one-time initialization for the bundled lists.
 - **Unicode data**: the Rust standard library does not expose general categories, which the matcher
-  relies on. The constitution allows only `unicode-normalization` as a runtime dependency, so any other
-  Unicode data the port needs is generated at development time and embedded in the crate, or the plan
-  proposes a constitution amendment. The research phase measures Rust's data against .NET's on every
-  code point, as 003 and 004 did.
+  relies on, and the constitution allows only `unicode-normalization` as a runtime dependency. So the
+  categories come from generated, embedded tables pinned to .NET's Unicode version (FR-004), and no
+  constitution amendment is needed. Normalization still comes from `unicode-normalization`, whose Unicode
+  version may differ from .NET's; the research phase measures it, and Rust's own case mapping and
+  whitespace rules, against .NET on every code point, as 003 and 004 did.
 - **Crate name**: `persian-text-guard` is unclaimed on crates.io (checked 2026-09-19); `persian_text_guard`
   and `persiantextguard` are also free.
-- **crates.io account and publishing**: the maintainer owns or creates the crates.io account.
-  crates.io's trusted publishing from CI may only be configurable once the crate exists; if so, the plan
-  states exactly how the first version is published (for example with a short-lived, narrowly scoped
-  token, removed afterwards) and which account steps the maintainer performs, in what order.
+- **crates.io account and publishing**: the maintainer owns or creates the crates.io account, and
+  performs the account steps FR-020 implies, in the order the plan gives: create the `crates-io` GitHub
+  environment and the narrowly scoped token before the dry run and release, delete the token after
+  `1.5.0`, then configure trusted publishing. This is the one release in which a token is stored, for a
+  limited time; the release notes and verification record say so.
 - **Toolchain**: Rust is not installed on the maintainer's machine yet (checked 2026-09-19); installing
   it is part of the work, with the maintainer's approval.
 - **Behaviour source**: the corpus is the specification. The .NET package remains the source that the
