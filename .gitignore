@@ -21,3 +21,18 @@ js/temp/
 js/consumers/*/node_modules/
 js/consumers/*/package-lock.json
 js/consumers/browser/out/
+
+# Python port (python/)
+python/.venv/
+python/dist/
+python/build/
+python/.bench/
+python/src/persian_text_guard/_wordlists.py
+python/src/persian_text_guard/_version.py
+python/LICENSE
+python/THIRD-PARTY-NOTICES.md
+python/consumers/.envs/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

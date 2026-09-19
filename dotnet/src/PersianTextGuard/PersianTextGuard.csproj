@@ -25,7 +25,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EnablePackageValidation>true</EnablePackageValidation>
     <!-- Every release must be additive over the last one (constitution, Public API & Versioning). -->
-    <PackageValidationBaselineVersion>1.2.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>1.3.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <ItemGroup>

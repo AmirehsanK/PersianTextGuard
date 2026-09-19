@@ -3110,5 +3110,17 @@
       "matches": [],
       "censored": "کد ۴۵۵"
     }
+  },
+  {
+    "id": "fa-ordinary-with-supplementary-characters",
+    "kind": "ordinary",
+    "configuration": "default",
+    "input": "سلام 😀 دوست 𠀀 عزیز",
+    "expected": {
+      "containsProfanity": false,
+      "firstMatch": null,
+      "matches": [],
+      "censored": "سلام 😀 دوست 𠀀 عزیز"
+    }
   }
 ]
