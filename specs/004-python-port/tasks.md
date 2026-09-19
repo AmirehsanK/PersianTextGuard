@@ -520,14 +520,14 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
      - the `pypi` environment still has exactly the `v*` tag policy.
 
   Record under "SC-009: release gates dry run".
-- [ ] T063 Commit `verification.md` and push. Open the pull request with `gh pr create`:
+- [X] T063 Commit `verification.md` and push. Open the pull request with `gh pr create`:
   - **Title**: "Python port on PyPI, corpus cases for supplementary characters, version 1.4.0".
   - **Body**: summary; the Python package; the new corpus cases; CI and release; the dry run; links to the spec, verification and release notes; ending with the Claude Code attribution line.
 
   Wait for CI: all nine build and test jobs pass (.NET ×2, JavaScript ×2, Python ×5), and the three publish jobs are skipped. **Do not merge without the user's go-ahead.**
-- [ ] T064 After the user approves, merge with `gh pr merge <n> --merge`, fast-forward local `main`, and confirm `main`'s CI is green.
-- [ ] T065 Add the five Python job names to `main`'s required checks with `gh api -X PATCH repos/AmirehsanK/PersianTextGuard/branches/main/protection/required_status_checks`, keeping the four existing ones, `strict: false`, and `app_id` 15368. The 1.3.0 delegation covered only the JavaScript checks, so ask the user first, unless they have already said to proceed with the release.
-- [ ] T066 (**irreversible**; needs the user's go-ahead to release) Push tag `v1.4.0` on the merge commit, only if all of these hold:
+- [X] T064 After the user approves, merge with `gh pr merge <n> --merge`, fast-forward local `main`, and confirm `main`'s CI is green.
+- [X] T065 Add the five Python job names to `main`'s required checks with `gh api -X PATCH repos/AmirehsanK/PersianTextGuard/branches/main/protection/required_status_checks`, keeping the four existing ones, `strict: false`, and `app_id` 15368. The 1.3.0 delegation covered only the JavaScript checks, so ask the user first, unless they have already said to proceed with the release.
+- [X] T066 (**irreversible**; needs the user's go-ahead to release) Push tag `v1.4.0` on the merge commit, only if all of these hold:
   - `main` is green;
   - `VERSION` is `1.4.0`;
   - the GitHub environment `pypi` exists with its `v*` tag rule, and the user confirms the PyPI pending publisher (T047);
@@ -535,14 +535,14 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   - neither npm, NuGet nor PyPI has 1.4.0.
 
   Watch the run. Every job succeeds, including all three publish jobs.
-- [ ] T067 Verify all three registries (SC-011, quickstart §7):
+- [X] T067 Verify all three registries (SC-011, quickstart §7):
   - install `persian-text-guard==1.4.0` from PyPI into a fresh venv and run the smoke check;
   - `npm view persian-text-guard@1.4.0 version`, and a fresh install that flags `ک.ی.ر`;
   - the NuGet index lists 1.4.0;
   - the PyPI JSON shows the version, and the project page shows attestations and the README.
 
   Record the results in `verification.md`.
-- [ ] T068 Create the GitHub release with `gh release create v1.4.0 --title "PersianTextGuard 1.4.0" --notes-file specs/004-python-port/release-notes-1.4.0.md --verify-tag`. Mark T063–T068 done in `tasks.md`, record "Release 1.4.0" in `verification.md`, and commit and push to `main` as "Record 1.4.0 release verification".
+- [X] T068 Create the GitHub release with `gh release create v1.4.0 --title "PersianTextGuard 1.4.0" --notes-file specs/004-python-port/release-notes-1.4.0.md --verify-tag`. Mark T063–T068 done in `tasks.md`, record "Release 1.4.0" in `verification.md`, and commit and push to `main` as "Record 1.4.0 release verification".
 
 ---
 

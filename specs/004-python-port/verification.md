@@ -388,3 +388,38 @@ on tags). It found two problems in the Python job, both fixed on the branch:
 `["0.0.1","1.3.0"]`; NuGet index `1.0.0, 1.0.1, 1.1.0, 1.2.0, 1.3.0`; PyPI JSON `404`; on
 `004-python-port`, `VERSION` is `1.4.0` and `ci.yml` has no `DRY RUN` or `--dry-run`; the `pypi`
 environment still has exactly the `v*` tag rule.
+
+## Pull request, merge and required checks (T063–T065)
+
+- [PersianTextGuard#5](https://github.com/AmirehsanK/PersianTextGuard/pull/5), "Python port on PyPI,
+  corpus cases for supplementary characters, version 1.4.0": all nine build and test jobs passed
+  (.NET ×2, JavaScript ×2, Python ×5); the three publish jobs were skipped.
+- Merged with the maintainer's go-ahead (`gh pr merge 5 --merge`), merge commit
+  `ae92cb9d2966f481e21408f38f15f206827a1d43`; `main`'s CI on it
+  ([run 35434275824](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35434275824)) green.
+- `main`'s required status checks (`strict: false`, `app_id` 15368) are now the four existing checks
+  plus `Python (3.11)`, `Python (3.12)`, `Python (3.13)`, `Python (3.14)` and `Python (3.14t)`: nine.
+
+## Release 1.4.0 (T066–T068)
+
+- **Before tagging**: `origin/main` at `ae92cb9` with green CI; `VERSION` 1.4.0; the `pypi` environment
+  with its `v*` tag rule, and the PyPI pending publisher confirmed by the maintainer; npm
+  `["0.0.1","1.3.0"]`, NuGet up to 1.3.0, PyPI 404; no `v1.4.0` tag on `origin`. **CPython 3.15**:
+  `uv python list 3.15` shows only `3.15.0rc2`, not a final release, so the matrix stays at 3.11–3.14
+  (constitution Principle III).
+- `v1.4.0` pushed on `ae92cb9`.
+  [Run 35434765981](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35434765981): every job
+  succeeded, including `Publish to NuGet` ("Your package was pushed"), `Publish to npm`
+  (`+ persian-text-guard@1.4.0`, tag `latest`, provenance signed) and `Publish to PyPI`.
+- **Registries (SC-011)**, from fresh environments:
+  - PyPI: `pip install persian-text-guard==1.4.0` in a new 3.14 venv; `__version__` 1.4.0, `ک.ی.ر`
+    flagged, `censor("kir and motherfucker")` gives `**** and ****`, and `consumers/smoke.py` prints
+    `ok`. The JSON API lists `persian_text_guard-1.4.0-py3-none-any.whl` and `persian_text_guard-1.4.0.tar.gz`;
+    the description is the README (`text/markdown`, Persian section included); the wheel's provenance
+    has a GitHub attestation for `AmirehsanK/PersianTextGuard`, workflow `ci.yml`, environment `pypi`.
+  - npm: dist-tag `latest` is `1.4.0`; a fresh `npm install persian-text-guard@1.4.0` flags `ک.ی.ر`.
+    It became visible a few minutes after the publish.
+  - NuGet: the flat-container index lists 1.4.0 (about two minutes after the push); a new console app
+    with `PersianTextGuard` 1.4.0 prints `nuget 1.4.0.0 True` for `ک.ی.ر`.
+- GitHub release [`v1.4.0`](https://github.com/AmirehsanK/PersianTextGuard/releases/tag/v1.4.0),
+  "PersianTextGuard 1.4.0", from `release-notes-1.4.0.md` (`--verify-tag`), not a draft or prerelease.
