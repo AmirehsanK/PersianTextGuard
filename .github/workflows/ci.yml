@@ -146,7 +146,7 @@ jobs:
           # The API compatibility check compares with the newest release tag that has python/.
           fetch-depth: 0
 
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4  # v10.1.0 (no moving major tag is published)
         with:
           # "3.14+gil" asks for the standard build, so "3.14" never resolves to the free-threaded one.
           python-version: ${{ matrix.python == '3.14' && '3.14+gil' || matrix.python }}
@@ -319,7 +319,7 @@ jobs:
           name: python-package
           path: dist
 
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4  # v10.1.0 (no moving major tag is published)
 
       # PyPI versions are PEP 440: VERSION 1.4.0-dev.2 is 1.4.0.dev2 in the file names. packaging comes
       # through uv, because the runner's system pip refuses to install into it (PEP 668).
