@@ -149,7 +149,7 @@ description: "Task list for the Rust port published to crates.io (release 1.5.0)
 
 ### The corpus runner amendment (research R4)
 
-- [ ] T009 Apply [contracts/corpus-runner-amendment.md](contracts/corpus-runner-amendment.md) to
+- [X] T009 Apply [contracts/corpus-runner-amendment.md](contracts/corpus-runner-amendment.md) to
   `specs/002-monorepo-conformance-corpus/contracts/corpus-format.md` ("Runner obligations" 3 and 5) and to
   the matching runner rules in `conformance/README.md`, wording both the same. Add a line under the 002
   contract's title: "Amended by spec 005 (FR-017) for ports whose strings cannot hold lone surrogates or

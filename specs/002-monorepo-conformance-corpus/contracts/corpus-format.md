@@ -1,5 +1,7 @@
 # Contract: Conformance Corpus Format, v1
 
+Amended by spec 005 (FR-017) for ports whose strings cannot hold lone surrogates or have no missing string value.
+
 **Feature**: [../spec.md](../spec.md) | **Data model**: [../data-model.md](../data-model.md)
 
 This is the interface between the corpus and every port's runner, today .NET and later JavaScript,
@@ -182,12 +184,16 @@ Every port's runner MUST do the following.
 
 **Running cases:**
 
-3. Build each Input as described, or report the case as **not applicable** by id when its language
-   cannot represent a part. Not-applicable cases are listed in the run output, never silently skipped.
+3. Build each Input as described. A port whose strings cannot hold a lone surrogate builds the Input as
+   UTF-16 units and replaces each lone surrogate with U+FFFD, in the Input and in every text value of
+   `expected`; a mask that does not build into one character of the port counts as refused. A port with
+   no missing string value reads a `null` Input as the empty string. Any other part the port's language
+   cannot represent makes the case **not applicable**, reported by id: listed in the run output, never
+   silently skipped.
 4. Check the kind rules (data model) before comparing results.
 5. Compare **every** field of `expected` exactly (spec Clarification 1). The only conversion allowed is
    of positions, from code points to the port's native unit, counting a lone surrogate as one code
-   point.
+   point. A lone surrogate replaced under obligation 3 still counts as one code point.
 
 **Reporting:**
 

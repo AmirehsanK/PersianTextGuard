@@ -40,3 +40,10 @@ On the skeleton (T005–T007): clean on stable, and `cargo test --locked` passes
 placeholder README doc test). `scripts/set-version.sh` self-check: "no change" with `VERSION` unchanged; a
 hand-edited `version = "0.0.1"` fails the build with "VERSION says 1.4.0 but Cargo.toml says 0.0.1; run
 scripts/set-version.sh"; the script restores 1.4.0 and the `--locked` build passes.
+
+## Corpus runner amendment (T009)
+
+Applied to `specs/002-monorepo-conformance-corpus/contracts/corpus-format.md` (obligations 3 and 5, and a
+line under the title) and to `conformance/README.md` with the same wording. No case file changed. The
+existing runners after the change: .NET conformance 532 × 3 (`net10.0`, `net8.0`, `net48`); JavaScript
+`test/corpus.test.ts` 530; Python `pytest -m corpus` 532.
