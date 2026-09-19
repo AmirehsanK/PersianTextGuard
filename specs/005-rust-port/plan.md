@@ -71,7 +71,7 @@ maintainer's machine builds with the GNU host (R15). `no_std` and WebAssembly ar
 **Scale/Scope**:
 - **Rust source**: about 3,000 lines, plus the generated tables (about 1,000 lines).
 - **Tests**: about 1,200 lines.
-- **Other files**: a table generator, a benchmark package, a consumer crate, 3 scripts.
+- **Other files**: a table generator, a benchmark package, a consumer crate, 5 scripts.
 - **Elsewhere**: the corpus runner amendment (002 contract, `conformance/README.md`), a one-line `.csproj`
   change, CI adding 7 jobs and a publish job, two READMEs.
 
@@ -87,10 +87,10 @@ Evaluated against [constitution v2.0.0](../../.specify/memory/constitution.md).
 | **II. User Input Never Throws** | Every text function returns for any text the language can represent; no panics | ✅ FR-014 | ✅ `&str` and `&[u8]` entry points never fail; `Result` only for masks and word-list input; `forbid(unsafe_code)`; proptest over 200,000 inputs (R7). |
 | **III. Native and Dependency-Free** | Native Rust; allowlisted dependencies only; MSRV declared and tested | ✅ | ✅ `unicode-normalization` only; categories and case from embedded generated tables, no amendment (R1); MSRV 1.85 tested on three platforms. Test and benchmark dependencies are allowed. |
 | **IV. Build Once, Match Fast, Share Safely** | Immutable, `Send + Sync`; construction-time work; token lookup; Criterion | ✅ | ✅ Immutable filter without interior mutability; `LazyLock`; `HashMap` token lookup ported from .NET; Criterion in `rust/bench`, README table, CI gate (R6, R7, R9). |
-| **V. One Behaviour, Verified in Every Language** | Every corpus case; byte positions in Rust; same capabilities | ⚠️ The runner rules would leave 9 cases not applicable | ✅ **Resolved by amendment**: 0 not applicable, with two readings measured to equal .NET's (R4). Positions are bytes. Every capability is present; the byte versions are a convenience over them, like Python's `WordList.load`. |
+| **V. One Behaviour, Verified in Every Language** | Every corpus case; byte positions in Rust; same capabilities | ⚠️ The runner rules would leave 9 cases not applicable | ✅ **Resolved by amendment**: 0 not applicable, with two readings measured to equal .NET's (R4). Positions are bytes. Every capability is present. The byte versions are an input form, not a new capability: Principle II itself names invalid UTF-8 in Go's byte slices as input a port must accept, so taking raw bytes is how a language accepts its raw text, as Python's `WordList.load` is how it reads files. |
 | **VI. Documented in Persian and English, Pinned by Tests** | Bilingual README; examples tested; rustdoc on every public item | ✅ | ✅ `rust/README.md` bilingual (R13), included as doc tests; `missing_docs` denied in CI. |
 | **VII. Curated, Categorised, Credited Word Lists** | Lists live once in `wordlists/`, embedded at build | ✅ | ✅ `build.rs` embeds them; the packaged copy is generated and git-ignored; `THIRD-PARTY-NOTICES.md` ships in the crate. |
-| **Public API & Versioning** | Lockstep from `VERSION`; tag = version; `cargo-semver-checks`; blocked if any port fails; MINOR | ✅ | ✅ `build.rs` enforces `VERSION`; every publish job needs every port's jobs and checks the tag; semver check with a first-release baseline; `#[non_exhaustive]` enums keep new categories MINOR; `1.5.0`. ⚠️ Four registries cannot publish atomically; mitigated by idempotent re-runs, as before. |
+| **Public API & Versioning** | Lockstep from `VERSION`; tag = version; `cargo-semver-checks`; blocked if any port fails; MINOR | ✅ | ✅ `build.rs` enforces `VERSION`; every publish job needs every port's jobs and checks the tag; semver check with a first-release baseline; `#[non_exhaustive]` enums and structs keep new categories, fields and options MINOR (additive API); `1.5.0`. ⚠️ Four registries cannot publish atomically; mitigated by idempotent re-runs, as before. |
 | **Development Workflow & Quality Gates** | Branch and PR; CI green for every port; behaviour PRs update corpus and ports together | ✅ | ✅ Branch `005-rust-port`; no behaviour change; the Rust jobs become required checks after merge. |
 | **Governance: Adoption** | No PR moves further from unmet requirements | ✅ | ✅ Adds `rust/` and crates.io to lockstep releases. |
 

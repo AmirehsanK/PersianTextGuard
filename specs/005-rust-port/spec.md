@@ -281,10 +281,13 @@ It protects users from the second release onward.
 - **FR-003**: CI MUST build and test the crate on Linux, Windows and macOS.
 - **FR-004**: The crate MUST have no runtime dependencies beyond the standard library and those the
   constitution's allowlist names for Rust. The Unicode general categories the matcher tests, which the
-  standard library does not provide, MUST come from compact tables generated at development time from
-  the Unicode data .NET uses, and embedded in the crate (clarified 2026-09-19). The generator MUST live
+  standard library does not provide, and the one-unit lower-casing, which the standard library ties to the
+  compiler's Unicode version, MUST come from compact tables generated at development time from the Unicode
+  data .NET uses, and embedded in the crate (clarified 2026-09-19; lower-casing added during planning,
+  research R1). The generator MUST live
   in the repository, CI MUST fail when the committed tables differ from what it produces, and the tables
-  MUST agree with .NET's category for every code point that .NET's Unicode version assigns.
+  MUST agree with .NET's category and lower-casing for every code point that .NET's Unicode version
+  assigns.
 - **FR-005**: The bundled word lists MUST be taken from `wordlists/` when the crate is built or packaged,
   and the crate's version MUST come from `VERSION`. The port MUST NOT keep its own hand-edited copy of
   the list files, and the published crate MUST build without the rest of the repository.

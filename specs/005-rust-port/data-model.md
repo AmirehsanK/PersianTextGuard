@@ -32,8 +32,10 @@ written. `Normalization` has the constants `NONE`, `STANDARD` and `COMPARISON` (
 | `mode` | `WordMatchMode` | `WholeWord` | |
 | `category` | `WordCategory` | `Uncategorized` | |
 
-`Clone`, `Eq`, `Hash` over all three fields. Public fields: an entry is plain data. A filter copies the
-entries it is given, so changing a caller's entries afterwards cannot affect it.
+`Clone`, `Eq`, `Hash` over all three fields. The fields are public to read; the struct is
+`#[non_exhaustive]`, so it is built with `new`, `with_mode` and `with_category`, and a future field is a
+MINOR change. A filter copies the entries it is given, so changing a caller's entries afterwards cannot
+affect it.
 
 ## `ProfanityFilterOptions`
 
@@ -60,6 +62,8 @@ maskable keys, and the options. Nothing is mutated after `new`; there is no inte
 filter is `Send + Sync` by construction.
 
 ## `ProfanityMatch<'f>`
+
+`#[non_exhaustive]`: only the filter creates matches, and callers read the fields.
 
 | Field | Type | Rule |
 | --- | --- | --- |

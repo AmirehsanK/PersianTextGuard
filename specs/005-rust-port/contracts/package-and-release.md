@@ -32,7 +32,7 @@ New or changed paths only.
 │   │   ├── Cargo.toml  Cargo.lock  benches/filter.rs  src/bin/bench_table.rs
 │   ├── consumer/                            # a tiny binary crate using the packaged crate (quickstart §4)
 │   ├── tools/gen_tables.cs                  # .NET 10 generator of src/tables.rs
-│   ├── scripts/prepare-package.sh  set-version.sh  check-package.sh
+│   ├── scripts/prepare-package.sh  set-version.sh  check-package.sh  bench-gate.sh  check-api.sh
 │   └── wordlists/  LICENSE  THIRD-PARTY-NOTICES.md   # copied by prepare-package.sh; git-ignored
 ├── README.md                                # crates.io next to NuGet, npm and PyPI; Development and Releasing gain rust/
 ├── .gitignore                               # rust/target/, rust/bench/target/, rust/wordlists/, rust/LICENSE, …
@@ -83,7 +83,7 @@ The existing job names MUST NOT change. The Rust rows are added.
 | existing nine | as today | as today | yes |
 | `Rust (stable, ubuntu-latest)`, `Rust (stable, windows-latest)`, `Rust (stable, macos-latest)` | matrix | `cargo test --locked` | yes (added after merge) |
 | `Rust (1.85, ubuntu-latest)`, `Rust (1.85, windows-latest)`, `Rust (1.85, macos-latest)` | matrix | `cargo test --locked` on 1.85 | yes (added after merge) |
-| `Rust checks` | ubuntu, stable | fmt, clippy, docs, table regeneration with .NET 10, package and `check-package.sh`, build of the `.crate` on its own, semver check, benchmark gate (`CleanShortMessage` under 50 µs), upload `crate-package` | yes (added after merge) |
+| `Rust checks` | ubuntu, stable | fmt, clippy, docs, table regeneration with .NET 10, the full no-panic property test (`PROPTEST_CASES=100000`, release), package and `check-package.sh`, build of the `.crate` on its own, semver check, benchmark gate (`scripts/bench-gate.sh`: `CleanShortMessage` under 50 µs), upload `crate-package` | yes (added after merge) |
 | `Publish to NuGet`, `Publish to npm`, `Publish to PyPI` | ubuntu | as today; `needs` gains `rust` and `rust-checks` | — |
 | `Publish to crates.io` | ubuntu | on `v*` tags; `needs` every build and test job (`build`, `netfx`, `javascript`, `python`, `rust`, `rust-checks`); `environment: crates-io`; `id-token: write`; tag check; `Cargo.toml` version = `VERSION`; skip when crates.io has the version; `cargo publish --locked` with `CARGO_REGISTRY_TOKEN` from the environment when present, otherwise through `rust-lang/crates-io-auth-action` | — |
 

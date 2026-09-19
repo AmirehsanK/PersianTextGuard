@@ -63,6 +63,7 @@ impl FromStr for Normalization {} // "comparison", "standard", "none"; Err = Par
 
 // ------------------------------------------------------------------ entries and word lists
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[non_exhaustive]                                                 // fields readable; built with new/with_*
 pub struct BannedWord {
     pub text: String,
     pub mode: WordMatchMode,
@@ -100,6 +101,7 @@ impl ProfanityFilterOptions {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[non_exhaustive]                                                 // produced only by the filter
 pub struct ProfanityMatch<'f> {
     pub word: &'f BannedWord,               // the entry as given, owned by the filter
     pub evasion: EvasionSet,
@@ -201,9 +203,9 @@ This table is copied into `rust/README.md` (FR-012).
 
 - **1.5.0 is the first release of this crate**, and the baseline for `cargo-semver-checks` (FR-022).
 - **After that**, removing or changing any declaration above is MAJOR, and adding to it is MINOR. The
-  four enums, `ProfanityFilterOptions` and `WordListError` are `#[non_exhaustive]` from the first release,
-  so a new category, evasion, step, option or error kind is MINOR in Rust too, as the constitution rules
-  across ports; callers who `match` on them need a wildcard arm, which the README shows. A release that
+  four enums, `BannedWord`, `ProfanityFilterOptions`, `ProfanityMatch` and `WordListError` are
+  `#[non_exhaustive]` from the first release, so a new category, evasion, step, field, option or error kind
+  is MINOR in Rust too, as the constitution rules across ports (new public API is additive); callers who `match` on them need a wildcard arm, which the README shows. A release that
   adds a category or evasion still calls it out in the release notes, because it changes which inputs
   match.
 - The minimum supported Rust version is 1.85, raised only as FR-002 says.
