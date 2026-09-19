@@ -148,8 +148,7 @@ jobs:
 
       - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4  # v10.1.0 (no moving major tag is published)
         with:
-          # "3.14+gil" asks for the standard build, so "3.14" never resolves to the free-threaded one.
-          python-version: ${{ matrix.python == '3.14' && '3.14+gil' || matrix.python }}
+          python-version: ${{ matrix.python }}
           enable-cache: true
           cache-dependency-glob: python/uv.lock
 
@@ -166,6 +165,11 @@ jobs:
       - name: Interpreter
         run: |
           uv run python -c "import sys, unicodedata; print(sys.version, unicodedata.unidata_version, getattr(sys, '_is_gil_enabled', lambda: True)())"
+
+      # "3.14" must be the standard build: the free-threaded one has its own job.
+      - name: Check 3.14 is the standard build
+        if: matrix.python == '3.14'
+        run: uv run python -c "import sys; sys.exit(0 if sys._is_gil_enabled() else 'expected the standard (GIL) build')"
 
       - name: Lint and type check
         if: matrix.python != '3.14t'
