@@ -1,3 +1,7 @@
+# unwrap and expect are warned in src/ (no panics on input) and allowed in tests.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+
 # Every Unicode-dependent operation goes through src/unicode.rs, which follows .NET's Unicode data
 # (research R1): the standard library's answers change with the compiler's Unicode version, and its
 # case mapping and whitespace differ from .NET's. unicode.rs allows these locally.

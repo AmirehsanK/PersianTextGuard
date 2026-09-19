@@ -47,3 +47,20 @@ Applied to `specs/002-monorepo-conformance-corpus/contracts/corpus-format.md` (o
 line under the title) and to `conformance/README.md` with the same wording. No case file changed. The
 existing runners after the change: .NET conformance 532 × 3 (`net10.0`, `net8.0`, `net48`); JavaScript
 `test/corpus.test.ts` 530; Python `pytest -m corpus` 532.
+
+## Foundational layers (T010–T020)
+
+- `dotnet run tools/gen_tables.cs -- src/tables.rs` (from `rust/`, .NET 10.0.11): **4,099 category runs and
+  1,172 lower-case pairs**, as research R1 measured, plus the 128-entry ASCII category table of the fast
+  path. The header names the .NET major version only ("from .NET 10"), not `Environment.Version`, so a
+  .NET patch release in CI does not change the file; running the generator again leaves
+  `git diff --exit-code src/tables.rs` clean. `.gitattributes` keeps the file LF on Windows checkouts.
+- Unit tests (`cargo test --locked --lib`): 40 passed on stable 1.98.1 and on 1.85.1: Unicode primitives
+  (whitespace against the generated categories on all 65,536 units, the 8 Unicode 16/17 case pairs left
+  unchanged, `Cs`/`Lo`/`Cn`/`Mc` categories, NFKC around all 66 noncharacters, noncharacter lengths),
+  the ported `internals.test.ts` (source maps, normalizer, word-list headings, 1,250 bundled entries and
+  1,025 in `persian_default()`), fold and squeeze, the UTF-16 view and byte map.
+- `cargo fmt --check` and `cargo clippy --locked --all-targets -- -D warnings`: clean. `clippy.toml` allows
+  `unwrap`/`expect` in tests. The internal modules carry a temporary `#[allow(dead_code)]` in `lib.rs`
+  until the filter uses them (T024–T028). The documentation check and the doc tests run from T028, since
+  several examples use `ProfanityFilter`.
