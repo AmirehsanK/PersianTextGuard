@@ -345,3 +345,46 @@ state again.
   and 0; .NET whitespace 0 everywhere; lower-casing 0, 0, 0, 5 and 5; NFKC 62 on 3.11 (U+1E030–U+1E06D)
   and 36 on 3.14 (U+1CCD6–U+1CCF9); NFD 20 on 3.14). `str.isspace` differs from .NET on
   U+001C–U+001F on every version. ✓
+
+## First CI runs on the branch
+
+Before any dry-run tag, CI was run on `004-python-port` with `workflow_dispatch` (publish jobs only run
+on tags). It found two problems in the Python job, both fixed on the branch:
+
+1. [Run 35433277522](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35433277522): every
+   Python job failed with "Unable to resolve action `astral-sh/setup-uv@v10`". Since v8, setup-uv
+   publishes exact version tags only, with no moving major tag. The workflow now pins the v10.1.0
+   commit, `bec219d24cd3e171d82865faccec33120bb574f4`, with the version in a comment.
+2. [Run 35433397141](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35433397141): `Python (3.14)`
+   failed with "No interpreter found for Python 3.14+gil": uv on the runner resolves `+gil` only against
+   installed interpreters, not downloads. The job now asks for plain `3.14`, which downloads the standard
+   build on a fresh runner, and a step asserts `sys._is_gil_enabled()` so it can never test the
+   free-threaded build by mistake.
+3. [Run 35433517074](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35433517074): every job
+   green. `Python (3.14)`: CPython 3.14.7 (Unicode 16.0.0, GIL on), 195 unit tests and 532 corpus tests,
+   package and consumer checks passed, "baseline: no previous release", benchmark gate
+   "CleanShortMessage: mean 76.7 µs, limit 500 µs". `Python (3.14t)`: 3.14.7 free-threaded with
+   `PYTHON_GIL=0`, 727 passed, then 193 passed on 8 threads each.
+
+## SC-009: release gates dry run (T059–T062)
+
+- **Precondition**: the GitHub environment `pypi` was created with `gh api`, as `npm` is set up:
+  custom deployment policies, exactly one rule, `v*` of type `tag`, no secrets.
+  `gh api repos/AmirehsanK/PersianTextGuard/environments/pypi/deployment-branch-policies` lists
+  `v* tag` (total 1).
+- `004-python-port` pushed. Scratch branch `dryrun/release-gates`: NuGet login and push replaced by
+  `ls -l artifacts/*.nupkg` and an echo, `--dry-run` added to `npm publish`, the PyPI upload replaced by
+  `ls -l dist/`, and a `"DRY RUN: simulated failure"` step first in the Python job. The safety greps
+  printed nothing, and the YAML parsed, before each push.
+
+| Run | Tag | Result |
+| --- | --- | --- |
+| [1](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35433682039) | `v1.4.0-dev.1` | All five `Python (…)` jobs `failure`; `Build, test, pack`, .NET Framework and both JavaScript jobs `success`; `Publish to NuGet`, `Publish to npm` and `Publish to PyPI` all `skipped`. |
+| [2](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35433837300) | `v1.4.0-dev.2` | Every job `success`. NuGet stub: `artifacts/PersianTextGuard.1.4.0-dev.2.nupkg`, "DRY RUN - would push to NuGet". npm: `+ persian-text-guard@1.4.0-dev.2`, tag `next`, 8 files, `(dry-run)`. PyPI: "Check file versions" printed `['persian_text_guard-1.4.0.dev2-py3-none-any.whl', 'persian_text_guard-1.4.0.dev2.tar.gz']` and passed; the stub listed both files. Deployments to `pypi`, `nuget` and `npm` for `v1.4.0-dev.2`: the `v*` rule admits release tags. |
+| [3](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35433983874) | `v1.4.0-dev.3` on the run-2 commit | Every build and test job `success`; all three publish jobs `failure` at "Check tag matches VERSION": "Tag v1.4.0-dev.3 does not match VERSION 1.4.0-dev.2". |
+
+**Cleanup (T062)**: the three tags deleted on `origin` and locally; `dryrun/release-gates` deleted on
+`origin` and locally; `git ls-remote origin | grep -i -E "dev|dryrun"` prints nothing; npm versions
+`["0.0.1","1.3.0"]`; NuGet index `1.0.0, 1.0.1, 1.1.0, 1.2.0, 1.3.0`; PyPI JSON `404`; on
+`004-python-port`, `VERSION` is `1.4.0` and `ci.yml` has no `DRY RUN` or `--dry-run`; the `pypi`
+environment still has exactly the `v*` tag rule.

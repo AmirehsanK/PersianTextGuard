@@ -482,7 +482,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
 
   Record every count in `verification.md` under "Full matrix".
 - [X] T058 Walk through [quickstart.md](quickstart.md) §1–§6 and §8, ticking each expected outcome in `verification.md` with the task that produced it. §7 is completed by T059–T066.
-- [ ] T059 Prepare the real CI dry run (research R19, SC-009), following 003's T067 with these changes:
+- [X] T059 Prepare the real CI dry run (research R19, SC-009), following 003's T067 with these changes:
   1. **Precondition** (M2): `gh api repos/AmirehsanK/PersianTextGuard/environments/pypi` shows the `v*` tag rule (T047); `gh api repos/AmirehsanK/PersianTextGuard/environments/pypi/deployment-branch-policies` lists `v*` with `type: tag`. Stop and ask the user if it does not.
   2. Commit and push `004-python-port`, with no pull request yet.
   3. Run `git switch -c dryrun/release-gates`.
@@ -494,12 +494,12 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   5. Set `VERSION` to `1.4.0-dev.1`.
   6. **Safety check** before committing: `grep -nE "dotnet nuget push|NuGet/login|gh-action-pypi-publish" .github/workflows/ci.yml` prints nothing, and `grep -n "npm publish" .github/workflows/ci.yml | grep -v -- "--dry-run"` prints nothing. Validate the YAML. Stop if anything fails.
   7. Commit as "DRY RUN ONLY: release gate test (do not merge)" and push the branch.
-- [ ] T060 Dry run 1, where a failing Python job blocks all three registries: tag and push `v1.4.0-dev.1`. Wait with `gh run watch`. Then confirm with `gh run view <id> --json jobs`:
+- [X] T060 Dry run 1, where a failing Python job blocks all three registries: tag and push `v1.4.0-dev.1`. Wait with `gh run watch`. Then confirm with `gh run view <id> --json jobs`:
   - all five `Python (…)` jobs are `failure`, and the .NET and JavaScript jobs are `success`;
   - `Publish to NuGet`, `Publish to npm` and `Publish to PyPI` are `skipped`.
 
   If a publish job ran, stop, delete the tag, and report. Record the job list.
-- [ ] T061 Dry runs 2 and 3:
+- [X] T061 Dry runs 2 and 3:
   1. **Run 2, everything green.** Remove the failure step, set `VERSION` to `1.4.0-dev.2`, repeat the safety check, commit, push, then tag and push `v1.4.0-dev.2`. Every job succeeds:
      - NuGet lists `PersianTextGuard.1.4.0-dev.2.nupkg`;
      - npm reports `+ persian-text-guard@1.4.0-dev.2` with tag `next`, 8 files, `(dry-run)`;
@@ -508,7 +508,7 @@ description: "Task list for the Python port published to PyPI (release 1.4.0)"
   2. **Run 3, mismatched tag.** Tag the same commit `v1.4.0-dev.3` and push. All three publish jobs fail at "Check tag matches VERSION" with "Tag v1.4.0-dev.3 does not match VERSION 1.4.0-dev.2".
 
   Record conclusions and log excerpts.
-- [ ] T062 Clean up the dry run:
+- [X] T062 Clean up the dry run:
   1. Delete the three tags, remote and local.
   2. Switch to `004-python-port`; delete `dryrun/release-gates`, remote and local.
   3. Confirm:
