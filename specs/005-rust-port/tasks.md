@@ -256,7 +256,7 @@ packaged crate.
 
 ### Tests for User Story 1 (write first; they fail until T024–T028)
 
-- [ ] T021 [P] [US1] Create `rust/tests/api.rs` using only `persian_text_guard::*`, covering spec US1
+- [X] T021 [P] [US1] Create `rust/tests/api.rs` using only `persian_text_guard::*`, covering spec US1
   scenarios 1–7 and guarantees G3–G7 and G11 of [contracts/public-api.md](contracts/public-api.md):
   - scenario 3 exactly: `shit` at byte 0, 4 bytes, evasion `{LookalikeCharacters}`; `fuck` at byte 9, 7 bytes,
     `{SplitWord}`; scenario 4: `"😀 کیر"` gives start 5, len 6, and `&text[m.range()] == "کیر"`;
@@ -275,12 +275,12 @@ packaged crate.
     slice, `HashSet`, `iter().cloned()`);
   - G3 over a handful of inputs (T036 extends it to every corpus input), including `""`, `"   "`,
     `"hi \u{FFFD} kir"`, `"k kos i kos r"`, `"جنده\u{200C}ها رو ببین"`.
-- [ ] T022 [P] [US1] Create `rust/tests/word_list_load.rs` (G8): a UTF-8 file with a BOM and `\r\n` in a
+- [X] T022 [P] [US1] Create `rust/tests/word_list_load.rs` (G8): a UTF-8 file with a BOM and `\r\n` in a
   temporary directory (`std::env::temp_dir()` plus a unique name, removed afterwards), loaded by path
   (`&str`, `PathBuf`) and by reader (`File`, `&mut File`, `&[u8]`, `Cursor`): all equal `parse` of the text
   without the BOM; a missing path is `Io` with kind `NotFound`; invalid UTF-8 is `InvalidUtf8` with the right
   `valid_up_to`; `[3]` on line 2 is `UnknownCategory { line: 2, .. }`.
-- [ ] T023 [P] [US1] Create `rust/tests/bytes.rs` (G9, FR-008a):
+- [X] T023 [P] [US1] Create `rust/tests/bytes.rs` (G9, FR-008a):
   - valid UTF-8 bytes give exactly the `&str` results;
   - `b"kir \xFF fuck"`: two matches, `kir` 0..3 and `fuck` 6..10; `censor_bytes` gives `b"**** \xFF ****"`,
     the invalid byte kept;
@@ -291,39 +291,39 @@ packaged crate.
 
 ### Implementation for User Story 1
 
-- [ ] T024 [US1] Port `js/src/scan.ts` to `rust/src/scan.rs`: `Entry`, `Key`, `Phrase`, `ScanState`, `Hit`, the
+- [X] T024 [US1] Port `js/src/scan.ts` to `rust/src/scan.rs`: `Entry`, `Key`, `Phrase`, `ScanState`, `Hit`, the
   sink, `scan`, `match_tokens`, `match_anywhere` (a search for a `[u16]` needle, the TypeScript's `indexOf`
   loop), `try_join_single_letters`, `match_split_halves`, `match_broken_chunks`, `masked_pattern`,
   `fits_mask`, `try_find_word` with the Persian suffixes, `phrase_starts_at`, `has_suffix`. Positions are
   view units. Where the TypeScript relies on `charCodeAt` of an empty string giving `NaN`, guard explicitly.
-- [ ] T025 [US1] Port `js/src/regions.ts` to `rust/src/regions.rs`: `Candidate`, `Region`, `to_candidate`
+- [X] T025 [US1] Port `js/src/regions.ts` to `rust/src/regions.rs`: `Candidate`, `Region`, `to_candidate`
   (with the source-map cache), `merge` (sort by start ascending, end descending, stable, as in TypeScript),
   `MASK_LENGTH = 4`. Censoring regions are applied by `filter.rs` on the caller's string.
-- [ ] T026 [US1] Port `js/src/filter.ts` to `rust/src/filter.rs`: `ProfanityFilter` with `new` and
+- [X] T026 [US1] Port `js/src/filter.ts` to `rust/src/filter.rs`: `ProfanityFilter` with `new` and
   `with_defaults` (entries cloned into `Box<[BannedWord]>`; lookups store indexes into it; the rest as the
   TypeScript builds it: de-duplication by (mode, normalized text), a folded key beside the original when
   folding is on), `count`, `contains_profanity`, `find_match`, `find_matches` (positions converted with
   `ByteMap`), `censor` and `censor_with`: validate the mask first ("a letter, digit, whitespace, control
   character, or a character above U+FFFF" is `InvalidMask`), then splice the caller's string with the
   mask repeated four times, then keep re-scanning until clean with the TypeScript's pass cap.
-- [ ] T027 [US1] Create `rust/src/bytes.rs` (research R3) and the five byte methods on `ProfanityFilter`:
+- [X] T027 [US1] Create `rust/src/bytes.rs` (research R3) and the five byte methods on `ProfanityFilter`:
   decode with `<[u8]>::utf8_chunks` into a `Cow<str>` (borrowed when the input is valid) and a table from
   decoded byte offsets to source byte offsets (each U+FFFD's three bytes map to the whole invalid sequence);
   run the `&str` path; map regions back so a region covering a U+FFFD covers the whole invalid sequence;
   `censor_bytes*` splices the caller's bytes with the mask's UTF-8 encoding four times.
-- [ ] T028 [US1] Complete `rust/src/lib.rs`: `pub use` exactly the declarations of the contract (nothing else
+- [X] T028 [US1] Complete `rust/src/lib.rs`: `pub use` exactly the declarations of the contract (nothing else
   public), crate-level docs from the README, `#![warn(missing_docs)]`. Run `cargo test --locked --test api
   --test word_list_load --test bytes` until every test passes.
-- [ ] T029 [P] [US1] Replace the placeholder `rust/README.md` with a short English README whose quick start
+- [X] T029 [P] [US1] Replace the placeholder `rust/README.md` with a short English README whose quick start
   is a `rust` block building a filter from `WordList::persian_default()` and asserting the three US1
   results; it runs as a doc test. (T049 writes the full README.)
-- [ ] T030 [P] [US1] Create `rust/consumer/` (`publish = false`, its own `Cargo.toml` and lock file, not a
+- [X] T030 [P] [US1] Create `rust/consumer/` (`publish = false`, its own `Cargo.toml` and lock file, not a
   workspace member): `src/main.rs` runs the quick start with asserts and prints `ok`. Its dependency is
   `persian-text-guard = { path = "../target/package/persian-text-guard-<v>" }` written by
   `scripts/check-package.sh` (T031) into a generated `Cargo.toml`, so it builds against the unpacked crate,
   never the source tree. `consumer/Cargo.lock` is committed; `check-package.sh` runs `cargo update -p
   persian-text-guard --offline` in `consumer/` after writing the path, before `cargo run --locked`.
-- [ ] T031 [US1] Create `rust/scripts/prepare-package.sh` (copy `../wordlists/{persian,finglish,english}.txt`
+- [X] T031 [US1] Create `rust/scripts/prepare-package.sh` (copy `../wordlists/{persian,finglish,english}.txt`
   into `wordlists/`, and `../LICENSE`, `../THIRD-PARTY-NOTICES.md`; print what it copied) and
   `rust/scripts/check-package.sh`:
   1. `cargo package --locked --list` equals the allowlist of contracts/package-and-release.md exactly
@@ -338,7 +338,7 @@ packaged crate.
   5. writes `consumer/Cargo.toml`'s dependency path to the unpacked crate and runs `cargo run --locked` in
      `consumer/`, expecting `ok`.
   It prints each check and exits non-zero on the first failure.
-- [ ] T032 [US1] Run `scripts/prepare-package.sh && scripts/check-package.sh`. Record in `verification.md`
+- [X] T032 [US1] Run `scripts/prepare-package.sh && scripts/check-package.sh`. Record in `verification.md`
   under "US1": the test results, the file list, the `.crate` size and the consumer output. Commit T021–T032 as
   "Add the Rust filter, byte versions, package checks and consumer check".
 

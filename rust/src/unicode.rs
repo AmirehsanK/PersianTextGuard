@@ -195,7 +195,9 @@ pub(crate) fn is_noncharacter(code_point: u32) -> bool {
     (0xFDD0..=0xFDEF).contains(&code_point) || (code_point & 0xFFFE) == 0xFFFE
 }
 
-/// The length (0, 1 or 2 units) of a noncharacter starting at `index`, or 0 when there is none.
+/// The length (0, 1 or 2 units) of a noncharacter starting at `index`, or 0 when there is none. The
+/// TypeScript's NFKC walks the text with it; [`nfkc`] decodes code points instead, so only the tests use it.
+#[cfg(test)]
 pub(crate) fn noncharacter_length_at(text: &[u16], index: usize) -> usize {
     let unit = text[index];
     if is_high_surrogate(unit) {

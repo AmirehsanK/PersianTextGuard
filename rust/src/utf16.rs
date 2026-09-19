@@ -11,8 +11,6 @@
 //! [`from_view`]. For example, .NET flags `kir𠀀` as `kir` at units 0..5 (the two surrogates are not
 //! letters, so they join the word); here that region is bytes 0..7 of the string, all of it.
 
-use std::borrow::Cow;
-
 /// The UTF-16 view of `text`.
 pub(crate) fn to_view(text: &str) -> Vec<u16> {
     text.encode_utf16().collect()
@@ -22,18 +20,6 @@ pub(crate) fn to_view(text: &str) -> Vec<u16> {
 /// never panic either way.
 pub(crate) fn from_view(view: &[u16]) -> String {
     String::from_utf16_lossy(view)
-}
-
-/// A view decoded back to UTF-8, borrowing `original` when the view is exactly its encoding.
-pub(crate) fn from_view_or<'a>(view: &[u16], original: &'a str) -> Cow<'a, str> {
-    if view.len() == original.len()
-        && original.is_ascii()
-        && view.iter().zip(original.bytes()).all(|(&u, b)| u == u16::from(b))
-    {
-        Cow::Borrowed(original)
-    } else {
-        Cow::Owned(from_view(view))
-    }
 }
 
 /// Converts regions of a message's view, in UTF-16 units, to byte regions of the message.
@@ -115,6 +101,5 @@ mod tests {
     fn views_round_trip() {
         let text = "سلام \u{1F600} kir";
         assert_eq!(from_view(&to_view(text)), text);
-        assert!(matches!(from_view_or(&to_view("abc"), "abc"), Cow::Borrowed(_)));
     }
 }

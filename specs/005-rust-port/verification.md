@@ -64,3 +64,23 @@ existing runners after the change: .NET conformance 532 × 3 (`net10.0`, `net8.0
   `unwrap`/`expect` in tests. The internal modules carry a temporary `#[allow(dead_code)]` in `lib.rs`
   until the filter uses them (T024–T028). The documentation check and the doc tests run from T028, since
   several examples use `ProfanityFilter`.
+
+## US1: the filter, byte versions and package (T021–T032)
+
+- `cargo test --locked --test api --test word_list_load --test bytes`: 17 + 5 + 4 passed (spec US1
+  scenarios 1–7 and the independent test, G3–G7, G9, G11, masks, options, any iterable of entries,
+  file and reader loading with a BOM and `\r\n`, `NotFound`, `InvalidUtf8`, the byte versions with
+  invalid sequences kept). Whole suite: 45 unit tests, 26 integration tests and 35 doc tests (README
+  quick start and every public type's example) pass; clippy and `cargo doc` with warnings denied are clean.
+- `scripts/prepare-package.sh && scripts/check-package.sh`:
+  1. file list: 25 files, exactly the allowlist (`.cargo_vcs_info.json` is absent when packaging a dirty
+     tree locally; the script accepts both, and CI packages a clean tree);
+  2. `cargo package --locked` built the unpacked crate on its own, from its packaged `wordlists/`. Cargo
+     warned that the test targets (`api`, `bytes`, `corpus`, `word_list_load`) are not in the package, as
+     expected, and the packaged `Cargo.toml` has no `[[test]]` section;
+  3. `persian-text-guard-1.4.0.crate`: 80,453 bytes (280.7 KiB unpacked), under 1 MB (SC-004);
+  4. manifest: `persian-text-guard` 1.4.0 (= `VERSION`), `rust-version` 1.85, one normal dependency,
+     `unicode-normalization`;
+  5. `consumer/` built against `target/package/persian-text-guard-1.4.0` and printed `ok`.
+- `scripts/set-version.sh` self-check repeated with `consumer/` present: "no change"; a hand-edited
+  `0.0.1` fails the build; the script restores 1.4.0 in `Cargo.toml` and both lock files.
