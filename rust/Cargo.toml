@@ -1,6 +1,6 @@
 [package]
 name = "persian-text-guard"
-version = "1.4.0"
+version = "1.5.0"
 edition = "2024"
 rust-version = "1.85"
 license = "MIT"

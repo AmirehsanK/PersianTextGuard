@@ -129,3 +129,44 @@ existing runners after the change: .NET conformance 532 × 3 (`net10.0`, `net8.0
   `{"all": 1250, "default": 1025, "categories": {"uncategorized": 0, "profanity": 93, "sexual": 353,
   "insult": 400, "slur": 146, "harassment": 33, "mild": 225}}`. `git diff --no-index` against
   `python.txt` and `js.txt`: **0 differences** with either.
+
+## US3: CI and the release gates (T042–T047)
+
+- `.github/workflows/ci.yml` gains two jobs, with every existing job name unchanged:
+  - **`Rust (${{ matrix.toolchain }}, ${{ matrix.os }})`**: `stable` and `1.85` × `ubuntu-latest`,
+    `windows-latest`, `macos-latest` (six jobs), `fail-fast: false`, `cargo test --locked`;
+  - **`Rust checks`** (ubuntu, stable): `cargo fmt --check`; `cargo clippy --locked --all-targets -D
+    warnings`; `cargo doc` with `RUSTDOCFLAGS=-D warnings`; the .NET 10 table regeneration and
+    `git diff --exit-code src/tables.rs`; `PROPTEST_CASES=100000 cargo test --locked --release --test
+    no_panic`; `scripts/prepare-package.sh` and `scripts/check-package.sh`; the API check (a step asks
+    crates.io and, on 404, prints "baseline: no previous release" and skips
+    `obi1kenobi/cargo-semver-checks-action`); `scripts/bench-gate.sh`; and the `crate-package` artifact.
+  - Actions are pinned by commit: `dtolnay/rust-toolchain@02cb101` (master),
+    `Swatinem/rust-cache@6323deb` (v2.9.2), `obi1kenobi/cargo-semver-checks-action@6b69fcf` (v2.9),
+    `rust-lang/crates-io-auth-action@c6f97d4` (v1.0.5).
+- **`Publish to crates.io`**: `needs: [build, netfx, javascript, python, rust, rust-checks]`, only on
+  `refs/tags/v*`, `environment: crates-io`, `id-token: write`; it checks the tag against `VERSION` and
+  `rust/Cargo.toml` against `VERSION`, skips a version already on crates.io, runs
+  `prepare-package.sh`, authenticates through `crates-io-auth-action` only when the environment has no
+  `CARGO_REGISTRY_TOKEN`, and publishes with `cargo publish --locked`.
+- `Publish to NuGet`, `Publish to npm` and `Publish to PyPI` now also need `rust` and `rust-checks`.
+- The YAML was validated with the scratchpad's strict checker (unique keys): 10 jobs, names and `needs`
+  as above.
+- **Release gates checked locally (T045)**: reading `ci.yml` back, all four publish jobs need the six
+  build and test jobs and run only on `refs/tags/v`; the tag check passes for `v1.4.0` (the version at
+  the time) and fails for `v9.9.9`; the `Cargo.toml` check passes for the file's version and fails for
+  `9.9.9`; `https://crates.io/api/v1/crates/persian-text-guard/9.9.9` answers **404** today, and so does
+  the crate itself, so the API check takes its "no previous release" path.
+- **Baselines moved to 1.4.0 (T044)**: `PackageValidationBaselineVersion` 1.3.0 → 1.4.0 and
+  `dotnet pack` succeeded; `npm run api:compat` reported "API compatible with v1.4.0: 45 declarations
+  kept, 0 added"; `uv run python scripts/check_api.py` found `v1.4.0` and griffe ran for real:
+  "ok: no breaking change against v1.4.0".
+- **Version 1.5.0 (T046)**: `VERSION` 1.4.0 → 1.5.0, then `rust/scripts/set-version.sh` rewrote
+  `rust/Cargo.toml` and both lock files. All four packages rebuilt:
+  `persian-text-guard-1.5.0.crate` (85,563 bytes, all package checks pass, consumer prints `ok`),
+  `persian_text_guard-1.5.0-py3-none-any.whl` and `.tar.gz`, `persian-text-guard-1.5.0.tgz`, and
+  `PersianTextGuard.1.5.0.nupkg` with package validation against 1.4.0.
+- **The `crates-io` environment (T047)** was created with `gh api`, exactly as `pypi`: custom
+  deployment branch policy with one rule, `v*` of type `tag`, and no secrets
+  (`deployment-branch-policies` → `{"name": "v*", "type": "tag"}`, `secrets.total_count` 0). The
+  repository now has `crates-io`, `npm`, `nuget` and `pypi`.

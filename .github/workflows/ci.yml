@@ -226,9 +226,117 @@ jobs:
           name: python-package
           path: python/dist/*
 
+  rust:
+    name: Rust (${{ matrix.toolchain }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: ["stable", "1.85"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de  # master, pinned by commit
+        with:
+          toolchain: ${{ matrix.toolchain }}
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6  # v2.9.2
+        with:
+          workspaces: rust
+
+      # Unit, integration, corpus (one trial per case), thread, proptest and doc tests, README included.
+      - name: Test
+        run: cargo test --locked
+
+  rust-checks:
+    name: Rust checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # cargo-semver-checks and the package checks read the repository's history.
+          fetch-depth: 0
+
+      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de  # master, pinned by commit
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6  # v2.9.2
+        with:
+          workspaces: |
+            rust
+            rust/bench
+
+      - name: Format
+        run: cargo fmt --check
+
+      - name: Lint
+        run: cargo clippy --locked --all-targets -- -D warnings
+
+      - name: Documentation
+        run: |
+          RUSTDOCFLAGS="-D warnings" cargo doc --locked --no-deps
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      # The Unicode tables are generated from .NET itself (research R1); they must not drift.
+      - name: Regenerate the Unicode tables
+        run: |
+          dotnet run tools/gen_tables.cs -- src/tables.rs
+          git diff --exit-code src/tables.rs
+
+      # SC-007: 100,000 arbitrary strings and 100,000 arbitrary byte sequences.
+      - name: No-panic property test (full count)
+        env:
+          PROPTEST_CASES: "100000"
+        run: cargo test --locked --release --test no_panic
+
+      - name: Package checks
+        run: |
+          scripts/prepare-package.sh
+          scripts/check-package.sh
+
+      # Before the first release crates.io has no crate, so there is no baseline to compare with.
+      - name: Is there a published version to compare with?
+        id: baseline
+        run: |
+          STATUS="$(curl -s -o /dev/null -w '%{http_code}' -A "PersianTextGuard CI (https://github.com/AmirehsanK/PersianTextGuard)" https://crates.io/api/v1/crates/persian-text-guard)"
+          if [ "$STATUS" = "404" ]; then
+            echo "baseline: no previous release"
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "baseline: the newest persian-text-guard on crates.io (HTTP $STATUS)"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: API compatibility with the previous release
+        if: steps.baseline.outputs.exists == 'true'
+        uses: obi1kenobi/cargo-semver-checks-action@6b69fcf40e9b5fb17adeb57e4b6ecd020649a239  # v2.9
+        with:
+          package: persian-text-guard
+          manifest-path: rust/Cargo.toml
+
+      - name: Benchmark regression gate
+        run: scripts/bench-gate.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: crate-package
+          path: rust/target/package/*.crate
+
   publish:
     name: Publish to NuGet
-    needs: [build, netfx, javascript, python]
+    needs: [build, netfx, javascript, python, rust, rust-checks]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: nuget
@@ -263,7 +371,7 @@ jobs:
   publish-npm:
     name: Publish to npm
     # Lockstep: no registry publishes unless every job for every port is green.
-    needs: [build, netfx, javascript, python]
+    needs: [build, netfx, javascript, python, rust, rust-checks]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: npm
@@ -304,7 +412,7 @@ jobs:
   publish-pypi:
     name: Publish to PyPI
     # Lockstep: no registry publishes unless every job for every port is green.
-    needs: [build, netfx, javascript, python]
+    needs: [build, netfx, javascript, python, rust, rust-checks]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: pypi
@@ -336,3 +444,62 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
+
+  publish-crates:
+    name: Publish to crates.io
+    # Lockstep: no registry publishes unless every job for every port is green.
+    needs: [build, netfx, javascript, python, rust, rust-checks]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: crates-io
+    permissions:
+      contents: read
+      id-token: write   # crates.io trusted publishing, once the crate exists and it is configured
+    env:
+      # The first release publishes with a short-lived, publish-new-only token in this environment;
+      # later releases have no secret and authenticate through crates-io-auth-action (research R12).
+      HAS_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v5
+
+      # A tag must name the version being released: v1.2.3 only when VERSION says 1.2.3.
+      - name: Check tag matches VERSION
+        run: test "${GITHUB_REF_NAME#v}" = "$(tr -d '[:space:]' < VERSION)" || { echo "Tag $GITHUB_REF_NAME does not match VERSION $(cat VERSION)"; exit 1; }
+
+      - name: Check Cargo.toml matches VERSION
+        run: |
+          V="$(tr -d '[:space:]' < VERSION)"
+          grep -qx "version = \"$V\"" rust/Cargo.toml || { echo "rust/Cargo.toml does not say version = \"$V\"; run rust/scripts/set-version.sh"; exit 1; }
+
+      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de  # master, pinned by commit
+        with:
+          toolchain: stable
+
+      # Re-running this job after a partial release is safe: a version already on crates.io is skipped.
+      - name: Skip if already published
+        id: published
+        run: |
+          V="$(tr -d '[:space:]' < VERSION)"
+          STATUS="$(curl -s -o /dev/null -w '%{http_code}' -A "PersianTextGuard CI (https://github.com/AmirehsanK/PersianTextGuard)" "https://crates.io/api/v1/crates/persian-text-guard/$V")"
+          if [ "$STATUS" = "200" ]; then
+            echo "persian-text-guard $V is already on crates.io"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Copy the word lists, licence and notices into the crate
+        if: steps.published.outputs.exists == 'false'
+        run: rust/scripts/prepare-package.sh
+
+      - name: Authenticate (trusted publishing)
+        id: auth
+        if: steps.published.outputs.exists == 'false' && env.HAS_TOKEN == 'false'
+        uses: rust-lang/crates-io-auth-action@c6f97d42243bad5fab37ca0427f495c86d5b1a18  # v1.0.5
+
+      - name: Publish
+        if: steps.published.outputs.exists == 'false'
+        working-directory: rust
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN || steps.auth.outputs.token }}
+        run: cargo publish --locked

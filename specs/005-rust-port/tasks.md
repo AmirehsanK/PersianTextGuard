@@ -433,7 +433,7 @@ id, file, visible input and differences.
 **Independent Test**: spec US3. Local checks first (T045); the real proof is the CI run and dry run
 (T059–T062).
 
-- [ ] T042 [US3] **Do this after T048 and T052**, whose scripts the jobs run. Add the Rust jobs to
+- [X] T042 [US3] **Do this after T048 and T052**, whose scripts the jobs run. Add the Rust jobs to
   `.github/workflows/ci.yml`, leaving every existing job name unchanged (research R11):
   - **Job `rust`**, `name: Rust (${{ matrix.toolchain }}, ${{ matrix.os }})`, `strategy.fail-fast: false`,
     `matrix.toolchain: ["stable", "1.85"]`, `matrix.os: [ubuntu-latest, windows-latest, macos-latest]`,
@@ -453,7 +453,7 @@ id, file, visible input and differences.
   - Use `run: |` block scalars for any command containing `": "` (003's and 004's lesson), and validate the
     YAML with the scratchpad's `yamlcheck/check.mjs` (strict, unique keys; `npm install yaml@2` there if
     missing).
-- [ ] T043 [US3] Add the crates.io publish job, and gate the others (research R12):
+- [X] T043 [US3] Add the crates.io publish job, and gate the others (research R12):
   - **`publish`, `publish-npm`, `publish-pypi`**: `needs: [build, netfx, javascript, python, rust, rust-checks]`.
   - **New `publish-crates`**, `name: Publish to crates.io`, same `needs` and `if: startsWith(github.ref,
     'refs/tags/v')`, `runs-on: ubuntu-latest`, `environment: crates-io`, `permissions: { contents: read,
@@ -471,21 +471,21 @@ id, file, visible input and differences.
     8. `cargo publish --locked` in `rust/`, with `CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN ||
        steps.auth.outputs.token }}`.
   - Validate the YAML as in T042.
-- [ ] T044 [US3] Move every compatibility baseline to the previous release, 1.4.0 (research R16): in
+- [X] T044 [US3] Move every compatibility baseline to the previous release, 1.4.0 (research R16): in
   `dotnet/src/PersianTextGuard/PersianTextGuard.csproj` set `PackageValidationBaselineVersion` to `1.4.0`
   and run `dotnet pack`; `npm run api:compat` in `js/` names `v1.4.0`; `uv run python scripts/check_api.py`
   in `python/` now finds `v1.4.0` and runs griffe for real: it must pass (the Python API is unchanged).
   Record all three.
-- [ ] T045 [US3] Check the release gates locally (as 004 T045), and record: reading `ci.yml` back, every
+- [X] T045 [US3] Check the release gates locally (as 004 T045), and record: reading `ci.yml` back, every
   publish job needs all six build and test job ids and runs only on `refs/tags/v`; the tag check passes for
   `v$(cat VERSION)` and fails for `v9.9.9`; the Cargo.toml check passes and fails likewise; the "already
   published" step returns 404 for `persian-text-guard/9.9.9` today.
-- [ ] T046 [US3] Set `VERSION` to `1.5.0` and run `rust/scripts/set-version.sh`. Rebuild all four packages and
+- [X] T046 [US3] Set `VERSION` to `1.5.0` and run `rust/scripts/set-version.sh`. Rebuild all four packages and
   confirm the version: `cargo package` gives `persian-text-guard-1.5.0.crate`; `uv build` in `python/` gives
   `persian_text_guard-1.5.0-*`; `npm run pack` in `js/` gives `persian-text-guard-1.5.0.tgz`; `dotnet pack`
   gives `PersianTextGuard.1.5.0.nupkg` with validation passing against 1.4.0. Commit T042–T046 as "Publish
   to crates.io in lockstep; version 1.5.0".
-- [ ] T047 [US3] Create the GitHub environment `crates-io` with `gh api` exactly as `pypi` was created in 004
+- [X] T047 [US3] Create the GitHub environment `crates-io` with `gh api` exactly as `pypi` was created in 004
   (custom deployment policy, one rule `v*` of type `tag`, no secrets), before any push that runs the new
   workflow, and verify it with `gh api .../environments/crates-io/deployment-branch-policies`. Then 👤 tell the
   maintainer the crates.io steps of [contracts/package-and-release.md](contracts/package-and-release.md) →

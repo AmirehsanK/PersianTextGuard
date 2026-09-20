@@ -7,6 +7,6 @@ rust-version = "1.85"
 publish = false
 
 [dependencies]
-persian-text-guard = { path = "../target/package/persian-text-guard-1.4.0" }
+persian-text-guard = { path = "../target/package/persian-text-guard-1.5.0" }
 
 [workspace]

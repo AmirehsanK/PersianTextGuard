@@ -1,0 +1,18 @@
+# The benchmarks live in their own unpublished package: Criterion 0.8 needs Rust 1.86, one release above
+# the crate's minimum of 1.85, so it must not be a dev-dependency of the crate (research R9).
+[package]
+name = "persian-text-guard-bench"
+version = "0.0.0"   # unpublished; the crate's version is in ../Cargo.toml
+edition = "2024"
+publish = false
+
+[dependencies]
+persian-text-guard = { path = ".." }
+criterion = "0.7"
+serde_json = "1"
+
+[[bench]]
+name = "filter"
+harness = false
+
+[workspace]
