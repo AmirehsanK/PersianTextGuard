@@ -579,7 +579,7 @@ with the maintainer's go-ahead.
   regeneration diff, and the package and consumer checks. Record every count under "Full matrix".
 - [X] T058 Walk through [quickstart.md](quickstart.md) §1–§6 and §8, ticking each expected outcome in
   `verification.md` with the task that produced it. §7 is completed by T059–T068.
-- [ ] T059 Push `005-rust-port` (no pull request yet) and run CI on it with `gh workflow run ci.yml --ref
+- [X] T059 Push `005-rust-port` (no pull request yet) and run CI on it with `gh workflow run ci.yml --ref
   005-rust-port` **before any tag** (004's lesson: the first run found two workflow errors). Fix and re-run
   until every job is green on Linux, Windows and macOS; record each run. Then prepare the dry run as 004
   T059, with these changes:
@@ -594,11 +594,11 @@ with the maintainer's go-ahead.
      prints nothing, and neither `grep -n "npm publish" … | grep -v -- --dry-run` nor `grep -n "cargo publish" …
      | grep -v -- --dry-run` prints anything. Validate the YAML. Stop if anything fails.
   5. Commit as "DRY RUN ONLY: release gate test (do not merge)" and push the branch.
-- [ ] T060 Dry run 1, a failing Rust job blocks all four registries: tag and push `v1.5.0-dev.1`; wait with
+- [X] T060 Dry run 1, a failing Rust job blocks all four registries: tag and push `v1.5.0-dev.1`; wait with
   `gh run watch`; with `gh run view <id> --json jobs` confirm: all six `Rust (…)` jobs `failure`, the other
   build and test jobs `success`, and `Publish to NuGet`, `Publish to npm`, `Publish to PyPI` and `Publish to
   crates.io` `skipped`. If a publish job ran, stop, delete the tag, and report.
-- [ ] T061 Dry runs 2 and 3:
+- [X] T061 Dry runs 2 and 3:
   1. **Run 2, everything green.** Remove the failure step, `VERSION` → `1.5.0-dev.2`, `set-version.sh`, safety
      check, commit, push, tag and push `v1.5.0-dev.2`. Every job succeeds; NuGet lists
      `PersianTextGuard.1.5.0-dev.2.nupkg`; npm reports `+ persian-text-guard@1.5.0-dev.2` with tag `next`
@@ -607,7 +607,7 @@ with the maintainer's go-ahead.
      deployments to all four environments are recorded.
   2. **Run 3, mismatched tag.** Tag the same commit `v1.5.0-dev.3` and push: all four publish jobs fail at
      "Check tag matches VERSION".
-- [ ] T062 Clean up the dry run: delete the three tags (remote and local) and `dryrun/release-gates` (remote and
+- [X] T062 Clean up the dry run: delete the three tags (remote and local) and `dryrun/release-gates` (remote and
   local); confirm `git ls-remote origin | grep -i -E "dev|dryrun"` prints nothing; npm, NuGet and PyPI list
   no 1.5.0 or dev version; `https://crates.io/api/v1/crates/persian-text-guard` is still 404; on
   `005-rust-port`, `VERSION` is `1.5.0` and `ci.yml` has no `DRY RUN` or `--dry-run`; both environments keep

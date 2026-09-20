@@ -302,3 +302,40 @@ tag (004's lesson).
   `Rust checks` included the .NET 10 table regeneration with no diff, the 100,000-case no-panic property
   test, the package and consumer checks, "baseline: no previous release" for the API check, and the
   benchmark gate.
+
+## SC-009: release gates dry run (T059–T062)
+
+Preconditions: the `crates-io` and `pypi` environments both list one policy, `v*` of type `tag`.
+
+A scratch branch `dryrun/release-gates` changed **only** `.github/workflows/ci.yml` and `VERSION`: the
+NuGet login and push became `ls` and an echo, `npm publish` gained `--dry-run`,
+`pypa/gh-action-pypi-publish` became `ls -l dist/`, the crates.io authentication step was removed and
+`cargo publish` became `--dry-run`. Before each push the safety check ran: no `dotnet nuget push`,
+`NuGet/login`, `gh-action-pypi-publish` or `crates-io-auth-action` anywhere in the file, no `npm publish`
+or `cargo publish` without `--dry-run`, and the YAML validated.
+
+| Run | Tag | Result |
+| --- | --- | --- |
+| 1 | `v1.5.0-dev.1` ([35534761378](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35534761378)) | All six `Rust (…)` jobs **failed** (forced step), every other build and test job passed, and **all four publish jobs were skipped**. |
+| 2 | `v1.5.0-dev.2`, first attempt ([35535150214](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35535150214)) | All 16 build and test jobs passed; NuGet, npm and PyPI succeeded; **`Publish to crates.io` failed** — see below. |
+| 2 | `v1.5.0-dev.2`, after the fix ([35535626774](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35535626774)) | **All 20 jobs succeeded.** |
+| 3 | `v1.5.0-dev.3` on the run-2 commit ([35536086019](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35536086019)) | All four publish jobs **failed at "Check tag matches VERSION"**. |
+
+**What the dry run caught** (the reason for doing it): `cargo publish` refused with "5 files in the
+working directory contain changes that were not yet committed into git: LICENSE,
+THIRD-PARTY-NOTICES.md, wordlists/{english,finglish,persian}.txt". Those are exactly the copies
+`prepare-package.sh` makes and `Cargo.toml`'s `include` list carries; they are git-ignored on purpose
+(FR-005: one copy lives at the repository root). `check-package.sh` already packages with
+`--allow-dirty`, so local checks never saw it. The publish step now runs `cargo publish --locked
+--allow-dirty`, with a comment saying why. Run 2 then packaged and verified `persian-text-guard
+v1.5.0-dev.2`, 25 files, 297.6 KiB (83.4 KiB compressed), and stopped at "aborting upload due to dry run".
+
+Run 2's other stubs: NuGet listed `PersianTextGuard.1.5.0-dev.2.nupkg` and `.snupkg`; npm reported
+`+ persian-text-guard@1.5.0-dev.2` with tag `next`; PyPI listed `persian_text_guard-1.5.0.dev2` (PEP 440)
+files. Deployments were recorded to all four environments: `crates-io`, `npm`, `nuget`, `pypi`.
+
+**Cleanup (T062)**: the three tags and the branch were deleted locally and on the remote;
+`git ls-remote origin | grep -i -E "dev|dryrun"` prints nothing. No registry has 1.5.0 or a dev version:
+crates.io answers 404 for the crate, npm lists no 1.5.0 or dev version, PyPI answers 404 for 1.5.0, and
+NuGet's newest is 1.4.0. On `005-rust-port`, `VERSION` is `1.5.0` and `ci.yml` has no `DRY RUN` or
+`--dry-run`. Both environments keep exactly their `v*` rule.
