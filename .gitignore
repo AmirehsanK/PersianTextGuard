@@ -38,6 +38,9 @@ __pycache__/
 .ruff_cache/
 
 # Rust port (rust/)
+# The Rust benchmark table binary lives in a bin/ directory, which the .NET "bin/" rule ignores.
+!rust/bench/src/bin/
+
 rust/target/
 rust/bench/target/
 rust/consumer/target/
