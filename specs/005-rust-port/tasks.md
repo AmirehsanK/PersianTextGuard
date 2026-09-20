@@ -354,7 +354,7 @@ threads; nothing panics.
 **Independent Test**: spec US2: `cargo test --test corpus` passes every case; a corrupted case reports its
 id, file, visible input and differences.
 
-- [ ] T033 [P] [US2] Create `rust/tests/corpus/load.rs` and `rust/tests/corpus/values.rs` (included from
+- [X] T033 [P] [US2] Create `rust/tests/corpus/load.rs` and `rust/tests/corpus/values.rs` (included from
   `tests/corpus.rs` with `mod corpus;` and `#[path]` as needed), ports of `js/test/corpus/load.ts` and
   `values.ts`, with 004's Python runner as a second reference:
   - `find_repository_root()` walks up from `env!("CARGO_MANIFEST_DIR")` to a directory with `VERSION` and
@@ -367,7 +367,7 @@ id, file, visible input and differences.
   - `code_points_to_bytes(text, start, len)`; `show_invisible` (Cf, Cc, Zl, Zp, whitespace other than
     U+0020, U+FFFD from a replaced surrogate and noncharacters shown as `\u{XXXX}`); `compare(expected,
     actual)` returning `(path, expected, actual)` triples, text compared by built value.
-- [ ] T034 [US2] Create `rust/tests/corpus/evaluate.rs`, a port of `js/test/corpus/evaluate.ts` against the
+- [X] T034 [US2] Create `rust/tests/corpus/evaluate.rs`, a port of `js/test/corpus/evaluate.ts` against the
   public API: one filter per configuration (built once); the `null` Input read as `""` (amended rule);
   matching kinds return `containsProfanity`, `firstMatch`, `matches` and `censored`, where the **expected**
   positions are converted from code points to bytes of the built input before comparing (FR-016, the
@@ -376,14 +376,14 @@ id, file, visible input and differences.
   `mask-validation`: a mask that builds into one `char` is `accepted` exactly when `censor_with("kir", c)` is
   `Ok`; a mask that does not build into one `char` (the lone surrogate) is `accepted: false` (amended
   rule); `check_kind_rules` with .NET's wording.
-- [ ] T035 [US2] Create `rust/tests/corpus.rs` (`harness = false`) with `libtest-mimic`: the corpus loads once;
+- [X] T035 [US2] Create `rust/tests/corpus.rs` (`harness = false`) with `libtest-mimic`: the corpus loads once;
   one `Trial` per case named by its id, whose failure message is `Case '<id>' in <file>: <problem>`, then
   `  input "<show_invisible>"`, then one `  <path>: expected <e> actual <a>` line per difference ("breaks its
   kind rule" for kind-rule violations); plus guard trials: loads, `formatVersion == 1` and a newer version
   refused (a copy in a temp directory), at least 300 cases, unique ids matching
   `^[a-z0-9]+(-[a-z0-9]+)*$`, no pending case (naming the ids and the fill command), every configuration
   exists, and 0 cases not applicable.
-- [ ] T036 [US2] Run `cargo test --locked --test corpus`: every case passes (523 plus the guards).
+- [X] T036 [US2] Run `cargo test --locked --test corpus`: every case passes (523 plus the guards).
   - **Failures**: find the root cause by comparing the Rust module with the TypeScript, the C# and the
     Python port, and fix the port. **Never** edit the corpus to match the port.
   - **Unicode differences**: if a failure is a genuine difference in Unicode data (it can only come from
@@ -391,7 +391,7 @@ id, file, visible input and differences.
 
   Extend `rust/tests/api.rs` with G3 over every matching corpus input (built with the same rules). Record the
   count and time in `verification.md`.
-- [ ] T037 [US2] Create `rust/tests/no_panic.rs` with `proptest` (SC-007, G1, G9): strategies for arbitrary
+- [X] T037 [US2] Create `rust/tests/no_panic.rs` with `proptest` (SC-007, G1, G9): strategies for arbitrary
   `String`s biased toward Persian letters, ZWNJ, digits, symbols, supplementary characters, noncharacters
   and runs of repeats, and for arbitrary `Vec<u8>` (mostly invalid UTF-8); every public text function
   called with the default filter; for bytes, the byte versions agree with the string versions on
@@ -400,7 +400,7 @@ id, file, visible input and differences.
   every matrix job stays quick; the `Rust checks` job (T042) runs `PROPTEST_CASES=100000 cargo test --locked
   --release --test no_panic`, which is SC-007's 100,000 strings and 100,000 byte sequences. Run the full count
   once locally too, and record both run times.
-- [ ] T038 [US2] Create `rust/tests/threads.rs` (SC-008, G6, G7): one filter per corpus configuration, a
+- [X] T038 [US2] Create `rust/tests/threads.rs` (SC-008, G6, G7): one filter per corpus configuration, a
   single-threaded pass over every matching input recording `contains_profanity`, `find_matches` and
   `censor`; 8 threads behind `std::sync::Barrier` (with `std::thread::scope`), each checking every input
   twice and comparing; and 8 threads calling `WordList::all()` and `persian_default()` at the same moment in
@@ -408,15 +408,15 @@ id, file, visible input and differences.
   `std::env::current_exe()` run with the environment variable `PTG_FIRST_USE_CHILD=1` and the arguments
   `first_use_child --exact --nocapture`; the `first_use_child` test does nothing unless that variable is set,
   and then prints `<count> <distinct pointers>` for the parent to check (`8 1`).
-- [ ] T039 [US2] Run the whole suite on stable and 1.85 (`cargo +1.85 test --locked`) on this machine; record
+- [X] T039 [US2] Run the whole suite on stable and 1.85 (`cargo +1.85 test --locked`) on this machine; record
   both versions and pass counts. Linux, macOS and Windows MSVC are covered by CI (T042), which runs before
   the dry run.
-- [ ] T040 [US2] Check failure reporting on scratch edits, reverted afterwards with `git checkout --
+- [X] T040 [US2] Check failure reporting on scratch edits, reverted afterwards with `git checkout --
   conformance`: change `fa-emoji-before-word`'s `censored` to `"😀 ####"` and set
   `matching-persian-ordinary-messages-pass-001`'s `containsProfanity` to `true`; `cargo test --test corpus`
   fails exactly those 2 trials, with the T035 messages; then rename `conformance/` and confirm "Conformance
   corpus not found", and rename it back. Record both outputs.
-- [ ] T041 [US2] Cross-check the bundled selections (FR-018, SC-002, quickstart §3): a `#[test] #[ignore]` in
+- [X] T041 [US2] Cross-check the bundled selections (FR-018, SC-002, quickstart §3): a `#[test] #[ignore]` in
   `rust/tests/api.rs` (run with `--ignored`) writes `artifacts/compare/rust.txt` (`text\tmode\tcategory` per
   entry) and prints the counts JSON; diff with `artifacts/compare/python.txt` and `js.txt` (regenerate them as
   in 004 T041 if missing): 0 differences, same counts. Record, and commit T033–T041 as "Run the conformance

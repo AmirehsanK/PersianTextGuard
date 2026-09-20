@@ -292,3 +292,66 @@ fn censoring_is_always_clean() {
     let censored = filter.censor("k kos i kos r");
     assert!(!filter.contains_profanity(&censored), "{censored}");
 }
+
+#[path = "corpus/load.rs"]
+mod load;
+#[path = "corpus/values.rs"]
+mod values;
+
+#[test]
+fn g3_and_g4_hold_on_every_corpus_input() {
+    let root = load::find_repository_root().unwrap();
+    let corpus = load::load_corpus(&root.join("conformance")).unwrap();
+    let filters = [
+        default_filter(),
+        ProfanityFilter::with_defaults(WordList::all()),
+        ProfanityFilter::new(
+            WordList::persian_default(),
+            ProfanityFilterOptions::default().fold_lookalike_characters(false),
+        ),
+    ];
+
+    let mut checked = 0;
+    for case in corpus
+        .cases
+        .iter()
+        .filter(|case| load::MATCHING_KINDS.contains(&case.kind.as_str()))
+    {
+        // Built with the runner's rules: lone surrogates as U+FFFD, null as "".
+        let text = values::build_text(case.json.get("input").unwrap_or(&serde_json::Value::Null));
+        for filter in &filters {
+            assert_consistent(filter, &text);
+        }
+        checked += 1;
+    }
+
+    assert!(checked >= 300, "only {checked} matching inputs");
+}
+
+/// Quickstart §3 (FR-018, SC-002): dumps every bundled entry as `text\tmode\tcategory` to
+/// `artifacts/compare/rust.txt` and prints the counts, to diff with the Python and JavaScript dumps.
+/// Run with `cargo test --test api -- --ignored`.
+#[test]
+#[ignore = "writes artifacts/compare/rust.txt for the cross-port comparison"]
+fn dump_bundled_entries_for_comparison() {
+    let root = load::find_repository_root().unwrap();
+    let directory = root.join("artifacts").join("compare");
+    std::fs::create_dir_all(&directory).unwrap();
+
+    let dump: String = WordList::all()
+        .iter()
+        .map(|word| format!("{}\t{}\t{}\n", word.text, word.mode, word.category))
+        .collect();
+    std::fs::write(directory.join("rust.txt"), dump).unwrap();
+
+    let categories: Vec<String> = WordCategory::ALL
+        .iter()
+        .map(|&category| format!("\"{category}\": {}", WordList::bundled(&[category]).len()))
+        .collect();
+    println!(
+        "{{\"all\": {}, \"default\": {}, \"categories\": {{{}}}}}",
+        WordList::all().len(),
+        WordList::persian_default().len(),
+        categories.join(", ")
+    );
+}

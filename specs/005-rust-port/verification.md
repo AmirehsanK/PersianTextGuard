@@ -84,3 +84,48 @@ existing runners after the change: .NET conformance 532 × 3 (`net10.0`, `net8.0
   5. `consumer/` built against `target/package/persian-text-guard-1.4.0` and printed `ok`.
 - `scripts/set-version.sh` self-check repeated with `consumer/` present: "no change"; a hand-edited
   `0.0.1` fails the build; the script restores 1.4.0 in `Cargo.toml` and both lock files.
+
+## US2: the conformance corpus (T033–T041)
+
+- `cargo test --locked --test corpus`: **531 trials passed, 0 failed** — 523 cases and 8 guard trials
+  (loads; `formatVersion` is 1; a copy with `formatVersion` 2 in a temporary directory is refused; at
+  least 300 cases; unique ids matching `^[a-z0-9]+(-[a-z0-9]+)*$`; no pending case; every configuration
+  exists and builds; **0 cases not applicable**). Every case passed on the first run, on stable and on
+  1.85; no port change was needed, and no corpus case was touched. 1.10 s in debug, 0.12 s in release.
+- Positions: the port reports bytes; each case's recorded code-point positions are converted to bytes of
+  the built input before comparing (amended obligation 5). Lone surrogates are read as U+FFFD and `null`
+  as `""` (amended obligation 3); `mask-lone-high-surrogate` is `accepted: false` because the units do not
+  build into one `char`.
+- `tests/api.rs` extends G3 and G4 to **every matching corpus input** (523 inputs × 3 filter
+  configurations).
+- `tests/no_panic.rs` (proptest): 2,000 cases per strategy by default (4 s). SC-007's full run,
+  `PROPTEST_CASES=100000 cargo test --locked --release --test no_panic`: **100,000 strings and 100,000
+  byte sequences, 17.4 s**, no panic; the byte versions agreed with the string versions on
+  `String::from_utf8_lossy` throughout, and every region was inside its input.
+- `tests/threads.rs` (SC-008): one filter per configuration, 8 threads behind a `Barrier`, each checking
+  every matching input twice — identical answers to the single-threaded pass; a filter shared through an
+  `Arc`; and, in a fresh process, 8 threads using the bundled lists for the first time at the same moment
+  printed `FIRST-USE 8 1`: one slice for all of them.
+- Whole suite (T039): **645 tests** on stable 1.98.1 and on 1.85.1 — 45 unit, 18 api, 4 bytes, 531 corpus,
+  3 no-panic, 4 threads, 5 word-list-load, 35 doc tests.
+- Failure reporting (T040), on scratch edits reverted afterwards with `git checkout -- conformance`:
+
+  ```text
+  ---- matching-persian-ordinary-messages-pass-001 ----
+  Case 'matching-persian-ordinary-messages-pass-001' in matching-persian.json: breaks its kind rule
+    input "هر کس پلات بالاست پیام بده"
+    ordinary requires containsProfanity to be false
+
+  ---- fa-emoji-before-word ----
+  Case 'fa-emoji-before-word' in matching-persian.json: 1 field(s) differ
+    input "😀 کیر"
+    expected.censored: expected "😀 ####" actual "😀 ****"
+  ```
+
+  Exactly those 2 trials failed (529 passed). With `conformance/` renamed away, one trial failed with
+  "Conformance corpus not found: D:\Git\PersianTextGuard\conformance". Both were restored.
+- Bundled selections (T041, FR-018, SC-002): `cargo test --test api -- --ignored` wrote
+  `artifacts/compare/rust.txt` (1,250 lines) and printed
+  `{"all": 1250, "default": 1025, "categories": {"uncategorized": 0, "profanity": 93, "sexual": 353,
+  "insult": 400, "slur": 146, "harassment": 33, "mild": 225}}`. `git diff --no-index` against
+  `python.txt` and `js.txt`: **0 differences** with either.
