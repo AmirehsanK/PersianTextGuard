@@ -339,3 +339,19 @@ files. Deployments were recorded to all four environments: `crates-io`, `npm`, `
 crates.io answers 404 for the crate, npm lists no 1.5.0 or dev version, PyPI answers 404 for 1.5.0, and
 NuGet's newest is 1.4.0. On `005-rust-port`, `VERSION` is `1.5.0` and `ci.yml` has no `DRY RUN` or
 `--dry-run`. Both environments keep exactly their `v*` rule.
+
+## Pull request (T063)
+
+[Pull request #6](https://github.com/AmirehsanK/PersianTextGuard/pull/6), "Rust port on crates.io, corpus
+runner amendment, version 1.5.0", from `005-rust-port` into `main`, mergeable, with the summary, the
+crate, the byte versions, the runner amendment, CI and release, the dry run, and links to the spec,
+verification and release notes.
+
+CI on the pull request
+([35536881060](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35536881060)):
+**16 build and test jobs succeeded and the 4 publish jobs were skipped**, as required.
+
+**Stopped here on purpose.** T064 (merge), T065 (adding the seven Rust job names to `main`'s required
+checks), T066 (the irreversible `v1.5.0` tag, which also needs the maintainer's crates.io token in the
+`crates-io` environment), T067 (verifying the four registries) and T068 (revoking the token, trusted
+publishing, the GitHub release) each need the maintainer's decision.
