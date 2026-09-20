@@ -170,3 +170,71 @@ existing runners after the change: .NET conformance 532 × 3 (`net10.0`, `net8.0
   deployment branch policy with one rule, `v*` of type `tag`, and no secrets
   (`deployment-branch-policies` → `{"name": "v*", "type": "tag"}`, `secrets.total_count` 0). The
   repository now has `crates-io`, `npm`, `nuget` and `pypi`.
+
+## US4: documentation, benchmarks and API compatibility (T048–T056)
+
+- **Benchmarks (T048, T050)**: `rust/bench/` is a separate, unpublished package with the same ten
+  operations and message constants as the .NET, JavaScript and Python benchmarks (copied verbatim from
+  `js/bench/filter.bench.ts`), plus `src/bin/bench_table.rs` and `scripts/bench-gate.sh`.
+  Measured with `cargo bench` on the maintainer's machine (confirmed `Intel(R) Core(TM) i7-9700K CPU @
+  3.60GHz` with `Get-CimInstance Win32_Processor`), rustc 1.98.1, release:
+
+  | Operation | Mean | Operations/s |
+  | --- | ---: | ---: |
+  | Short clean message (5 words) | 3.8 µs | 262,929 |
+  | Long clean message (60 words) | 41.4 µs | 24,145 |
+  | Message with evasions | 3.6 µs | 280,985 |
+  | Normalize a long message | 11.7 µs | 85,746 |
+  | Build a filter from the bundled list | 1.4 ms | 734 |
+  | `find_matches`, clean short message | 3.8 µs | 266,191 |
+  | `find_matches`, message with three banned words | 9.3 µs | 107,110 |
+  | `censor`, short message with one banned word | 5.5 µs | 182,664 |
+  | `censor`, 60-word message with three banned words | 168 µs | 5,957 |
+  | A 132,000-character message | 7.5 ms | 134 |
+
+  **SC-005 is met with room to spare**: build 1.4 ms (target under 5 ms), short clean message 3.8 µs
+  (under 5 µs), 132,000-character message 7.5 ms (under 50 ms). No optimisation pass was needed.
+  `scripts/bench-gate.sh` passes at the CI limit (50 µs) and at SC-005's own limit
+  (`scripts/bench-gate.sh 5`: "mean 3.9 µs (limit 5 µs) ok").
+
+  **Deviation from research R9**: the package pins **criterion 0.7**, not 0.8. Criterion 0.8 depends on
+  `alloca`, which compiles C, and this machine has no C toolchain (the GNU Rust host ships a linker
+  driver only), so 0.8 cannot run the benchmarks here at all. 0.7 has no C dependency, runs the same ten
+  benchmarks and writes the same `estimates.json`. The package stays separate from the crate either way,
+  as the contract's layout says.
+- **README (T049, T051)**: `rust/README.md` is the crates.io and docs.rs front page: installation, quick
+  start, what matched and why, byte positions and slicing, censoring and masks, categories, your own
+  words, word-list files, options, normalizing and tokenizing, byte versions, matching on
+  `#[non_exhaustive]` enums, threads, the errors table, the four-language name table, the performance
+  table, limitations, links, and a Persian section whose paragraphs are each in their own
+  `<div dir="rtl">`. **14 `rust` blocks**, every one a doc test. `cargo test --locked --doc`: **48 passed**
+  (the 14 README blocks and 34 public-item examples) on stable and on 1.85.
+- **Documentation (T053)**: `RUSTDOCFLAGS="-D warnings -D missing_docs" cargo doc --locked --no-deps`
+  passes. The generated pages for `ProfanityFilter::censor_with`, `find_matches_bytes` and
+  `WordList::load_reader` explain the edge cases, not just the signatures: the mask rules and that the
+  mask is "checked before the text"; that invalid sequences "are read as U+FFFD", that a region "covers
+  the whole sequence" and "never ends inside a valid character"; and the byte-order mark, `NotFound`,
+  `InvalidUtf8` and `valid_up_to`.
+- **API check (T052)**: `rust/scripts/check-api.sh` asks crates.io and prints "baseline: no previous
+  release (crates.io has no persian-text-guard yet)" today; CI does the same and only then runs
+  `cargo-semver-checks`. **Proof**, on two throwaway commits reverted afterwards with `git reset HEAD~1`
+  and `git checkout`:
+  - changing `censor` to take `String` is **not** caught — cargo-semver-checks 0.50 has no lint for a
+    changed parameter type (223 checks, 223 pass). Worth knowing: the check is not a complete guard.
+  - removing `ProfanityFilter::censor_bytes_with` **is** caught, and named:
+    "failure inherent_method_missing: pub method removed or renamed … Failed in:
+    ProfanityFilter::censor_bytes_with", "Summary semver requires new major version: 1 major and 0 minor
+    checks failed", exit code 100.
+
+  `cargo-semver-checks` cannot be built on this machine (its `ring` dependency needs a C compiler), so
+  the proof used the official prebuilt release binary, v0.50.0, the same artifact the CI action uses.
+- **Root README (T054)**: crates.io is listed beside NuGet, npm and PyPI with `cargo add
+  persian-text-guard` and a Rust example; the layout shows `rust/`; "Development" gains the Rust command
+  table; "Releasing" covers crates.io, the `crates-io` environment and the first-release token;
+  "Limitations" gains the Rust Unicode note; and a "Changes in 1.5.0" section was added. The root
+  README's Python example is still tested: `uv run pytest tests/test_readme.py` — 17 passed.
+- **Release notes (T055)**: `specs/005-rust-port/release-notes-1.5.0.md`, English with a Persian summary
+  in `<div dir="rtl">` blocks.
+- **T056**: `cargo fmt --check`, `cargo clippy --locked --all-targets -- -D warnings`, `cargo doc` with
+  warnings denied, `cargo test --locked` (8 test binaries green) on stable and 1.85, the package checks,
+  the API check, the benchmark gate, and `uv run pytest tests/test_readme.py` in `python/` — all pass.

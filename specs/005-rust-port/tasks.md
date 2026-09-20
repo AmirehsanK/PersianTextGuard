@@ -502,7 +502,7 @@ id, file, visible input and differences.
 **Independent Test**: spec US4: `cargo doc` with warnings denied passes; the benchmarks match the README
 table; `cargo-semver-checks` catches a changed signature.
 
-- [ ] T048 [P] [US4] Create `rust/bench/` (`persian-text-guard-bench`, `publish = false`, not a workspace
+- [X] T048 [P] [US4] Create `rust/bench/` (`persian-text-guard-bench`, `publish = false`, not a workspace
   member, its own committed `Cargo.lock`, kept in step by `set-version.sh` (T007); `criterion = "0.8"` and
   `persian-text-guard = { path = ".." }`):
   `benches/filter.rs` with the ten benchmarks and message constants copied verbatim from
@@ -514,7 +514,7 @@ table; `cargo-semver-checks` catches a changed signature.
   --release --bin bench_table -- --gate CleanShortMessage --limit-us 50`, which reads that benchmark's
   `estimates.json` and exits non-zero when the mean exceeds the limit (50 µs, the CI gate; `--limit-us 5`
   applies SC-005).
-- [ ] T049 [US4] Write the full `rust/README.md` (FR-024, research R13), every code block a `rust` doc test:
+- [X] T049 [US4] Write the full `rust/README.md` (FR-024, research R13), every code block a `rust` doc test:
   - title `# persian-text-guard`, a one-line English description, badges-free;
   - **English**: installation (`cargo add persian-text-guard`, minimum Rust 1.85); the quick start; what
     matched and why; positions in bytes and slicing; censoring and masks (`censor`, `censor_with`); categories;
@@ -526,18 +526,18 @@ table; `cargo-semver-checks` catches a changed signature.
     characters; no `no_std`); links (project README, docs.rs, the other packages);
   - **Persian**: installation and quick start, each paragraph in its own `<div dir="rtl">` block starting and
     ending with a Persian word, code in separate blocks with comments in both languages (004 R16).
-- [ ] T050 [US4] Run the benchmarks on this machine (confirm the i7-9700K with `Get-CimInstance
+- [X] T050 [US4] Run the benchmarks on this machine (confirm the i7-9700K with `Get-CimInstance
   Win32_Processor`; stop if it differs) with stable Rust: `cd rust/bench && cargo bench`, then `cargo run
   --release --bin bench_table`. Check SC-005: build under 5 ms, `CleanShortMessage` under 5 µs,
   `VeryLongMessage` under 50 ms. If one is missed, profile (`cargo bench` with `--profile-time`, or
   counting allocations) and optimise the hot path before continuing; do not weaken a target without the
   maintainer. Put the table in `rust/README.md` and `verification.md`.
-- [ ] T051 [US4] Confirm the README examples are doc tests: `cargo test --locked --doc` lists one test for every
+- [X] T051 [US4] Confirm the README examples are doc tests: `cargo test --locked --doc` lists one test for every
   `rust` block in `rust/README.md` (count them with `grep -c '^```rust' rust/README.md`; T049's outline gives
   at least 14: quick start, what matched, positions, censoring, categories, own words, word-list files,
   options, normalization, byte versions, non-exhaustive matching, threads, and the Persian quick start and
   censoring), plus one per public type's example, and all pass on stable and 1.85. Record both counts.
-- [ ] T052 [US4] Add the API check (research R10): a CI step in `rust-checks` that queries
+- [X] T052 [US4] Add the API check (research R10): a CI step in `rust-checks` that queries
   `https://crates.io/api/v1/crates/persian-text-guard` and, on 404, prints "baseline: no previous release"
   and passes; otherwise runs `obi1kenobi/cargo-semver-checks-action` (pinned by commit, `package:
   persian-text-guard`, `manifest-path: rust/Cargo.toml`). Put the decision in `rust/scripts/check-api.sh`
@@ -545,21 +545,21 @@ table; `cargo-semver-checks` catches a changed signature.
   --locked`). **Prove it** (quickstart §5): on a throwaway commit change `censor` to take `String`, run
   `cargo semver-checks --baseline-rev HEAD~1`, confirm it fails and names the change, then `git reset HEAD~1`
   and `git checkout -- rust/src`. Record the output.
-- [ ] T053 [US4] Check the documentation (FR-023, SC-006): `RUSTDOCFLAGS="-D warnings -D missing_docs" cargo
+- [X] T053 [US4] Check the documentation (FR-023, SC-006): `RUSTDOCFLAGS="-D warnings -D missing_docs" cargo
   doc --locked --no-deps` passes; read the generated pages for `ProfanityFilter::censor_with`,
   `ProfanityFilter::find_matches_bytes` and `WordList::load_reader`, and confirm they explain the edge cases
   (mask rules, byte positions, invalid sequences, BOM), not only the signatures.
-- [ ] T054 [US4] Update the root `README.md` (FR-025): the packages section lists crates.io next to NuGet,
+- [X] T054 [US4] Update the root `README.md` (FR-025): the packages section lists crates.io next to NuGet,
   npm and PyPI, with `cargo add persian-text-guard` and a short Rust example; "Changes in 1.5.0" (Rust added;
   corpus runner rules amended; .NET, JavaScript and Python unchanged); "Development" shows `rust/` and its
   commands; "Releasing" adds crates.io, the `crates-io` environment and the first-release token; "Limitations"
   gains the Rust note (R1). The root README has no Rust doc tests; its Python example stays tested by
   `python/tests/test_readme.py` (re-run it).
-- [ ] T055 [US4] Draft `specs/005-rust-port/release-notes-1.5.0.md` in English with a Persian summary in
+- [X] T055 [US4] Draft `specs/005-rust-port/release-notes-1.5.0.md` in English with a Persian summary in
   `<div dir="rtl">` blocks (as 1.4.0's): the Rust crate with install and quick start; the byte versions; the
   corpus runner amendment (no case changed); NuGet, npm and PyPI 1.5.0 identical to 1.4.0 apart from the
   version; every package now validated against 1.4.0.
-- [ ] T056 [US4] Run the lint command, `cargo test --locked` (stable and 1.85), the package and API checks,
+- [X] T056 [US4] Run the lint command, `cargo test --locked` (stable and 1.85), the package and API checks,
   the benchmark gate, and in `python/` `uv run pytest tests/test_readme.py`. Everything passes. Commit
   T048–T056 as "Document, benchmark and API-check the Rust port".
 
