@@ -283,3 +283,22 @@ which is outside those paths and stayed untouched). From the empty state:
 All are characters assigned in Unicode 16 or 17, none is in the corpus, and they are documented as a
 limitation in `rust/README.md` and the root README, as research R1 planned. No new difference appeared,
 so no corpus case was needed.
+
+## CI on the branch (T059, first part)
+
+`005-rust-port` was pushed and CI run on it with `gh workflow run ci.yml --ref 005-rust-port`, before any
+tag (004's lesson).
+
+- **Run [35529689145](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35529689145)**: all six
+  `Rust (…)` matrix jobs passed on `ubuntu-latest`, `windows-latest` (the MSVC target) and `macos-latest`,
+  on stable and 1.85, and every existing job passed. **`Rust checks` failed**: `scripts/bench-gate.sh:
+  Permission denied` (exit 126) — Git for Windows does not record the executable bit, so the two newest
+  scripts were committed as mode 644. Fixed with `git update-index --chmod=+x` on
+  `rust/scripts/bench-gate.sh` and `rust/scripts/check-api.sh` (the three older scripts already had it).
+- **Run [35530073069](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35530073069)**:
+  **all 16 build and test jobs green** — `Build, test, pack`, `Test on .NET Framework 4.8`,
+  `JavaScript (Node 22|24)`, `Python (3.11|3.12|3.13|3.14|3.14t)`, `Rust (stable|1.85, ubuntu|windows|
+  macos)` and `Rust checks` — and all four publish jobs **skipped**, since the run was not on a tag.
+  `Rust checks` included the .NET 10 table regeneration with no diff, the 100,000-case no-panic property
+  test, the package and consumer checks, "baseline: no previous release" for the API check, and the
+  benchmark gate.
