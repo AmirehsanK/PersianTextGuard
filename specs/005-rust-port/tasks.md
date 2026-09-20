@@ -612,7 +612,7 @@ with the maintainer's go-ahead.
   no 1.5.0 or dev version; `https://crates.io/api/v1/crates/persian-text-guard` is still 404; on
   `005-rust-port`, `VERSION` is `1.5.0` and `ci.yml` has no `DRY RUN` or `--dry-run`; both environments keep
   exactly their `v*` rule. Record under "SC-009: release gates dry run".
-- [ ] T063 Commit `verification.md` and push. Open the pull request with `gh pr create`: title "Rust port on
+- [X] T063 Commit `verification.md` and push. Open the pull request with `gh pr create`: title "Rust port on
   crates.io, corpus runner amendment, version 1.5.0"; body: summary, the crate, the byte versions, the
   runner amendment, CI and release, the dry run, links to spec, verification and release notes, ending with
   the Claude Code attribution line. Wait for CI: all sixteen build and test jobs pass (.NET ×2, JavaScript
