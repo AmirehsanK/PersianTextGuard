@@ -572,12 +572,12 @@ table; `cargo-semver-checks` catches a changed signature.
 **Purpose**: Prove everything from a clean state, prove CI and the release gates on GitHub, then release
 with the maintainer's go-ahead.
 
-- [ ] T057 Run the full matrix from a clean state: `git clean -xdn rust js/dist python` first (never
+- [X] T057 Run the full matrix from a clean state: `git clean -xdn rust js/dist python` first (never
   `graphify-out/`), then `git clean -xdf` of the same paths; .NET tests and conformance on three targets;
   `npm ci && npm run test:all` in `js/`; `uv sync --locked --group package` and the five-Python run of 004
   T057; in `rust/`: `cargo +stable test --locked`, `cargo +1.85 test --locked`, the lint command, the table
   regeneration diff, and the package and consumer checks. Record every count under "Full matrix".
-- [ ] T058 Walk through [quickstart.md](quickstart.md) §1–§6 and §8, ticking each expected outcome in
+- [X] T058 Walk through [quickstart.md](quickstart.md) §1–§6 and §8, ticking each expected outcome in
   `verification.md` with the task that produced it. §7 is completed by T059–T068.
 - [ ] T059 Push `005-rust-port` (no pull request yet) and run CI on it with `gh workflow run ci.yml --ref
   005-rust-port` **before any tag** (004's lesson: the first run found two workflow errors). Fix and re-run

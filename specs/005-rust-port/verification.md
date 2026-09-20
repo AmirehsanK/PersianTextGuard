@@ -238,3 +238,48 @@ existing runners after the change: .NET conformance 532 × 3 (`net10.0`, `net8.0
 - **T056**: `cargo fmt --check`, `cargo clippy --locked --all-targets -- -D warnings`, `cargo doc` with
   warnings denied, `cargo test --locked` (8 test binaries green) on stable and 1.85, the package checks,
   the API check, the benchmark gate, and `uv run pytest tests/test_readme.py` in `python/` — all pass.
+
+## Full matrix from a clean state (T057)
+
+`git clean -xdn rust js/dist python` was read first and then run with `-xdf` (never `graphify-out/`,
+which is outside those paths and stayed untouched). From the empty state:
+
+- .NET: `PersianTextGuard.Tests` 1,029 × 3 (`net8.0`, `net10.0`, `net48`); `PersianTextGuard.Conformance`
+  532 × 3.
+- JavaScript: `npm ci && npm run test:all` — 675 passed (5 files).
+- Python: `uv sync --locked --group package`, then **727 passed on each of 3.11, 3.12, 3.13, `3.14+gil`
+  and, with `PYTHON_GIL=0`, 3.14t**.
+- Rust: `cargo +stable test --locked` and `cargo +1.85 test --locked` — 8 test binaries green on each
+  (45 unit, 18 api + 1 ignored, 4 bytes, 531 corpus, 3 no-panic, 4 threads, 5 word-list-load, 48 doc).
+- Rust lint: `cargo fmt --check`, `cargo clippy --locked --all-targets -- -D warnings`, `cargo doc` with
+  warnings denied — clean. Table regeneration: 4,099 runs and 1,172 pairs, `git diff --exit-code
+  src/tables.rs` clean.
+- Package and consumer checks: all pass; the consumer printed `ok`.
+
+## Quickstart walk-through (T058)
+
+| Section | Outcome | Task |
+| --- | --- | --- |
+| §1 Build and test everything | fmt, clippy, docs, `cargo test` and `cargo +1.85 test` all clean; 523 corpus cases plus guards, 0 not applicable | T020, T036, T039, T057 |
+| §2 The Unicode tables are exactly .NET's | regeneration leaves `src/tables.rs` unchanged | T010, T057 |
+| §3 Same entries as the other ports | 1,250 entries, 1,025 in the default selection, identical per-category counts, 0 differences with `python.txt` and `js.txt` | T041 |
+| §4 The crate as users get it | 25 files, 85,563 bytes, builds on its own, consumer prints `ok` | T031, T032, T046 |
+| §5 API compatibility detects a break | "baseline: no previous release" today; removing a public method is caught and named (`inherent_method_missing`) | T052 |
+| §6 Performance | build 1.4 ms, `CleanShortMessage` 3.8 µs, `VeryLongMessage` 7.5 ms on the i7-9700K — every SC-005 target met | T050 |
+| §7 Release checks | T059–T068 | — |
+| §8 Re-running the Unicode comparison | re-run below | T057 |
+
+**§8, the Unicode comparison re-run** (`specs/005-rust-port/tools/rust-dump` against 004's `dump.cs`,
+.NET 10.0.11; Rust `std` and `unicode-normalization` both on Unicode 17.0):
+
+- whitespace: **0 differences** on all 65,536 units, with `char::is_whitespace` and with .NET's set;
+- one-unit lower-casing: **8 differences** — U+1C89, U+A7CB, U+A7CC, U+A7CE, U+A7D2, U+A7D4, U+A7DA,
+  U+A7DC — exactly the Unicode 16/17 case pairs research R1 found, and exactly what the generated
+  `LOWER` table removes, so the crate itself has none;
+- NFKC: **37 differences** — U+A7F1 and U+1CCD6–U+1CCF9;
+- NFD: **20 differences** — U+105C9, U+105E4, U+11383, U+11385, U+1138E, U+11391, U+113C5, U+113C7,
+  U+113C8, U+16121–U+16128, U+16D68–U+16D6A.
+
+All are characters assigned in Unicode 16 or 17, none is in the corpus, and they are documented as a
+limitation in `rust/README.md` and the root README, as research R1 planned. No new difference appeared,
+so no corpus case was needed.
