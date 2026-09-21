@@ -355,3 +355,31 @@ CI on the pull request
 checks), T066 (the irreversible `v1.5.0` tag, which also needs the maintainer's crates.io token in the
 `crates-io` environment), T067 (verifying the four registries) and T068 (revoking the token, trusted
 publishing, the GitHub release) each need the maintainer's decision.
+
+## Merge and required checks (T064, T065)
+
+- **T064**: pull request #6 merged into `main` as `ae97f80` ("Rust port on crates.io, corpus runner
+  amendment, version 1.5.0 (#6)"), and local `main` fast-forwarded. CI on `main`
+  ([35578490383](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35578490383)): **16 build
+  and test jobs succeeded, the 4 publish jobs skipped** (the push was not a tag).
+- **T065**: `main`'s required status checks now list **sixteen** contexts — the nine that were there
+  plus `Rust (stable|1.85, ubuntu|windows|macos)` and `Rust checks` — all with `app_id` 15368 and
+  `strict: false`.
+
+## Release preconditions for T066
+
+| Precondition | State |
+| --- | --- |
+| `main` is green | ✅ run 35578490383 |
+| `VERSION` is 1.5.0 | ✅ |
+| `rust/Cargo.toml` is 1.5.0 | ✅ |
+| `crates-io` environment limited to tag `v*` | ✅ |
+| `pypi` environment still limited to tag `v*` | ✅ |
+| CPython 3.15 final released? (would need a matrix pull request first) | ✅ not yet: `uv python list 3.15` shows only `cpython-3.15.0rc2`, a release candidate |
+| No registry has 1.5.0 | ✅ crates.io 404, npm none, PyPI 404, NuGet newest 1.4.0 |
+| 👤 `CARGO_REGISTRY_TOKEN` in the `crates-io` environment | ❌ **missing** — `secrets.total_count` is 0 |
+
+The tag waits on the last one: a crates.io token with the **publish-new** scope only, restricted to
+`persian-text-guard` and expiring within 7 days, stored as the `crates-io` environment secret
+`CARGO_REGISTRY_TOKEN`. Without it the publish job would try trusted publishing, which crates.io only
+allows on a crate that already exists, so the first release would fail.

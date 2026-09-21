@@ -618,9 +618,9 @@ with the maintainer's go-ahead.
   the Claude Code attribution line. Wait for CI: all sixteen build and test jobs pass (.NET ×2, JavaScript
   ×2, Python ×5, Rust ×7) and the four publish jobs are skipped. **Do not merge without the maintainer's
   go-ahead.**
-- [ ] T064 After the maintainer approves, `gh pr merge <n> --merge`, fast-forward local `main`, and confirm
+- [X] T064 After the maintainer approves, `gh pr merge <n> --merge`, fast-forward local `main`, and confirm
   `main`'s CI is green.
-- [ ] T065 Add the seven Rust job names to `main`'s required checks with `gh api -X PATCH
+- [X] T065 Add the seven Rust job names to `main`'s required checks with `gh api -X PATCH
   repos/AmirehsanK/PersianTextGuard/branches/main/protection/required_status_checks`, keeping the nine
   existing ones, `strict: false`, `app_id` 15368 (sixteen in all). Ask the maintainer first unless they have
   already approved the release steps.
