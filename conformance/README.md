@@ -130,6 +130,14 @@ UTF-16 code unit, which may be a lone surrogate). `null` as an input means the l
 value. Output text (`censored`, `censoredWith`, `output`, `tokens`) may also be a `build` object; it
 is compared by the text it builds.
 
+Runners build each Input as described. A port whose strings cannot hold a lone surrogate builds the
+Input as UTF-16 units and replaces each lone surrogate with U+FFFD, in the Input and in every text value
+of `expected`; a mask that does not build into one character of the port counts as refused. A port with
+no missing string value reads a `null` Input as the empty string. Any other part the port's language
+cannot represent makes the case **not applicable**, reported by id: listed in the run output, never
+silently skipped. A lone surrogate replaced this way still counts as one code point. (These readings
+were added by spec 005 for Rust; the full rules are the contract's "Runner obligations".)
+
 ### The other kinds
 
 ```json

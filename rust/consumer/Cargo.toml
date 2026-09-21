@@ -1,0 +1,12 @@
+# Written by scripts/check-package.sh: the dependency is the unpacked .crate of the current version.
+[package]
+name = "persian-text-guard-consumer"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+
+[dependencies]
+persian-text-guard = { path = "../target/package/persian-text-guard-1.5.0" }
+
+[workspace]

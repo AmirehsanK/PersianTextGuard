@@ -1,0 +1,23 @@
+# unwrap and expect are warned in src/ (no panics on input) and allowed in tests.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+
+# Every Unicode-dependent operation goes through src/unicode.rs, which follows .NET's Unicode data
+# (research R1): the standard library's answers change with the compiler's Unicode version, and its
+# case mapping and whitespace differ from .NET's. unicode.rs allows these locally.
+disallowed-methods = [
+    { path = "char::is_alphabetic", reason = "use unicode::is_letter (research R1)" },
+    { path = "char::is_alphanumeric", reason = "use unicode::is_letter_or_digit (research R1)" },
+    { path = "char::is_numeric", reason = "use unicode.rs categories (research R1)" },
+    { path = "char::is_whitespace", reason = "use unicode::is_white_space (research R1)" },
+    { path = "char::is_lowercase", reason = "use unicode.rs categories (research R1)" },
+    { path = "char::is_uppercase", reason = "use unicode.rs categories (research R1)" },
+    { path = "char::to_lowercase", reason = "use unicode::to_lower_invariant (research R1)" },
+    { path = "char::to_uppercase", reason = "Unicode-version dependent; see unicode.rs (research R1)" },
+    { path = "str::to_lowercase", reason = "use unicode::to_lower_invariant (research R1)" },
+    { path = "str::to_uppercase", reason = "Unicode-version dependent; see unicode.rs (research R1)" },
+    { path = "str::trim", reason = "use a unicode::is_white_space trim (research R1)" },
+    { path = "str::split_whitespace", reason = "use unicode::is_white_space (research R1)" },
+    { path = "unicode_normalization::UnicodeNormalization::nfkc", reason = "only in unicode.rs (research R1)" },
+    { path = "unicode_normalization::UnicodeNormalization::nfd", reason = "only in unicode.rs (research R1)" },
+]

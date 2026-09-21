@@ -43,6 +43,21 @@ assert filter.contains_profanity("ک.ی.ر")
 assert filter.censor("kir and motherfucker") == "**** and ****"
 ```
 
+For Rust, the same filter is on crates.io, with one dependency, no `unsafe`, and the same answers for
+every message ([Rust README](rust/README.md)):
+
+```bash
+cargo add persian-text-guard
+```
+
+```rust
+use persian_text_guard::{ProfanityFilter, WordList};
+
+let filter = ProfanityFilter::with_defaults(WordList::persian_default());
+assert!(filter.contains_profanity("ک.ی.ر"));
+assert_eq!(filter.censor("kir and motherfucker"), "**** and ****");
+```
+
 ## Profanity filtering
 
 ```csharp
@@ -245,6 +260,16 @@ form submission.
 dotnet run -c Release --project dotnet/benchmarks/PersianTextGuard.Benchmarks -f net10.0
 ```
 
+## Changes in 1.5.0
+
+- **Rust.** `persian-text-guard` is now on crates.io, for Rust 1.85 and later, released together with
+  the .NET, npm and PyPI packages at the same version. It adds byte versions of checking, finding
+  matches and censoring, for input that may not be UTF-8.
+- The conformance corpus runner rules gained two readings for ports whose strings cannot hold a lone
+  surrogate or have no missing string value, so the Rust runner runs every case and reports none as not
+  applicable. No case changed.
+- .NET, JavaScript and Python behaviour is unchanged: 1.5.0 of each is 1.4.0 with a new version number.
+
 ## Changes in 1.4.0
 
 - **Python.** `persian-text-guard` is now on PyPI, for CPython 3.11 and later, released together with
@@ -291,6 +316,9 @@ the same word lists, version and behaviour:
 ├── python/                         # the PyPI package persian-text-guard
 │   ├── pyproject.toml  hatch_build.py  uv.lock
 │   └── src/persian_text_guard/  tests/  bench/  consumers/  scripts/
+├── rust/                           # the crates.io crate persian-text-guard
+│   ├── Cargo.toml  Cargo.lock  build.rs  README.md
+│   └── src/  tests/  bench/  consumer/  tools/  scripts/
 ├── README.md  LICENSE  THIRD-PARTY-NOTICES.md  icon.png
 ├── .github/workflows/ci.yml
 └── .specify/  .claude/  specs/
@@ -340,17 +368,36 @@ For the Python port, run these in `python/` with [uv](https://docs.astral.sh/uv/
 | API compatibility | `uv run python scripts/check_api.py` |
 | Benchmarks | `uv run python bench/bench_filter.py -o .bench/results.json`, then `uv run python scripts/bench_table.py .bench/results.json` |
 
+For the Rust port, run these in `rust/` (Rust 1.85 or later):
+
+| Purpose | Command |
+| --- | --- |
+| All tests, corpus and README examples included | `cargo test --locked` |
+| Conformance corpus only | `cargo test --locked --test corpus` (one trial per case; filter with `-- <id>`) |
+| The minimum supported Rust version | `cargo +1.85 test --locked` |
+| Lint and format | `cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings` |
+| Documentation | `RUSTDOCFLAGS="-D warnings" cargo doc --locked --no-deps` |
+| Regenerate the Unicode tables (.NET 10) | `dotnet run tools/gen_tables.cs -- src/tables.rs` |
+| Set the version from `VERSION` | `scripts/set-version.sh` |
+| Package and consumer checks | `scripts/prepare-package.sh && scripts/check-package.sh` |
+| API compatibility | `scripts/check-api.sh` |
+| Benchmarks | `cd bench && cargo bench`, then `cargo run --release --bin bench_table` |
+
 ### Releasing
 
 Every package is released together, at the version in `VERSION`:
 
 1. Set `VERSION` in the pull request, and merge it once CI is green for every port.
 2. Tag the merge commit `vX.Y.Z`, matching `VERSION`, and push the tag.
-3. CI publishes `PersianTextGuard` to NuGet and `persian-text-guard` to npm and PyPI, only when every
-   build and test job for every port is green and the tag matches `VERSION`. The npm package is
-   published with provenance, and the PyPI files with attestations, from this workflow. PyPI uses
-   trusted publishing through the `pypi` GitHub environment, which only `v*` tags may deploy to; no
-   token is stored.
+3. CI publishes `PersianTextGuard` to NuGet and `persian-text-guard` to npm, PyPI and crates.io, only
+   when every build and test job for every port is green and the tag matches `VERSION`. The npm package
+   is published with provenance, and the PyPI files with attestations, from this workflow. PyPI and
+   crates.io use trusted publishing through the `pypi` and `crates-io` GitHub environments, which only
+   `v*` tags may deploy to; no token is stored.
+   The first crates.io release is the exception: trusted publishing can only be configured on a crate
+   that exists, so 1.5.0 is published with a crates.io token of scope publish-new, restricted to
+   `persian-text-guard` and expiring within days, kept as the `crates-io` environment secret
+   `CARGO_REGISTRY_TOKEN` and deleted and revoked right after the release.
 4. If one registry's publish job fails after another succeeded, fix the cause and re-run the failed
    job: NuGet skips a version it already has, and so do the npm and PyPI jobs.
 
@@ -375,6 +422,10 @@ Every package is released together, at the version in `VERSION`:
   every character's category; older versions differ only on characters added in Unicode 15 or later,
   and Python 3.11 does not fold the Cyrillic modifier letters of Unicode 15. See its
   [limitations](python/README.md#limitations).
+- The Rust crate carries category and case tables generated from .NET 10, so those never drift, and
+  takes compatibility normalization from `unicode-normalization`, which follows a newer Unicode version
+  than .NET 10: they differ on 37 characters in NFKC and 20 in NFD, all added in Unicode 16 or 17. See
+  its [limitations](rust/README.md#limitations).
 
 ## Background
 
