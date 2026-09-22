@@ -1,0 +1,59 @@
+name: Bug in a package
+description: A crash, a wrong result that is not about matching, an installation or typing problem.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a word that was missed or an ordinary message that was flagged, please use
+        **A message was missed or wrongly flagged** instead — it asks for the right details.
+
+        **A crash on message text is a security issue here**, because the filter runs on a request path.
+        Please report it privately on the [Security tab](https://github.com/AmirehsanK/PersianTextGuard/security)
+        instead of opening a public issue.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Which package
+      options:
+        - "NuGet: PersianTextGuard (.NET)"
+        - "npm: persian-text-guard (JavaScript/TypeScript)"
+        - "PyPI: persian-text-guard (Python)"
+        - "crates.io: persian-text-guard (Rust)"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "1.5.0"
+    validations:
+      required: true
+
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime and operating system
+      placeholder: ".NET 10.0.11 on Windows 11 / Node 24 on Ubuntu 24.04 / CPython 3.13 / Rust 1.85 on macOS"
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: The smallest code that shows it
+      description: A few lines someone can paste and run. Include the word list you build the filter from.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened
+      description: Paste the full error message or stack trace, if there is one.
+    validations:
+      required: true

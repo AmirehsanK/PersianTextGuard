@@ -1,0 +1,56 @@
+name: Idea or proposal
+description: A new evasion to read through, a new capability, a new port, or anything else.
+title: "[idea] "
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check [what is out of scope](https://github.com/AmirehsanK/PersianTextGuard/blob/main/CONTRIBUTING.md#what-is-out-of-scope)
+        first: spam and link detection, machine-learning classifiers, and stripping emoji or links from
+        messages are deliberately not part of this project.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of idea
+      options:
+        - An evasion the filter should read through
+        - A new capability in the API
+        - A new language port
+        - Documentation
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What should change, and what someone would be able to do afterwards that they cannot do today.
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Messages it should catch
+      description: Real spellings people use, if you are proposing a new evasion.
+      render: text
+
+  - type: textarea
+    id: ordinary
+    attributes:
+      label: Ordinary messages it must not break
+      description: |
+        The hard part of every evasion. Reading `1` as `i` must not flag `455`; joining split words must
+        not turn «هر کس ده تا» into «کسده». Which ordinary Persian or English text comes closest to being
+        caught by your idea?
+      render: text
+
+  - type: markdown
+    attributes:
+      value: |
+        A capability has to land in **all four ports** at once, and a behaviour change goes into the
+        conformance corpus first. That is not a reason to hold back an idea — just so you know what
+        the work looks like if you want to implement it yourself.

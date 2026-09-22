@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security problem privately
+    url: https://github.com/AmirehsanK/PersianTextGuard/security/advisories/new
+    about: Never in a public issue. A crash on message text counts as a security problem here.
+  - name: How to contribute
+    url: https://github.com/AmirehsanK/PersianTextGuard/blob/main/CONTRIBUTING.md
+    about: How to report a miss, change the word lists, add a corpus case, and what is out of scope.
+  - name: Known limitations
+    url: https://github.com/AmirehsanK/PersianTextGuard#limitations
+    about: What the filter deliberately does not catch. Worth a look before reporting a miss.

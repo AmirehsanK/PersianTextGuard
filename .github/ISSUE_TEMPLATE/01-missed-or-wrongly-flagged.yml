@@ -1,0 +1,106 @@
+name: A message was missed or wrongly flagged
+description: A banned word slipped through, or an ordinary message was flagged. This is the most useful report you can send.
+title: "[matching] "
+labels: ["matching"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you — a real message is worth more than any bug report. It becomes a case in the
+        [conformance corpus](https://github.com/AmirehsanK/PersianTextGuard/tree/main/conformance) that
+        all four ports must pass forever.
+
+        **Issues are public.** Please send only the offending text: no usernames, screenshots of private
+        chats, or anyone else's personal data.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What happened?
+      options:
+        - A banned word slipped through (false negative)
+        - An ordinary message was flagged (false positive)
+        - The match was found, but the position or censored output is wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: message
+    attributes:
+      label: The exact message
+      description: Copy and paste it — please do not retype or describe it. Invisible characters matter.
+      placeholder: "ک.ی.ر"
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what you got
+      placeholder: |
+        Expected: contains_profanity() == true
+        Got: false, and censor() returned the message unchanged
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Which package
+      multiple: true
+      options:
+        - "NuGet: PersianTextGuard (.NET)"
+        - "npm: persian-text-guard (JavaScript/TypeScript)"
+        - "PyPI: persian-text-guard (Python)"
+        - "crates.io: persian-text-guard (Rust)"
+        - Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "1.5.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: wordlist
+    attributes:
+      label: Which word list
+      options:
+        - The bundled default (PersianDefault / persian_default / persianDefault)
+        - All bundled entries, Mild included (All / all)
+        - Selected categories (Bundled / bundled)
+        - My own entries
+    validations:
+      required: true
+
+  - type: textarea
+    id: codepoints
+    attributes:
+      label: Code points (optional, but very helpful)
+      description: |
+        Invisible characters — zero-width non-joiners, bidi marks, look-alike letters — are usually the
+        whole story. One of these prints them:
+
+        ```bash
+        node -e 'console.log([...process.argv[1]].map(c=>c.codePointAt(0).toString(16).toUpperCase().padStart(4,"0")).join(" "))' 'YOUR TEXT'
+        ```
+
+        ```bash
+        python -c "import sys; print(' '.join(f'{ord(c):04X}' for c in sys.argv[1]))" "YOUR TEXT"
+        ```
+      render: text
+
+  - type: checkboxes
+    id: checked
+    attributes:
+      label: Before you send
+      options:
+        - label: I checked the [Limitations](https://github.com/AmirehsanK/PersianTextGuard#limitations) — transposed letters (`fcuk`), letters typed as other letters (`cvnt`) and words split so that ordinary words would glue together (`fuc k`) are known gaps, not bugs.
+          required: true
+        - label: The text above contains no personal data of anyone else.
+          required: true
