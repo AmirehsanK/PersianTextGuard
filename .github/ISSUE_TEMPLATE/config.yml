@@ -6,6 +6,9 @@ contact_links:
   - name: How to contribute
     url: https://github.com/AmirehsanK/PersianTextGuard/blob/main/CONTRIBUTING.md
     about: How to report a miss, change the word lists, add a corpus case, and what is out of scope.
+  - name: Question about using a package
+    url: https://github.com/AmirehsanK/PersianTextGuard/discussions
+    about: Ask in Discussions if you are not sure something is a bug, or want advice on word lists.
   - name: Known limitations
     url: https://github.com/AmirehsanK/PersianTextGuard#limitations
     about: What the filter deliberately does not catch. Worth a look before reporting a miss.

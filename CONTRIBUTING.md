@@ -32,6 +32,10 @@ that every port must pass forever.
 
 No contribution is too small. Fixing one wrong word in the Persian README is a real contribution.
 
+Not sure whether something is a bug, or want advice on building your own word list? Ask in
+[Discussions](https://github.com/AmirehsanK/PersianTextGuard/discussions) — an issue is for something
+that needs fixing, a discussion is for everything else.
+
 ## Two rules that shape everything
 
 **1. Ordinary messages must pass.** A filter that rejects normal messages teaches people the site is
