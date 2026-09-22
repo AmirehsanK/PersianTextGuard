@@ -443,6 +443,8 @@ Two rules shape everything here:
 2. **One behaviour, in every language.** [`conformance/`](conformance/README.md) is the specification;
    a change to matching behaviour updates the corpus *and* every port in the same pull request.
 
+Taking part means following the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report a miss, how to change the word lists, how to add
 a corpus case, what is deliberately out of scope (spam and link detection, emoji stripping, entries the
 matcher already catches), and the pull-request checklist. The ground rules behind it all are in the

@@ -16,7 +16,7 @@ that every port must pass forever.
 - [Working on one port](#working-on-one-port)
 - [Pull requests](#pull-requests)
 - [What is out of scope](#what-is-out-of-scope)
-- [Conduct](#conduct)
+- [Conduct](#conduct) — and the [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Security](#security)
 - [خلاصهٔ فارسی](#خلاصهٔ-فارسی)
 
@@ -222,14 +222,13 @@ So you do not spend effort on something that will not be merged:
 
 ## Conduct
 
-This project handles offensive language by necessity: the word lists contain slurs and sexual insults
-because that is what they exist to catch. Discussing them clinically is part of the work. Using them at
-another person is not.
+Please read the [Code of Conduct](CODE_OF_CONDUCT.md); taking part means following it.
 
-Be respectful and assume good faith. Harassment, insults aimed at people, and discrimination of any kind
-are not welcome in issues, pull requests or reviews. Maintainers may edit, lock or delete contributions
-that cross that line. If someone behaves badly, tell the maintainer privately rather than replying in
-kind.
+The short version: be respectful, assume good faith, and discuss the work rather than the person. This
+project handles offensive language by necessity — the word lists contain slurs and sexual insults because
+that is what they exist to catch, and discussing them clinically is part of the work. Using them at
+another person is not. If someone behaves badly, [report it privately](CODE_OF_CONDUCT.md#reporting)
+rather than replying in kind.
 
 ## Security
 
