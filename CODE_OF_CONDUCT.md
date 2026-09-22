@@ -60,6 +60,8 @@ If someone behaves badly, tell the maintainer privately instead of replying in k
   [Security tab](https://github.com/AmirehsanK/PersianTextGuard/security/advisories/new) — it is the
   private channel this repository has, and it is fine to use it for conduct as well. Say up front that
   the report is about conduct, not a vulnerability.
+- Or email the maintainer directly: **amirehsank3@gmail.com**. Put "PersianTextGuard conduct" in the
+  subject so it is not lost.
 - Or contact the maintainer, [@AmirehsanK](https://github.com/AmirehsanK), through GitHub.
 - For behaviour that breaks GitHub's own rules, you can also use GitHub's
   [report abuse](https://github.com/contact/report-abuse) form, which reaches GitHub staff directly.
@@ -110,7 +112,7 @@ offensive language, and is informed by the community guidelines common to open-s
 
 <div dir="rtl">
 
-آزار، تهدید، توهین به اشخاص، و تبعیض بر پایهٔ قومیت، ملیت، دین، جنسیت، گرایش جنسی، ناتوانی، سن یا ظاهر — حتی به شوخی و حتی به فارسی — پذیرفته نیست. اگر کسی چنین رفتاری کرد، به‌جای پاسخ دادن، به‌صورت خصوصی به نگه‌دارندهٔ پروژه گزارش دهید: از بخش Security مخزن یا از راه حساب گیت‌هاب [@AmirehsanK](https://github.com/AmirehsanK). گزارش شما محرمانه می‌ماند و گزارشِ با حسن نیت هرگز به زیان شما نخواهد بود.
+آزار، تهدید، توهین به اشخاص، و تبعیض بر پایهٔ قومیت، ملیت، دین، جنسیت، گرایش جنسی، ناتوانی، سن یا ظاهر — حتی به شوخی و حتی به فارسی — پذیرفته نیست. اگر کسی چنین رفتاری کرد، به‌جای پاسخ دادن، به‌صورت خصوصی به نگه‌دارندهٔ پروژه گزارش دهید: از بخش Security مخزن، با ایمیل amirehsank3@gmail.com، یا از راه حساب گیت‌هاب [@AmirehsanK](https://github.com/AmirehsanK). گزارش شما محرمانه می‌ماند و گزارشِ با حسن نیت هرگز به زیان شما نخواهد بود.
 
 </div>
 
