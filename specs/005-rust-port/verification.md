@@ -383,3 +383,41 @@ The tag waits on the last one: a crates.io token with the **publish-new** scope 
 `persian-text-guard` and expiring within 7 days, stored as the `crates-io` environment secret
 `CARGO_REGISTRY_TOKEN`. Without it the publish job would try trusted publishing, which crates.io only
 allows on a crate that already exists, so the first release would fail.
+
+## Release 1.5.0 (T066–T068)
+
+Tag `v1.5.0` was pushed on `c4391fc` (the merge commit plus this file's record) after checking every
+precondition, including the 👤 `CARGO_REGISTRY_TOKEN` secret in the `crates-io` environment.
+
+**Run [35579523255](https://github.com/AmirehsanK/PersianTextGuard/actions/runs/35579523255)**: all 16
+build and test jobs succeeded; `Publish to NuGet`, `Publish to npm` and `Publish to PyPI` succeeded;
+**`Publish to crates.io` failed** with
+
+```text
+the remote server responded with an error (status 400 Bad Request): A verified email address is
+required to publish crates to crates.io.
+```
+
+The token and the gates were fine: crates.io refuses any publish from an account without a verified
+email. 👤 The maintainer verified their email, and re-running the failed job alone
+(`gh run rerun <id> --failed`) published the crate — the partial-release recovery the contract promises,
+exercised for real. The other three publish jobs were untouched, and their "skip if already published"
+paths were not needed.
+
+**Registries and documentation (T067)**, each from a fresh project:
+
+| Package | Check | Result |
+| --- | --- | --- |
+| crates.io | `cargo new` + `cargo add persian-text-guard@1.5.0`, then the README quick start | ✅ flags «ک.ی.ر», censors to `**** and ****`, `count()` 1,020 distinct entries |
+| npm | `npm install persian-text-guard@1.5.0`, `containsProfanity`/`censor` | ✅ `true`, `**** and ****` |
+| PyPI | `uv run --with "persian-text-guard==1.5.0"`, `contains_profanity`/`censor` | ✅ `True`, `**** and ****`, `__version__` 1.5.0 |
+| NuGet | `dotnet new console` + `dotnet add package PersianTextGuard --version 1.5.0` | ✅ `True`, `**** and ****`; the index lists 1.4.0 and 1.5.0 |
+| docs.rs | `https://docs.rs/persian-text-guard/1.5.0/persian_text_guard/` | ✅ HTTP 200 |
+
+**After the release (T068)**: the `crates-io` environment secret `CARGO_REGISTRY_TOKEN` was deleted
+(`secrets.total_count` back to 0), and the GitHub release
+[v1.5.0](https://github.com/AmirehsanK/PersianTextGuard/releases/tag/v1.5.0) was created from
+`release-notes-1.5.0.md`. 👤 Two account actions remain for the maintainer: revoking the token on
+crates.io, and adding trusted publishing on the crate's settings (repository
+`AmirehsanK/PersianTextGuard`, workflow `ci.yml`, environment `crates-io`), so later releases need no
+stored token.

@@ -624,20 +624,20 @@ with the maintainer's go-ahead.
   repos/AmirehsanK/PersianTextGuard/branches/main/protection/required_status_checks`, keeping the nine
   existing ones, `strict: false`, `app_id` 15368 (sixteen in all). Ask the maintainer first unless they have
   already approved the release steps.
-- [ ] T066 (**irreversible**; needs the maintainer's go-ahead) Push tag `v1.5.0` on the merge commit, only if:
+- [X] T066 (**irreversible**; needs the maintainer's go-ahead) Push tag `v1.5.0` on the merge commit, only if:
   `main` is green; `VERSION` and `rust/Cargo.toml` are `1.5.0`; the `crates-io` environment has its `v*` rule
   **and** the secret `CARGO_REGISTRY_TOKEN` (👤 created by the maintainer: publish-new scope, crate
   `persian-text-guard`, expiring within 7 days; check with `gh api .../environments/crates-io/secrets`);
   `pypi` still has its rule; **CPython 3.15**: if `uv python list 3.15` shows a final release, add it to the
   Python matrix and classifiers through a pull request first (constitution Principle III); no registry has
   1.5.0. Watch the run: every job succeeds, including all four publish jobs.
-- [ ] T067 Verify all four registries (SC-011, quickstart §7): a fresh `cargo new` project with
+- [X] T067 Verify all four registries (SC-011, quickstart §7): a fresh `cargo new` project with
   `persian-text-guard = "1.5.0"` runs the quick start; `pip install persian-text-guard==1.5.0` and the smoke
   check; `npm view persian-text-guard@1.5.0 version` and a fresh install that flags `ک.ی.ر`; the NuGet index
   lists 1.5.0 and a fresh console app flags it; docs.rs has built `persian-text-guard 1.5.0` (poll until the
   page returns 200, allowing for docs.rs's queue). Record results; allow for registry indexing delays as in
   004 (npm and NuGet took minutes).
-- [ ] T068 After the release: delete the `crates-io` environment secret with `gh secret delete
+- [X] T068 After the release: delete the `crates-io` environment secret with `gh secret delete
   CARGO_REGISTRY_TOKEN --env crates-io`; 👤 the maintainer revokes the token on crates.io and adds trusted
   publishing on the crate's settings (repository `AmirehsanK/PersianTextGuard`, workflow `ci.yml`,
   environment `crates-io`). Create the GitHub release with `gh release create v1.5.0 --title "PersianTextGuard
