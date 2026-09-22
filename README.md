@@ -427,6 +427,27 @@ Every package is released together, at the version in `VERSION`:
   than .NET 10: they differ on 37 characters in NFKC and 20 in NFD, all added in Unicode 16 or 17. See
   its [limitations](rust/README.md#limitations).
 
+## Contributing
+
+Contributions are welcome, and the most useful one takes a minute: **a real message that slipped through,
+or an ordinary message that was wrongly flagged**. Paste the exact text into an issue and it becomes a
+conformance case that all four ports must pass forever.
+
+Also welcome: word-list entries (especially the Finglish spellings your community uses), bug fixes,
+documentation and translation fixes, and new ports.
+
+Two rules shape everything here:
+
+1. **Ordinary messages must pass.** A false positive is treated as more severe than a missed evasion, so
+   every new way of catching a word must also add the ordinary text it could plausibly catch.
+2. **One behaviour, in every language.** [`conformance/`](conformance/README.md) is the specification;
+   a change to matching behaviour updates the corpus *and* every port in the same pull request.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report a miss, how to change the word lists, how to add
+a corpus case, what is deliberately out of scope (spam and link detection, emoji stripping, entries the
+matcher already catches), and the pull-request checklist. The ground rules behind it all are in the
+[constitution](.specify/memory/constitution.md).
+
 ## Background
 
 This started as the moderation layer of a Persian gaming community site, where every one
