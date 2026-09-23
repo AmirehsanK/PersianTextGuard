@@ -15,34 +15,45 @@
 [![PyPI downloads](https://static.pepy.tech/personalized-badge/persian-text-guard?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pypi%20downloads)](https://pepy.tech/project/persian-text-guard)
 [![crates.io downloads](https://img.shields.io/crates/d/persian-text-guard?label=crates.io%20downloads)](https://crates.io/crates/persian-text-guard)
 
-Persian text normalization and evasion-resistant profanity filtering for .NET.
+Persian text normalization and evasion-resistant profanity filtering, for .NET, JavaScript,
+Python and Rust — one behaviour, four packages, the same answer for every message.
 
 A word list is easy to get around. Type an Arabic `ي` instead of `ی`, slip a zero-width
 character inside a word, write `f u c k`, `sh1t`, `کیییییر` or `k0s`, and a plain
-`text.Contains(word)` check sees nothing. PersianTextGuard reads through those tricks,
-and just as importantly, it doesn't flag ordinary messages: `هر کس`, `تخم مرغ`, `class`,
-`push it` and `Scunthorpe` all pass.
+"does this text contain that word" check sees nothing. PersianTextGuard reads through those
+tricks, and just as importantly, it doesn't flag ordinary messages: `هر کس`, `تخم مرغ`,
+`class`, `push it` and `Scunthorpe` all pass.
+
+All four packages are released together at the same version, and each one is checked against the
+same [conformance corpus](conformance/README.md) of 523 cases, so a service written in one language
+and a service written in another agree on every message.
+
+## Install
 
 ```bash
-dotnet add package PersianTextGuard
+dotnet add package PersianTextGuard   # .NET
+npm install persian-text-guard        # JavaScript and TypeScript
+pip install persian-text-guard        # Python
+cargo add persian-text-guard          # Rust
 ```
 
-Targets .NET Standard 2.0 (so .NET Framework 4.6.1+ works), .NET 8 and .NET 10, and the
-tests run on .NET Framework 4.8, .NET 8 and .NET 10. No dependencies.
+The examples below are C#. The same API, with each language's naming, is in the
+[JavaScript](js/README.md), [Python](python/README.md) and [Rust](rust/README.md) READMEs.
 
-For JavaScript and TypeScript, the same filter is on npm, with types included and the same answers
-for every message ([JavaScript README](js/README.md)):
+### The four packages
 
-```bash
-npm install persian-text-guard
-```
+| Package | Requires | Notes |
+| --- | --- | --- |
+| [**NuGet** `PersianTextGuard`](https://www.nuget.org/packages/PersianTextGuard) | .NET Standard 2.0 (.NET Framework 4.6.1+), .NET 8, .NET 10 | Positions in UTF-16 code units. AOT-compatible on the modern targets |
+| [**npm** `persian-text-guard`](https://www.npmjs.com/package/persian-text-guard) ([README](js/README.md)) | Node.js in LTS, and browsers | ES modules and CommonJS, types included. Positions in UTF-16 code units |
+| [**PyPI** `persian-text-guard`](https://pypi.org/project/persian-text-guard/) ([README](python/README.md)) | CPython 3.11+, free-threaded 3.14 included | Typed (`py.typed`). Positions in code points |
+| [**crates.io** `persian-text-guard`](https://crates.io/crates/persian-text-guard) ([README](rust/README.md)) | Rust 1.85+ (edition 2024) | One dependency, `#![forbid(unsafe_code)]`. Positions in bytes, and byte-slice versions for input that may not be UTF-8 |
 
-For Python 3.11 and later, including free-threaded 3.14, the same filter is on PyPI, typed, with no
-dependencies and the same answers for every message ([Python README](python/README.md)):
-
-```bash
-pip install persian-text-guard
-```
+Every package has the same capabilities: build a filter from word lists and options, check a message,
+find the first match or every match, censor with a mask you choose, normalize and tokenize Persian
+text, and pick bundled lists by category. Names follow each language's conventions —
+`FindMatches` in C#, `findMatches` in TypeScript, `find_matches` in Python and Rust. The same quick
+start in Python and in Rust:
 
 ```python
 from persian_text_guard import ProfanityFilter, WordList
@@ -50,13 +61,6 @@ from persian_text_guard import ProfanityFilter, WordList
 filter = ProfanityFilter(WordList.persian_default())
 assert filter.contains_profanity("ک.ی.ر")
 assert filter.censor("kir and motherfucker") == "**** and ****"
-```
-
-For Rust, the same filter is on crates.io, with one dependency, no `unsafe`, and the same answers for
-every message ([Rust README](rust/README.md)):
-
-```bash
-cargo add persian-text-guard
 ```
 
 ```rust
