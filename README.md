@@ -3,8 +3,17 @@
 # PersianTextGuard
 
 [![CI](https://github.com/AmirehsanK/PersianTextGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/AmirehsanK/PersianTextGuard/actions/workflows/ci.yml)
-[![NuGet](https://img.shields.io/nuget/v/PersianTextGuard.svg)](https://www.nuget.org/packages/PersianTextGuard)
-[![Downloads](https://img.shields.io/nuget/dt/PersianTextGuard.svg)](https://www.nuget.org/packages/PersianTextGuard)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/AmirehsanK/PersianTextGuard/blob/main/LICENSE)
+
+[![NuGet](https://img.shields.io/nuget/v/PersianTextGuard?logo=nuget&label=nuget)](https://www.nuget.org/packages/PersianTextGuard)
+[![npm](https://img.shields.io/npm/v/persian-text-guard?logo=npm&label=npm)](https://www.npmjs.com/package/persian-text-guard)
+[![PyPI](https://img.shields.io/pypi/v/persian-text-guard?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/persian-text-guard/)
+[![crates.io](https://img.shields.io/crates/v/persian-text-guard?logo=rust&label=crates.io)](https://crates.io/crates/persian-text-guard)
+
+[![NuGet downloads](https://img.shields.io/nuget/dt/PersianTextGuard?label=nuget%20downloads)](https://www.nuget.org/packages/PersianTextGuard)
+[![npm downloads](https://img.shields.io/npm/dm/persian-text-guard?label=npm%20downloads)](https://www.npmjs.com/package/persian-text-guard)
+[![PyPI downloads](https://static.pepy.tech/personalized-badge/persian-text-guard?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pypi%20downloads)](https://pepy.tech/project/persian-text-guard)
+[![crates.io downloads](https://img.shields.io/crates/d/persian-text-guard?label=crates.io%20downloads)](https://crates.io/crates/persian-text-guard)
 
 Persian text normalization and evasion-resistant profanity filtering for .NET.
 
