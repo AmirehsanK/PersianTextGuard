@@ -48,3 +48,7 @@ specs/005-rust-port/tools/rust-dump/target/
 rust/wordlists/
 rust/LICENSE
 rust/THIRD-PARTY-NOTICES.md
+
+# Knowledge-graph output from `/graphify`. Regenerated from the sources on
+# demand and ~2 MB of derived JSON; nothing in it is hand-written.
+graphify-out/
