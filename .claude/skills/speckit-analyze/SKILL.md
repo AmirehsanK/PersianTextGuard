@@ -17,8 +17,6 @@ disable-model-invocation: false
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
-
 ## Pre-Execution Checks
 
 **Check for extension hooks (before analysis)**:
@@ -76,7 +74,6 @@ Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireSpec -Req
 - TASKS = FEATURE_DIR/tasks.md
 
 Abort with an error message if any required file is missing (instruct the user to run missing prerequisite command).
-For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 ### 2. Load Artifacts (Progressive Disclosure)
 

@@ -47,8 +47,6 @@ disable-model-invocation: false
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
-
 ## Pre-Execution Checks
 
 **Check for extension hooks (before checklist generation)**:
@@ -89,7 +87,6 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 1. **Setup**: Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -Template checklist-template` from repo root and parse JSON for FEATURE_DIR, AVAILABLE_DOCS list, and TEMPLATE_CONTENT.
    - All file paths must be absolute.
-   - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **IF EXISTS**: Load `.specify/memory/constitution.md` for project principles and governance constraints.
 
@@ -249,7 +246,6 @@ You **MUST** consider the user input before proceeding (if not empty).
    - ❌ Any item starting with "Verify", "Test", "Confirm", "Check" + implementation behavior
    - ❌ References to code execution, user actions, system behavior
    - ❌ "Displays correctly", "works properly", "functions as expected"
-   - ❌ "Click", "navigate", "render", "load", "execute"
    - ❌ Test cases, test plans, QA procedures
    - ❌ Implementation details (frameworks, APIs, algorithms)
 
