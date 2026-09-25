@@ -17,8 +17,6 @@ disable-model-invocation: false
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
-
 ## Pre-Execution Checks
 
 **Check for extension hooks (before specification)**:
@@ -222,16 +220,11 @@ Given that feature description, do this:
            **Your choice**: _[Wait for user response]_
            ```
 
-        4. **CRITICAL - Table Formatting**: Ensure markdown tables are properly formatted:
-           - Use consistent spacing with pipes aligned
-           - Each cell should have spaces around content: `| Content |` not `|Content|`
-           - Header separator must have at least 3 dashes: `|--------|`
-           - Test that the table renders correctly in markdown preview
-        5. Number questions sequentially (Q1, Q2, Q3 - max 3 total)
-        6. Present all questions together before waiting for responses
-        7. Wait for user to respond with their choices for all questions (e.g., "Q1: A, Q2: Custom - [details], Q3: B")
-        8. Update the spec by replacing each [NEEDS CLARIFICATION] marker with the user's selected or provided answer
-        9. Re-run validation after all clarifications are resolved
+        4. Number questions sequentially (Q1, Q2, Q3 - max 3 total)
+        5. Present all questions together before waiting for responses
+        6. Wait for user to respond with their choices for all questions (e.g., "Q1: A, Q2: Custom - [details], Q3: B")
+        7. Update the spec by replacing each [NEEDS CLARIFICATION] marker with the user's selected or provided answer
+        8. Re-run validation after all clarifications are resolved
 
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 

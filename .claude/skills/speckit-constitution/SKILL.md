@@ -17,8 +17,6 @@ disable-model-invocation: false
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
-
 ## Scope Guard
 
 This command's own work is limited to updating the project constitution itself. Dependent templates
@@ -93,7 +91,7 @@ Follow this execution flow:
    - If it does not exist, use the resolved template as the initial document.
    - Do not write back to any versioned template layer.
    - Identify every placeholder token of the form `[ALL_CAPS_IDENTIFIER]`.
-   **IMPORTANT**: The user might require less or more principles than the ones used in the template. If a number is specified, respect that - follow the general template. You will update the doc accordingly.
+   If the user asks for more or fewer principles than the template has, use their number and keep the template's structure.
 
 2. Collect/derive values for placeholders:
    - If user input (conversation) supplies a value, use it.

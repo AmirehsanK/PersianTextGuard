@@ -17,8 +17,6 @@ disable-model-invocation: false
 $ARGUMENTS
 ```
 
-You **MUST** consider the user input before proceeding (if not empty).
-
 ## Pre-Execution Checks
 
 **Check for extension hooks (before clarification)**:
@@ -68,7 +66,6 @@ Execution steps:
    - `FEATURE_SPEC`
    - (Optionally capture `IMPL_PLAN`, `TASKS` for future chained flows.)
    - If JSON parsing fails, abort and instruct user to re-run `/speckit-specify` or verify feature branch environment.
-   - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **IF EXISTS**: Load `.specify/memory/constitution.md` for project principles and governance constraints.
 
@@ -199,7 +196,7 @@ Execution steps:
     - Preserve formatting: do not reorder unrelated sections; keep heading hierarchy intact.
     - Keep each inserted clarification minimal and testable (avoid narrative drift).
 
-7. Validation (performed after EACH write plus final pass):
+7. Each write leaves the spec in this state:
    - Clarifications session contains exactly one bullet per accepted answer (no duplicates).
    - Total asked (accepted) questions ≤ 5.
    - Updated sections contain no lingering vague placeholders the new answer was meant to resolve.
